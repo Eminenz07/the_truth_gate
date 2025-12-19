@@ -1,0 +1,32 @@
+{% extends 'core/base.html' %}
+
+{% block title %}About | The Truth Gate{% endblock %}
+
+{% block content %}
+<div class="container sermon-container">
+    <div class="header-section text-center mb-4">
+        <h1>About The Truth Gate</h1>
+        <p class="tagline">"Ye shall know the truth, and the truth shall make you free." — John 8:32</p>
+    </div>
+
+    <div class="content text-center">
+        <p class="mb-2"><strong>The Truth Gate exists for one reason: to help you find clear, biblical truth for real-life struggles.</strong></p>
+        
+        <p>We believe that God's Word isn't just for Sunday mornings or theological debates. It is the living, active solution to the problems we face every day—anxiety, doubt, fear, and confusion.</p>
+
+        <p>This is not a blog. It is not a sermon archive. It is a place to find answers.</p>
+
+        <div class="mb-4"></div>
+
+        <h3>Our Mission</h3>
+        <p>To strip away the noise and religious jargon, presenting the Gospel in plain, modern language that anyone can understand. We want you to leave this site with more clarity and less weight than when you arrived.</p>
+
+        <h3>What We Believe</h3>
+        <p>We hold to the historic Christian faith, centering on Jesus Christ as the only way to God, the Bible as the ultimate authority, and grace as the only means of salvation.</p>
+
+        <div class="mt-4">
+            <a href="{% url 'home' %}" class="btn">Browse Topics</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

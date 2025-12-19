@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="header-section text-center mb-2">
+        <h1>{{ category.name }}</h1>
+        {% if category.description %}
+        <p>{{ category.description }}</p>
+        {% endif %}
+    </div>
+
+    <div class="sermon-list">
+        {% for sermon in sermons %}
+        <a href="{% url 'sermon_detail' category.slug sermon.slug %}" class="sermon-card">
+            <h3>{{ sermon.title }}</h3>
+            <p class="sermon-meta">{{ sermon.published_date|date:"F d, Y" }}</p>
+        </a>
+        {% empty %}
+        <p class="text-center">No sermons found in this category yet.</p>
+        {% endfor %}
+    </div>
+    
+    <div class="mt-4 text-center">
+        <a href="{% url 'home' %}" class="back-link">&larr; Back to Categories</a>
+    </div>
+</div>
+{% endblock %}

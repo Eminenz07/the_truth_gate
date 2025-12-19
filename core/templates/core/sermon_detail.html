@@ -1,0 +1,69 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ sermon.title }} | The Truth Gate{% endblock %}
+
+{% block content %}
+<article class="sermon-container container">
+    <header class="sermon-header text-center mb-4">
+        <h1 class="sermon-title">{{ sermon.title }}</h1>
+        <p class="category-tag"><a href="{% url 'category_detail' sermon.category.slug %}">{{ sermon.category.name }}</a></p>
+    </header>
+
+    <section class="problem-section mb-4">
+        <h2 class="section-label">The Problem</h2>
+        <div class="content">{{ sermon.problem_text|linebreaks }}</div>
+    </section>
+
+    <section class="scripture-section mb-4">
+        <h2 class="section-label">Scripture Focus</h2>
+        <blockquote class="scripture-block">
+            <p>{{ sermon.scripture_text|linebreaksbr }}</p>
+            <cite>— {{ sermon.scripture_citation }}</cite>
+        </blockquote>
+    </section>
+
+    <section class="explanation-section mb-4">
+        <h2 class="section-label">Explanation</h2>
+        <div class="content">{{ sermon.explanation_text|linebreaks }}</div>
+    </section>
+
+    <section class="truth-section mb-4">
+        <h2 class="section-label">The Truth</h2>
+        <div class="content">{{ sermon.truth_text|linebreaks }}</div>
+    </section>
+
+    <section class="application-section mb-4">
+        <h2 class="section-label">Apply This Today</h2>
+        <div class="application-card">
+            <div class="action-item mb-2">
+                <h3>Action</h3>
+                <p>{{ sermon.action_text|linebreaks }}</p>
+            </div>
+            <div class="reflection-item">
+                <h3>Reflection</h3>
+                <p>{{ sermon.reflection_question|linebreaks }}</p>
+            </div>
+        </div>
+    </section>
+
+    {% if sermon.youtube_url %}
+    <section class="media-links mb-4 text-center">
+        <a href="{{ sermon.youtube_url }}" target="_blank" class="btn btn-youtube">
+            Watch on YouTube
+        </a>
+    </section>
+    {% endif %}
+
+    {% if sermon.audio_url %}
+    <section class="audio-section mb-4 text-center">
+        <audio controls src="{{ sermon.audio_url }}">
+            Your browser does not support the audio element.
+        </audio>
+    </section>
+    {% endif %}
+
+    <div class="sermon-footer text-center mt-4">
+        <a href="{% url 'category_detail' sermon.category.slug %}" class="back-link">&larr; Back to {{ sermon.category.name }}</a>
+    </div>
+</article>
+{% endblock %}
