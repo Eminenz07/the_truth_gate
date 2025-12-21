@@ -1,0 +1,132 @@
+{% extends 'dashboard/base.html' %}
+
+{% block header_title %}Dashboard{% endblock %}
+
+{% block content %}
+<style>
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .stat-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .stat-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: #f0fdf4;
+        color: var(--success);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+    }
+
+    .stat-info .value {
+        font-size: 1.8rem;
+        font-weight: 600;
+        line-height: 1.2;
+    }
+
+    .stat-info .label {
+        color: var(--text-light);
+        font-size: 0.9rem;
+    }
+
+    .actions-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .action-btn {
+        background: white;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 2rem;
+        text-align: center;
+        text-decoration: none;
+        color: var(--text-main);
+        transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .action-btn:hover {
+        transform: translateY(-2px);
+        border-color: var(--primary);
+    }
+
+    .action-btn i {
+        font-size: 2rem;
+        color: var(--primary);
+        margin-bottom: 1rem;
+    }
+
+    .action-btn span {
+        display: block;
+        font-weight: 500;
+    }
+</style>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon">
+            <i class="fas fa-video"></i>
+        </div>
+        <div class="stat-info">
+            <div class="value">{{ total_sermons|default:"0" }}</div>
+            <div class="label">Total Sermons</div>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon" style="background: #ebf8ff; color: #4299e1;">
+            <i class="fas fa-calendar-check"></i>
+        </div>
+        <div class="stat-info">
+            <div class="value">{{ upcoming_events|default:"0" }}</div>
+            <div class="label">Upcoming Events</div>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon" style="background: #fff5f5; color: #f56565;">
+            <i class="fas fa-hands-praying"></i>
+        </div>
+        <div class="stat-info">
+            <div class="value">{{ prayer_requests|default:"0" }}</div>
+            <div class="label">New Requests</div>
+        </div>
+    </div>
+</div>
+
+<h2>Quick Actions</h2>
+<div class="actions-grid">
+    <a href="{% url 'dashboard:sermon_create' %}" class="action-btn">
+        <i class="fas fa-cloud-upload-alt"></i>
+        <span>Upload Sermon</span>
+    </a>
+    <a href="{% url 'dashboard:event_create' %}" class="action-btn">
+        <i class="fas fa-plus-circle"></i>
+        <span>Add Event</span>
+    </a>
+    <a href="{% url 'dashboard:settings' %}" class="action-btn">
+        <i class="fas fa-broadcast-tower"></i>
+        <span>Go Live / Config</span>
+    </a>
+    <a href="{% url 'dashboard:contact_list' %}" class="action-btn">
+        <i class="fas fa-envelope-open-text"></i>
+        <span>View Inbox</span>
+    </a>
+</div>
+{% endblock %}

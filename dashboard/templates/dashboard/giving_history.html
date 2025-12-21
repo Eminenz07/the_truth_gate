@@ -1,0 +1,15 @@
+{% extends 'dashboard/base.html' %}
+
+{% block header_title %}Giving History{% endblock %}
+
+{% block content %}
+<div class="card" style="text-align: center; padding: 4rem;">
+    <i class="fas fa-hand-holding-heart" style="font-size: 3rem; color: var(--text-light); margin-bottom: 1rem;"></i>
+    <h3>No donations yet</h3>
+    <p style="color: var(--text-light); margin-bottom: 2rem;">When you integrate a payment provider, transaction history will appear here.</p>
+    
+    <a href="{% url 'dashboard:settings' %}" class="action-btn" style="display: inline-block; padding: 1rem 2rem;">
+        Configure Payment Gateway
+    </a>
+</div>
+{% endblock %}

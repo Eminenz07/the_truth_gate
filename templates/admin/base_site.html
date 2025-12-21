@@ -1,0 +1,25 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}The Truth Gate Admin{% endblock %}
+
+{% block branding %}
+<div class="site-branding">
+    <h1 id="site-name">
+        <a href="{% url 'admin:index' %}">
+            The Truth Gate
+            <small>Administration</small>
+        </a>
+    </h1>
+</div>
+{% endblock %}
+
+{% block extrastyle %}
+<link rel="stylesheet" href="{% static 'admin/css/custom_admin.css' %}">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap"
+  rel="stylesheet"
+/>
+{% endblock %}

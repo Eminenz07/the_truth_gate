@@ -1,0 +1,51 @@
+{% extends 'dashboard/base.html' %}
+
+{% block header_title %}Events{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h2>Calendar</h2>
+    <a href="{% url 'dashboard:event_create' %}" class="action-btn" style="padding: 0.75rem 1.5rem; display: flex; align-items: center; gap: 0.5rem; background: var(--primary); color: white; border: none;">
+        <i class="fas fa-plus" style="font-size: 1rem; color: white; margin: 0;"></i> 
+        <span style="display: inline;">New Event</span>
+    </a>
+</div>
+
+<div class="card" style="padding: 0; overflow: hidden;">
+    <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr style="background: #f8fafc; text-align: left;">
+                <th style="padding: 1rem; border-bottom: 1px solid var(--border-color); font-weight: 600; font-size: 0.85rem; color: var(--text-light); text-transform: uppercase;">Event</th>
+                <th style="padding: 1rem; border-bottom: 1px solid var(--border-color); font-weight: 600; font-size: 0.85rem; color: var(--text-light); text-transform: uppercase;">Date & Time</th>
+                <th style="padding: 1rem; border-bottom: 1px solid var(--border-color); font-weight: 600; font-size: 0.85rem; color: var(--text-light); text-transform: uppercase;">Location</th>
+                <th style="padding: 1rem; border-bottom: 1px solid var(--border-color); font-weight: 600; font-size: 0.85rem; color: var(--text-light); text-transform: uppercase;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in events %}
+            <tr style="border-bottom: 1px solid var(--border-color);">
+                <td style="padding: 1rem;">
+                    <div style="font-weight: 500;">{{ event.title }}</div>
+                </td>
+                <td style="padding: 1rem;">
+                    <div>{{ event.start_time|date:"M d, Y" }}</div>
+                    <div style="font-size: 0.85rem; color: var(--text-light);">{{ event.start_time|date:"g:i A" }} - {{ event.end_time|date:"g:i A" }}</div>
+                </td>
+                <td style="padding: 1rem;">
+                    {{ event.location }}
+                </td>
+                <td style="padding: 1rem;">
+                    <a href="{% url 'dashboard:event_edit' event.pk %}" style="color: var(--primary); margin-right: 1rem;">Edit</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" style="padding: 3rem; text-align: center; color: var(--text-light);">
+                    No events scheduled. <a href="{% url 'dashboard:event_create' %}" style="color: var(--primary);">Add one?</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

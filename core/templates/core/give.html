@@ -1,0 +1,25 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Give | The Truth Gate{% endblock %}
+
+{% block content %}
+<div class="container site-main" style="max-width: 720px; text-align: center;">
+    <header class="mb-large">
+        <h1 class="page-title">Give Online</h1>
+        <p class="text-secondary">"Each of you should give what you have decided in your heart to give, not reluctantly or under compulsion, for God loves a cheerful giver." - 2 Corinthians 9:7</p>
+    </header>
+
+    <div class="giving-options" style="display: grid; gap: 2rem; justify-content: center;">
+        <div class="give-card" style="background: #fff; padding: 3rem; border: 1px solid var(--border-color); border-radius: 4px; max-width: 400px; margin: 0 auto;">
+            <h3 style="color: var(--accent); margin-bottom: 1rem;">Secure Donation</h3>
+            <p class="mb-2">Support the ministry of The Truth Gate.</p>
+            
+            <!-- Placeholder for Paystack/Flutterwave Button -->
+            <button class="btn" style="background: var(--accent); color: #fff; padding: 1rem 2rem; font-size: 1.1rem; border: none;">
+                Give Now via Paystack
+            </button>
+            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 1rem;">Secure payment processing.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% block extra_css %}
+<style>
+    .status-badge {
+        padding: 0.25rem 0.5rem;
+        border-radius: 99px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        display: inline-block;
+    }
+    .status-published { background: #def7ec; color: #03543f; }
+    .status-draft { background: #f3f4f6; color: #4b5563; }
+    .status-archived { background: #fde8e8; color: #9b1c1c; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h2>Library</h2>
+    <a href="{% url 'dashboard:sermon_create' %}" class="action-btn" style="padding: 0.75rem 1.5rem; display: flex; align-items: center; gap: 0.5rem; background: var(--primary); color: white; border: none;">
+        <i class="fas fa-plus" style="font-size: 1rem; color: white; margin: 0;"></i> 
+        <span style="display: inline;">New Sermon</span>
+    </a>
+</div>
+
+<div class="card" style="padding: 0; overflow: hidden;">
+    <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr style="background: #f8fafc; text-align: left;">
+                <th style="padding: 1rem; border-bottom: 1px solid var(--border-color); font-weight: 600; font-size: 0.85rem; color: var(--text-light); text-transform: uppercase;">Title</th>
+                <th style="padding: 1rem; border-bottom: 1px solid var(--border-color); font-weight: 600; font-size: 0.85rem; color: var(--text-light); text-transform: uppercase;">Speaker</th>
+                <th style="padding: 1rem; border-bottom: 1px solid var(--border-color); font-weight: 600; font-size: 0.85rem; color: var(--text-light); text-transform: uppercase;">Date</th>
+                <th style="padding: 1rem; border-bottom: 1px solid var(--border-color); font-weight: 600; font-size: 0.85rem; color: var(--text-light); text-transform: uppercase;">Status</th>
+                <th style="padding: 1rem; border-bottom: 1px solid var(--border-color); font-weight: 600; font-size: 0.85rem; color: var(--text-light); text-transform: uppercase;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sermon in sermons %}
+            <tr style="border-bottom: 1px solid var(--border-color);">
+                <td style="padding: 1rem;">
+                    <div style="font-weight: 500;">{{ sermon.title }}</div>
+                    <div style="font-size: 0.85rem; color: var(--text-light);">{{ sermon.series|default:"No Series" }}</div>
+                </td>
+                <td style="padding: 1rem;">{{ sermon.speaker|default:"-" }}</td>
+                <td style="padding: 1rem;">{{ sermon.date_preached|date:"M d, Y" }}</td>
+                <td style="padding: 1rem;">
+                    <span class="status-badge status-{{ sermon.status }}">
+                        {{ sermon.status|title }}
+                    </span>
+                </td>
+                <td style="padding: 1rem;">
+                    <a href="{% url 'dashboard:sermon_edit' sermon.pk %}" style="color: var(--primary); margin-right: 1rem;">Edit</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" style="padding: 3rem; text-align: center; color: var(--text-light);">
+                    No sermons found. <a href="{% url 'dashboard:sermon_create' %}" style="color: var(--primary);">Create one?</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Pagination could go here -->
+{% endblock %}

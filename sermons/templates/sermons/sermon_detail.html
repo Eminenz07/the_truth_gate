@@ -1,0 +1,58 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ sermon.title }} | The Truth Gate{% endblock %}
+
+{% block content %}
+<article class="sermon-container container site-main">
+    <header class="sermon-header text-center mb-4">
+        <div class="sermon-meta mb-2">
+            <span>{{ sermon.date_preached|date:"F d, Y" }}</span>
+            {% if sermon.series %} • <span>Series: {{ sermon.series.title }}</span>{% endif %}
+        </div>
+        <h1 class="sermon-title">{{ sermon.title }}</h1>
+        {% if sermon.speaker %}
+        <p class="text-secondary">by {{ sermon.speaker.name }}</p>
+        {% endif %}
+    </header>
+
+    <!-- Media Player -->
+    <section class="media-section mb-large text-center">
+        {% if sermon.sermon_type == 'video' and sermon.video_url %}
+            <div class="video-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; background: #000;">
+                <!-- Very basic embed logic - would need robust parsing for production -->
+                {% if "youtube" in sermon.video_url %}
+                    <iframe src="{{ sermon.video_url|cut:'watch?v='|cut:'https://www.youtube.com/'|add:'https://www.youtube.com/embed/' }}" 
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" 
+                            frameborder="0" allowfullscreen></iframe>
+                {% else %}
+                    <a href="{{ sermon.video_url }}" target="_blank" class="btn btn-primary">Watch Video</a>
+                {% endif %}
+            </div>
+        {% elif sermon.sermon_type == 'audio' and sermon.audio_file %}
+            <audio controls style="width: 100%;">
+                <source src="{{ sermon.audio_file.url }}" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        {% endif %}
+    </section>
+
+    <!-- Notes/Content -->
+    <section class="sermon-content">
+        <h2 class="section-label">Sermon Notes</h2>
+        
+        {% if sermon.scripture_reference %}
+        <blockquote class="scripture-block">
+            <cite>{{ sermon.scripture_reference }}</cite>
+        </blockquote>
+        {% endif %}
+
+        <div class="content">
+            {{ sermon.notes|safe }}
+        </div>
+    </section>
+
+    <div class="sermon-footer text-center mt-4">
+        <a href="{% url 'sermon_list' %}" class="back-link">&larr; Back to Library</a>
+    </div>
+</article>
+{% endblock %}

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Dashboard | The Truth Gate{% endblock %}</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:wght@500;600&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --sidebar-width: 260px;
+            --header-height: 70px;
+            --primary: #546e7a;
+            --bg-body: #f4f6f8;
+            --text-main: #2d3748;
+            --text-light: #718096;
+            --border-color: #e2e8f0;
+            --white: #ffffff;
+            --success: #48bb78;
+            --danger: #f56565;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--white);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            padding: 0 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .brand {
+            font-family: 'Lora', serif;
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            padding: 2rem 1rem;
+            flex: 1;
+        }
+
+        .nav-item {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--text-main);
+            text-decoration: none;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background-color: #f1f5f9;
+            color: var(--primary);
+        }
+
+        .nav-item i {
+            width: 24px;
+            margin-right: 0.5rem;
+            color: var(--text-light);
+        }
+
+        .nav-item:hover i, .nav-item.active i {
+            color: var(--primary);
+        }
+
+        .sidebar-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .top-bar {
+            height: var(--header-height);
+            background: var(--white);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 90;
+        }
+
+        .page-content {
+            padding: 2rem;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .btn-ghost {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        /* Utilities */
+        .card {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        h1 { font-family: 'Lora', serif; font-size: 1.8rem; margin-bottom: 1.5rem; }
+        h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; } /* Mobile sidebar handling TBD */
+            .main-content { margin-left: 0; }
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <a href="{% url 'dashboard:home' %}" class="brand">Ministry Portal</a>
+        </div>
+        
+        <nav class="nav-menu">
+            <a href="{% url 'dashboard:home' %}" class="nav-item {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+            <div style="margin: 1.5rem 0 0.5rem 1rem; text-transform: uppercase; font-size: 0.75rem; color: var(--text-light); font-weight: 600;">Content</div>
+            <a href="{% url 'dashboard:sermon_list' %}" class="nav-item {% if 'sermon' in request.resolver_match.url_name %}active{% endif %}">
+                <i class="fas fa-book-bible"></i> Sermons
+            </a>
+            <a href="{% url 'dashboard:event_list' %}" class="nav-item {% if 'event' in request.resolver_match.url_name %}active{% endif %}">
+                <i class="fas fa-calendar-alt"></i> Events
+            </a>
+            
+            <div style="margin: 1.5rem 0 0.5rem 1rem; text-transform: uppercase; font-size: 0.75rem; color: var(--text-light); font-weight: 600;">People</div>
+            <a href="{% url 'dashboard:prayer_list' %}" class="nav-item {% if 'prayer' in request.resolver_match.url_name %}active{% endif %}">
+                <i class="fas fa-praying-hands"></i> Prayer
+            </a>
+            <a href="{% url 'dashboard:contact_list' %}" class="nav-item {% if 'contact' in request.resolver_match.url_name %}active{% endif %}">
+                <i class="fas fa-envelope"></i> Messages
+            </a>
+
+            <div style="margin: 1.5rem 0 0.5rem 1rem; text-transform: uppercase; font-size: 0.75rem; color: var(--text-light); font-weight: 600;">Configuration</div>
+            <a href="{% url 'dashboard:giving_history' %}" class="nav-item {% if 'giving' in request.resolver_match.url_name %}active{% endif %}">
+                <i class="fas fa-hand-holding-dollar"></i> Giving
+            </a>
+            <a href="{% url 'dashboard:settings' %}" class="nav-item {% if 'settings' in request.resolver_match.url_name %}active{% endif %}">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <div style="width: 36px; height: 36px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
+                    {{ request.user.username|make_list|first|upper }}
+                </div>
+                <div>
+                    <div style="font-weight: 500; font-size: 0.9rem;">{{ request.user.username }}</div>
+                    <a href="{% url 'dashboard:logout' %}" class="btn-ghost" style="font-size: 0.8rem;">Log Out</a>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-bar">
+            <div class="page-title">
+                <span style="color: var(--text-light);">Ministry</span> / {% block header_title %}Overview{% endblock %}
+            </div>
+            <div class="actions">
+                <a href="/" target="_blank" class="btn-ghost"><i class="fas fa-external-link-alt"></i> View Website</a>
+            </div>
+        </header>
+
+        <div class="page-content">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+</body>
+</html>

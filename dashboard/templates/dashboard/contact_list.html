@@ -1,0 +1,44 @@
+{% extends 'dashboard/base.html' %}
+
+{% block header_title %}Inbox{% endblock %}
+
+{% block content %}
+<div class="card" style="padding: 0; overflow: hidden;">
+    <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr style="background: #f8fafc; text-align: left;">
+                <th style="padding: 1rem; border-bottom: 1px solid var(--border-color); font-weight: 600; font-size: 0.85rem; color: var(--text-light); text-transform: uppercase; width: 200px;">From</th>
+                <th style="padding: 1rem; border-bottom: 1px solid var(--border-color); font-weight: 600; font-size: 0.85rem; color: var(--text-light); text-transform: uppercase;">Message</th>
+                <th style="padding: 1rem; border-bottom: 1px solid var(--border-color); font-weight: 600; font-size: 0.85rem; color: var(--text-light); text-transform: uppercase; width: 150px;">Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sub in submissions %}
+            <tr style="border-bottom: 1px solid var(--border-color);">
+                <td style="padding: 1rem; vertical-align: top;">
+                    <div style="font-weight: 500;">{{ sub.name }}</div>
+                    <div style="font-size: 0.85rem; color: var(--text-light); margin-top: 0.25rem;">
+                        <a href="mailto:{{ sub.email }}" style="color: inherit; text-decoration: none;">{{ sub.email }}</a>
+                    </div>
+                </td>
+                <td style="padding: 1rem; vertical-align: top;">
+                    <div style="font-weight: 600; margin-bottom: 0.5rem;">{{ sub.subject }}</div>
+                    <div style="color: var(--text-main); font-size: 0.95rem; line-height: 1.5;">
+                        {{ sub.message|linebreaks }}
+                    </div>
+                </td>
+                <td style="padding: 1rem; vertical-align: top; color: var(--text-light); font-size: 0.9rem;">
+                    {{ sub.created_at|date:"M d, Y" }}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" style="padding: 3rem; text-align: center; color: var(--text-light);">
+                    Inbox is empty.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'dashboard/base.html' %}
+
+{% block header_title %}Settings{% endblock %}
+
+{% block content %}
+<form method="post" style="max-width: 600px;">
+    {% csrf_token %}
+    <div class="card">
+        {% if form.errors %}
+        <div style="background: #fde8e8; border: 1px solid #f8b4b4; color: #9b1c1c; padding: 1rem; border-radius: 6px; margin-bottom: 1.5rem;">
+            <p style="font-weight: 600; margin-bottom: 0.5rem;">Please correct the following errors:</p>
+            <ul style="margin: 0; padding-left: 1.5rem;">
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <h2>Live Stream Configuration</h2>
+        <div class="form-group">
+            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                {{ form.is_live_now }}
+                <span><strong>We are Live Now</strong> (Shows banner on homepage)</span>
+            </label>
+        </div>
+        <div class="form-group">
+            {{ form.live_stream_url.label_tag }}
+            {{ form.live_stream_url }}
+            <div style="font-size: 0.8rem; color: var(--text-light); margin-top: 0.25rem;">YouTube or Facebook embed link</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Giving Configuration</h2>
+        <div class="form-group">
+             <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                {{ form.giving_enabled }}
+                <span>Enable Online Giving</span>
+            </label>
+        </div>
+        <div class="form-group">
+            {{ form.flutterwave_public_key.label_tag }}
+            {{ form.flutterwave_public_key }}
+        </div>
+    </div>
+
+    <button type="submit" style="background: var(--primary); color: white; border: none; padding: 1rem 2rem; border-radius: 6px; font-weight: 600; cursor: pointer;">
+        Save Settings
+    </button>
+</form>
+{% endblock %}

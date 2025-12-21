@@ -1,0 +1,385 @@
+:root {
+    /* Color System: Peaceful & Trustworthy */
+    --bg-color: #faf9f6; /* Warm Alabaster/Off-white */
+    --card-bg: #ffffff;
+    --text-primary: #2d2d2d; /* Soft Charcoal */
+    --text-secondary: #666666; /* Warm Grey */
+    --accent: #546e7a; /* Muted Slate - Calm & Strong */
+    --border-color: #eaeaea; /* Very soft border */
+    
+    /* Spacing */
+    --spacing-unit: 1.5rem; /* Increased base spacing */
+    --container-width: 840px; /* Slightly wider for reading comfort */
+    --section-gap: 5rem; /* Generous breathing room */
+
+    /* Typography */
+    --font-heading: 'Lora', serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    line-height: 1.7; /* Increased for readability */
+    font-size: 1.125rem; /* 18px body text */
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+a:hover {
+    color: var(--accent);
+    opacity: 0.9;
+}
+
+.container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* Header - Anchored & Calm */
+.site-header {
+    padding: 4rem 0 3rem;
+    text-align: center;
+    border-bottom: 1px solid transparent; /* Placeholder for potential subtle divider */
+}
+
+.logo {
+    font-family: var(--font-heading);
+    font-size: 1.75rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    display: block;
+    margin-bottom: 0.75rem;
+    color: var(--text-primary);
+}
+
+.tagline {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    color: var(--text-secondary);
+    font-style: italic;
+    opacity: 0.8;
+}
+
+/* Main */
+.site-main {
+    min-height: 70vh;
+    padding-bottom: 6rem;
+}
+
+/* Typography Helpers - Visual Hierarchy */
+h1, h2, h3, h4 {
+    font-family: var(--font-heading);
+    font-weight: 400; /* Regular weight for elegance */
+    line-height: 1.3;
+    color: var(--text-primary);
+}
+
+h1 {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+}
+
+h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--accent);
+}
+
+h4 {
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+}
+
+p {
+    margin-bottom: 1.75rem;
+    max-width: 65ch; /* Optimal reading length */
+}
+
+/* Utilities */
+.text-center { text-align: center; }
+.text-secondary { color: var(--text-secondary); }
+.mb-1 { margin-bottom: 1rem; }
+.mb-2 { margin-bottom: 2rem; }
+.mb-4 { margin-bottom: 4rem; }
+.mb-large { margin-bottom: var(--section-gap); }
+.mt-4 { margin-top: 4rem; }
+
+/* Cards & Grid - Floating & Soft */
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+    padding: 2rem 0;
+}
+
+.category-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color); /* Subtle border */
+    padding: 2.5rem;
+    border-radius: 4px; /* Soft, not rounded */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    height: 100%;
+}
+
+.category-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03); /* Deep, soft shadow */
+    border-color: #dcdcdc;
+}
+
+.category-card h3 {
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+    font-size: 1.35rem;
+}
+
+.category-card p {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin-bottom: 0;
+    line-height: 1.6;
+}
+
+.sermon-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 680px; /* Focused reading width */
+    margin: 0 auto;
+}
+
+.sermon-card {
+    background: var(--card-bg);
+    border: 1px solid transparent;
+    border-bottom: 1px solid var(--border-color); /* Only bottom border for list feel */
+    padding: 2rem 1rem;
+    display: block;
+    transition: background-color 0.2s ease;
+}
+
+.sermon-card:hover {
+    background-color: #fafafa;
+    transform: none;
+    box-shadow: none;
+}
+
+.sermon-card h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+}
+
+.sermon-meta {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Sermon Detail - Deep Reading Layout */
+.sermon-container {
+    max-width: 720px; /* Slightly wider than lists */
+}
+
+.sermon-header {
+    margin-bottom: 4rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 3rem;
+}
+
+.sermon-title {
+    font-size: 3.25rem;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+}
+
+.category-tag a {
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    border: 1px solid var(--border-color);
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    display: inline-block;
+    transition: all 0.2s;
+}
+
+.category-tag a:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* Section Labels - Subtle Guides */
+.section-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.75rem;
+    display: inline-block;
+    min-width: 60px;
+}
+
+/* Content Sections */
+.problem-section .content, 
+.explanation-section .content, 
+.truth-section .content {
+    font-size: 1.25rem; /* Larger for impact */
+    color: var(--text-primary);
+}
+
+.scripture-block {
+    background: transparent;
+    padding: 2rem 0; /* Remove highlight background for trust */
+    border-left: none; /* Remove harsh line */
+    margin: 3rem 0;
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-style: italic;
+    color: var(--accent); /* Use accent for scripture */
+    text-align: center;
+    position: relative;
+}
+
+.scripture-block::before {
+    content: "“";
+    display: block;
+    font-size: 4rem;
+    line-height: 1;
+    margin-bottom: -2rem;
+    opacity: 0.2;
+}
+
+.scripture-block cite {
+    display: block;
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    font-style: normal;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+.application-card {
+    background: #f4f6f7; /* Very subtle slate tint */
+    padding: 3rem;
+    border-radius: 4px;
+    margin-top: 2rem;
+}
+
+.application-card h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.back-link {
+    display: inline-block;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-top: 3rem;
+    border-bottom: 1px solid transparent;
+}
+
+.back-link:hover {
+    border-bottom-color: var(--text-secondary);
+    opacity: 1;
+}
+
+/* Footer - Resolved */
+.site-footer {
+    padding: 4rem 0;
+    margin-top: auto;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    background-color: transparent;
+    border-top: 1px solid var(--border-color);
+}
+
+.footer-nav {
+    margin-bottom: 1.5rem;
+}
+
+.footer-nav a {
+    margin: 0 1rem;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.footer-nav a:hover {
+    color: var(--accent);
+}
+
+/* Forms & Buttons (Placeholder for future) */
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    border: 1px solid var(--text-secondary);
+    color: var(--text-primary);
+    border-radius: 4px;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn:hover {
+    background: var(--text-primary);
+    color: #fff;
+    border-color: var(--text-primary);
+}
+
+.btn-youtube {
+    border-color: #cc0000;
+    color: #cc0000;
+    margin-top: 1rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-youtube:hover {
+    background: #cc0000;
+    border-color: #cc0000;
+    color: #ffffff;
+}

@@ -1,0 +1,35 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Events | The Truth Gate{% endblock %}
+
+{% block content %}
+<div class="container site-main">
+    <header class="text-center mb-4">
+        <h1 class="page-title">Upcoming Events</h1>
+        <p class="text-secondary">Gather with us.</p>
+    </header>
+
+    <div class="events-list" style="max-width: 720px; margin: 0 auto;">
+        {% for event in events %}
+        <div class="event-card mb-4" style="background: #fff; padding: 2rem; border: 1px solid var(--border-color); border-radius: 4px; display: flex; gap: 2rem; align-items: start;">
+            <div class="event-date text-center" style="min-width: 80px;">
+                <span style="display: block; font-size: 1.5rem; font-weight: bold; color: var(--accent);">{{ event.start_time|date:"d" }}</span>
+                <span style="display: block; text-transform: uppercase; font-size: 0.9rem; color: var(--text-secondary);">{{ event.start_time|date:"M" }}</span>
+            </div>
+            <div class="event-details">
+                <h3 style="margin-top: 0;">{{ event.title }}</h3>
+                <p class="text-secondary mb-1">
+                    {{ event.start_time|date:"g:i A" }} - {{ event.end_time|date:"g:i A" }} • {{ event.location }}
+                </p>
+                <div class="content">
+                    {{ event.description|safe }}
+                </div>
+                <a href="{{ event.google_calendar_url }}" target="_blank" class="btn" style="margin-top: 1rem; font-size: 0.8rem;">+ Add to Google Calendar</a>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center text-secondary">No upcoming events scheduled.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

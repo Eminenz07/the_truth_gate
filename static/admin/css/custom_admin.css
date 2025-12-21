@@ -1,0 +1,235 @@
+:root {
+    /* Override Django Defaults to force our Light Theme structure */
+    --primary: #546e7a;
+    --secondary: #666666;
+    --accent: #546e7a;
+    --primary-fg: #ffffff;
+    --body-fg: #2d2d2d;
+    --body-bg: #faf9f6;
+    --body-quiet-color: #666666;
+    --header-color: #2d2d2d;
+    --header-bg: #ffffff;
+    --link-fg: #546e7a;
+    --link-hover-color: #455a64;
+    --link-selected-fg: #546e7a;
+    
+    /* Modules */
+    --module-bg: #ffffff;
+    --darkened-bg: #f8f9fa; /* For table headers/rows */
+    
+    /* Borders */
+    --border-color: #eaeaea;
+    --hairline-color: #eaeaea; 
+}
+
+/* Force Light Mode behavior regardless of OS preference */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --primary: #546e7a;
+        --secondary: #666666;
+        --accent: #546e7a;
+        --primary-fg: #ffffff;
+        --body-fg: #2d2d2d;
+        --body-bg: #faf9f6;
+        --body-quiet-color: #666666;
+        --header-color: #2d2d2d;
+        --header-bg: #ffffff;
+        --link-fg: #546e7a;
+        --link-hover-color: #455a64;
+        --link-selected-fg: #546e7a;
+        --module-bg: #ffffff;
+        --darkened-bg: #f8f9fa;
+        --border-color: #eaeaea;
+        --hairline-color: #eaeaea;
+    }
+}
+
+body {
+    background-color: var(--body-bg);
+    color: var(--body-fg);
+    font-family: var(--font-body);
+}
+
+/* Header */
+#header {
+    background: var(--header-bg);
+    color: var(--header-color);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 2rem;
+    height: auto;
+}
+
+#branding h1 {
+    color: var(--text-primary);
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: 1.5rem;
+}
+
+#branding h1 a:hover {
+    color: var(--accent);
+}
+
+#user-tools {
+    color: var(--text-secondary);
+}
+
+/* Sidebar / Modules */
+.module {
+    background: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    margin-bottom: 2rem;
+    overflow: hidden; /* Fix corners */
+}
+
+.module caption, .module h2 {
+    background: var(--darkened-bg) !important;
+    color: var(--accent) !important;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+/* Dashboard Modules */
+.module ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.module li {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.module li:last-child {
+    border-bottom: none;
+}
+
+.module li a {
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.module li a:hover {
+    color: var(--accent);
+}
+
+.module li .addlink, .module li .changelink {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+/* Recent Actions */
+#content-related {
+    background: transparent;
+}
+
+#content-related h3 {
+    color: var(--text-secondary);
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+#content-related .module {
+    background: #fff;
+    padding: 1rem;
+}
+div.results table {
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+thead th {
+    background: #f8f9fa;
+    color: var(--text-secondary);
+    border-bottom: 2px solid var(--border-color);
+    padding: 1rem;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+tr.row1, tr.row2 {
+    background: var(--module-bg) !important; 
+}
+
+tr:hover td {
+    background: var(--darkened-bg) !important;
+}
+
+td {
+    padding: 1rem;
+    color: var(--body-fg);
+    font-size: 0.95rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+a:link, a:visited {
+    color: var(--link-fg);
+}
+
+/* Buttons */
+.button, input[type=submit], input[type=button], .submit-row input, a.button {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 0.6rem 1.2rem;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    transition: background 0.2s;
+}
+
+.button:hover, input[type=submit]:hover, input[type=button]:hover, .submit-row input:hover {
+    background: var(--accent-hover);
+}
+
+.button.default, input[type=submit].default, .submit-row input.default {
+    background: var(--accent);
+}
+
+/* Forms */
+.form-row {
+    border-bottom: 1px solid var(--border-color);
+    padding: 1.5rem 0;
+}
+
+label {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+input[type=text], input[type=password], input[type=email], input[type=url], input[type=number], textarea, select {
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0.5rem;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: #333333 !important; /* Force visible text color */
+    background-color: #ffffff !important; /* Force white background */
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: var(--accent);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(84, 110, 122, 0.1);
+}
+
+/* Breadcrumbs */
+div.breadcrumbs {
+    background: transparent;
+    color: var(--text-secondary);
+    padding: 1rem 2rem;
+    font-size: 0.9rem;
+}

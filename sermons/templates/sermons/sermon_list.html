@@ -1,0 +1,49 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Sermons | The Truth Gate{% endblock %}
+
+{% block content %}
+<div class="container site-main">
+    <header class="text-center mb-4">
+        <h1 class="page-title">Sermon Library</h1>
+        <p class="text-secondary">Explore God's truth for your life.</p>
+    </header>
+
+    <!-- Search/Filter (Simple MVP) -->
+    <div class="search-bar text-center mb-large">
+        <form method="get" action="">
+            <input type="text" name="q" placeholder="Search sermons, topics, or speakers..." value="{{ request.GET.q|default:'' }}" style="padding: 0.75rem; width: 300px; border: 1px solid var(--border-color); border-radius: 4px;">
+            <button type="submit" class="btn">Search</button>
+        </form>
+    </div>
+
+    <!-- Sermon Grid -->
+    <div class="categories-grid">
+        {% for sermon in sermons %}
+        <a href="{% url 'sermon_detail' sermon.slug %}" class="category-card sermon-card-v2">
+            <span class="sermon-meta mb-1">{{ sermon.date_preached|date:"M d, Y" }} • {{ sermon.sermon_type|title }}</span>
+            <h3>{{ sermon.title }}</h3>
+            {% if sermon.speaker %}
+            <p class="text-secondary mb-1">by {{ sermon.speaker.name }}</p>
+            {% endif %}
+            <p>{{ sermon.description|truncatewords:20 }}</p>
+        </a>
+        {% empty %}
+        <p class="text-center text-secondary">No sermons found.</p>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <div class="pagination text-center mt-4">
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="btn">Previous</a>
+        {% endif %}
+        <span class="current mx-2">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="btn">Next</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
