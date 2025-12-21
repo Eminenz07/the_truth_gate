@@ -22,6 +22,9 @@
                     {{ event.start_time|date:"g:i A" }} - {{ event.end_time|date:"g:i A" }} • {{ event.location }}
                 </p>
                 <div class="content">
+                    {% if event.image %}
+                    <img src="{{ event.image.url }}" alt="{{ event.title }}" style="width: 100%; max-width: 600px; height: auto; border-radius: 4px; margin-bottom: 1rem; object-fit: cover;">
+                    {% endif %}
                     {{ event.description|safe }}
                 </div>
                 <a href="{{ event.google_calendar_url }}" target="_blank" class="btn" style="margin-top: 1rem; font-size: 0.8rem;">+ Add to Google Calendar</a>
