@@ -15,10 +15,19 @@
   </head>
   <body>
     <header class="site-header">
-      <div class="container">
+      <div class="container" style="position: relative;">
         <a href="{% url 'home' %}" class="logo">The Truth Gate</a>
         <p class="tagline">Ye shall know the truth</p>
+        
+        <button class="mobile-toggle" aria-label="Toggle Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
       </div>
+      
+      <div class="mobile-overlay"></div>
+
       <nav class="container">
         <ul class="site-nav" style="display: flex; justify-content: center; gap: 1rem; list-style: none; margin-top: 1.5rem; color: #546e7a;">
             <li><a href="{% url 'home' %}">Home</a></li> <li class="nav-separator" style="opacity: 0.5">|</li>
@@ -38,5 +47,28 @@
         <p>&copy; {% now "Y" %} The Truth Gate</p>
       </div>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggle = document.querySelector('.mobile-toggle');
+            const nav = document.querySelector('.site-nav');
+            const overlay = document.querySelector('.mobile-overlay');
+
+            function toggleMenu() {
+                toggle.classList.toggle('active');
+                nav.classList.toggle('active');
+                overlay.classList.toggle('active');
+                document.body.style.overflow = nav.classList.contains('active') ? 'hidden' : '';
+            }
+
+            toggle.addEventListener('click', toggleMenu);
+            overlay.addEventListener('click', toggleMenu);
+
+            // Close on link click
+            nav.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', toggleMenu);
+            });
+        });
+    </script>
   </body>
 </html>
