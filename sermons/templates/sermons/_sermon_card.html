@@ -1,0 +1,34 @@
+<div class="sermon-card-modern" style="border: 1px solid var(--border-color); padding: 2rem; border-radius: 4px; transition: transform 0.2s;">
+    <!-- Category Tag -->
+    <div class="mb-1">
+        {% for topic in sermon.topics.all|slice:":1" %}
+        <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); font-weight: 600;">
+            {{ topic.name }}
+        </span>
+        {% empty %}
+        <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); font-weight: 600;">
+            Sermon
+        </span>
+        {% endfor %}
+    </div>
+
+    <h3 style="font-size: 1.5rem; margin-bottom: 0.75rem;">
+        <a href="{% url 'sermon_detail' sermon.slug %}" style="text-decoration: none;">{{ sermon.title }}</a>
+    </h3>
+
+    {% if sermon.speaker %}
+    <p class="text-secondary" style="font-size: 0.9rem; margin-bottom: 1rem;">by {{ sermon.speaker.name }}</p>
+    {% endif %}
+
+    <p style="margin-bottom: 1.5rem; font-size: 0.95rem;">{{ sermon.description|truncatewords:20 }}</p>
+
+    <div class="actions" style="display: flex; gap: 1rem;">
+        {% if sermon.video_url %}
+        <a href="{% url 'sermon_detail' sermon.slug %}" class="action-link">Watch</a>
+        {% endif %}
+        {% if sermon.audio_file %}
+        <a href="{% url 'sermon_detail' sermon.slug %}" class="action-link">Listen</a>
+        {% endif %}
+        <a href="{% url 'sermon_detail' sermon.slug %}" class="action-link">Read</a>
+    </div>
+</div>

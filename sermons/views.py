@@ -11,6 +11,8 @@ class SermonListView(ListView):
     def get_queryset(self):
         queryset = Sermon.objects.filter(status='published')
         query = self.request.GET.get('q')
+        sort_by = self.request.GET.get('sort', 'latest') # Default to latest unless overridden
+
         if query:
             queryset = queryset.filter(
                 Q(title__icontains=query) |
@@ -18,11 +20,34 @@ class SermonListView(ListView):
                 Q(speaker__name__icontains=query) |
                 Q(series__title__icontains=query)
             )
-        return queryset
+
+        # Sorting Logic
+        if sort_by == 'oldest':
+            queryset = queryset.order_by('date_preached')
+        elif sort_by == 'a-z':
+            queryset = queryset.order_by('title')
+        elif sort_by == 'z-a':
+            queryset = queryset.order_by('-title')
+        else: # latest
+            queryset = queryset.order_by('-date_preached')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['series_list'] = Series.objects.all()[:5]
+        sort_by = self.request.GET.get('sort', 'all') 
+        context['current_sort'] = sort_by
+        
+        # Only fetch topics structure if we are in the 'all' (grouped) view
+        if sort_by == 'all':
+            from django.db.models import Prefetch
+            # Fetch topics that actually have published sermons
+            context['grouped_topics'] = Topic.objects.filter(
+                sermon__status='published'
+            ).distinct().prefetch_related(
+                Prefetch('sermon_set', 
+                         queryset=Sermon.objects.filter(status='published').order_by('-date_preached')[:4],
+                         to_attr='latest_sermons')
+            )
+            
         return context
 
 class SermonDetailView(DetailView):

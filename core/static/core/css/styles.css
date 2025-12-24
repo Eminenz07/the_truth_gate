@@ -51,27 +51,74 @@ a:hover {
 
 /* Header - Anchored & Calm */
 .site-header {
-    padding: 4rem 0 3rem;
+    padding: 3rem 0;
     text-align: center;
-    border-bottom: 1px solid transparent; /* Placeholder for potential subtle divider */
+    background-color: var(--bg-color); /* Ensure opaque background for sticky/fixed contexts if needed */
 }
 
 .logo {
     font-family: var(--font-heading);
-    font-size: 1.75rem;
-    font-weight: 500;
-    letter-spacing: -0.01em;
+    font-size: 2rem;
+    font-weight: 600; /* Slightly bolder for hierarchy */
+    letter-spacing: -0.02em;
     display: block;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
     color: var(--text-primary);
+    text-transform: uppercase; /* Modern minimalist touch */
 }
 
 .tagline {
-    font-family: var(--font-heading);
-    font-size: 1rem;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
     color: var(--text-secondary);
-    font-style: italic;
-    opacity: 0.8;
+    font-style: normal;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.7;
+    margin-bottom: 2rem;
+}
+
+/* Site Nav - Minimalist */
+.site-nav {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem !important; /* Spacious */
+    margin-top: 0;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+}
+
+.site-nav a {
+    color: var(--text-primary);
+    position: relative;
+    padding-bottom: 0.25rem;
+}
+
+.site-nav a:hover,
+.site-nav a.active {
+    color: var(--accent);
+}
+
+.site-nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: var(--accent);
+    transition: width 0.3s ease;
+}
+
+.site-nav a:hover::after,
+.site-nav a.active::after {
+    width: 100%;
+}
+
+.nav-separator {
+    display: none !important; /* Ensure removed even if present in HTML */
 }
 
 /* Main */
@@ -368,6 +415,16 @@ p {
     background: #cc0000;
     border-color: #cc0000;
     color: #ffffff;
+}
+
+.btn-primary {
+    background: var(--accent);
+    color: #ffffff;
+    border-color: var(--accent);
+}
+.btn-primary:hover {
+    background: var(--text-primary);
+    border-color: var(--text-primary);
 }
 
 /* --- Mobile Responsiveness & Drawer --- */

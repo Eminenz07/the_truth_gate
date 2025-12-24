@@ -153,16 +153,52 @@
         h2 { font-size: 1.25rem; margin-bottom: 1rem; }
 
         @media (max-width: 768px) {
-            .sidebar { display: none; } /* Mobile sidebar handling TBD */
+            .sidebar { 
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                display: flex; /* Keep flex logic but hide via transform */
+                width: 280px;
+                box-shadow: 5px 0 15px rgba(0,0,0,0.1);
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
             .main-content { margin-left: 0; }
+            .top-bar { padding: 0 1rem; }
+            
+            .mobile-toggle-btn {
+                display: block !important;
+                margin-right: 1rem;
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                color: var(--text-main);
+                cursor: pointer;
+            }
+            
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(0,0,0,0.5);
+                z-index: 95;
+            }
+            .sidebar-overlay.active { display: block; }
         }
+
+        .mobile-toggle-btn { display: none; }
     </style>
     {% block extra_css %}{% endblock %}
 </head>
 <body>
+    <div class="sidebar-overlay"></div>
+    
     <aside class="sidebar">
-        <div class="sidebar-header">
+        <div class="sidebar-header" style="justify-content: space-between;">
             <a href="{% url 'dashboard:home' %}" class="brand">Ministry Portal</a>
+            <button class="mobile-toggle-btn" style="font-size: 1.2rem;" onclick="toggleSidebar()">
+                <i class="fas fa-times"></i>
+            </button>
         </div>
         
         <nav class="nav-menu">
@@ -209,11 +245,16 @@
 
     <main class="main-content">
         <header class="top-bar">
-            <div class="page-title">
-                <span style="color: var(--text-light);">Ministry</span> / {% block header_title %}Overview{% endblock %}
+            <div style="display: flex; align-items: center;">
+                <button class="mobile-toggle-btn" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="page-title">
+                    <span style="color: var(--text-light);">Ministry</span> / {% block header_title %}Overview{% endblock %}
+                </div>
             </div>
             <div class="actions">
-                <a href="/" target="_blank" class="btn-ghost"><i class="fas fa-external-link-alt"></i> View Website</a>
+                <a href="/" target="_blank" class="btn-ghost"><i class="fas fa-external-link-alt"></i> <span style="display: none; display: inline-block;">View Website</span></a>
             </div>
         </header>
 
@@ -221,5 +262,15 @@
             {% block content %}{% endblock %}
         </div>
     </main>
+    </main>
+    
+    <script>
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('active');
+            document.querySelector('.sidebar-overlay').classList.toggle('active');
+        }
+        
+        document.querySelector('.sidebar-overlay').addEventListener('click', toggleSidebar);
+    </script>
 </body>
 </html>

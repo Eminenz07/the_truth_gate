@@ -9,41 +9,96 @@
         <p class="text-secondary">Explore God's truth for your life.</p>
     </header>
 
-    <!-- Search/Filter (Simple MVP) -->
-    <div class="search-bar text-center mb-large">
-        <form method="get" action="">
-            <input type="text" name="q" placeholder="Search sermons, topics, or speakers..." value="{{ request.GET.q|default:'' }}" style="padding: 0.75rem; width: 300px; border: 1px solid var(--border-color); border-radius: 4px;">
-            <button type="submit" class="btn">Search</button>
-        </form>
+    <!-- Filters -->
+    <div class="filters-container mb-4" style="display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap;">
+        <a href="?sort=all" class="filter-pill {% if current_sort == 'all' %}active{% endif %}">All</a>
+        <a href="?sort=latest" class="filter-pill {% if current_sort == 'latest' %}active{% endif %}">Latest</a>
+        <a href="?sort=oldest" class="filter-pill {% if current_sort == 'oldest' %}active{% endif %}">Oldest</a>
+        <a href="?sort=a-z" class="filter-pill {% if current_sort == 'a-z' %}active{% endif %}">A–Z</a>
+        <a href="?sort=z-a" class="filter-pill {% if current_sort == 'z-a' %}active{% endif %}">Z–A</a>
     </div>
 
-    <!-- Sermon Grid -->
-    <div class="categories-grid">
-        {% for sermon in sermons %}
-        <a href="{% url 'sermon_detail' sermon.slug %}" class="category-card sermon-card-v2">
-            <span class="sermon-meta mb-1">{{ sermon.date_preached|date:"M d, Y" }} • {{ sermon.sermon_type|title }}</span>
-            <h3>{{ sermon.title }}</h3>
-            {% if sermon.speaker %}
-            <p class="text-secondary mb-1">by {{ sermon.speaker.name }}</p>
+    {% if current_sort == 'all' %}
+        <!-- Grouped View -->
+        {% for topic in grouped_topics %}
+        <section class="topic-section mb-large">
+            <h2 style="font-size: 1.75rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 2rem; display: inline-block;">
+                {{ topic.name }}
+            </h2>
+            <div class="sermon-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
+                {% for sermon in topic.latest_sermons %}
+                    {% include "sermons/_sermon_card.html" with sermon=sermon %}
+                {% endfor %}
+            </div>
+            {% if topic.latest_sermons|length >= 4 %}
+            <div class="text-center mt-4">
+                <a href="?sort=latest&q={{ topic.name }}" class="btn" style="font-size: 0.9rem;">View All {{ topic.name }}</a>
+            </div>
             {% endif %}
-            <p>{{ sermon.description|truncatewords:20 }}</p>
-        </a>
+        </section>
         {% empty %}
         <p class="text-center text-secondary">No sermons found.</p>
         {% endfor %}
-    </div>
+    {% else %}
+        <!-- Flat List View -->
+        <div class="sermon-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
+            {% for sermon in sermons %}
+                {% include "sermons/_sermon_card.html" with sermon=sermon %}
+            {% empty %}
+            <p class="text-center text-secondary" style="grid-column: 1/-1;">No sermons found matching your criteria.</p>
+            {% endfor %}
+        </div>
+    {% endif %}
 
-    <!-- Pagination -->
-    {% if is_paginated %}
-    <div class="pagination text-center mt-4">
+    <!-- Pagination (Only for Flat List) -->
+    {% if is_paginated and current_sort != 'all' %}
+    <div class="pagination text-center mt-4" style="margin-top: 4rem;">
         {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="btn">Previous</a>
+            <a href="?page={{ page_obj.previous_page_number }}&sort={{ current_sort }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="btn">Previous</a>
         {% endif %}
-        <span class="current mx-2">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        <span class="current mx-2 text-secondary" style="font-size: 0.9rem;">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
         {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="btn">Next</a>
+            <a href="?page={{ page_obj.next_page_number }}&sort={{ current_sort }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="btn">Next</a>
         {% endif %}
     </div>
     {% endif %}
 </div>
+
+<style>
+/* Local Styles for specific UI components */
+.filter-pill {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 50px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    transition: all 0.2s;
+}
+.filter-pill:hover, .filter-pill.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: transparent; /* Keep minimalist */
+}
+.filter-pill.active {
+    background: rgba(84, 110, 122, 0.05); /* Very subtle active state */
+    font-weight: 600;
+}
+
+.action-link {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    color: var(--accent);
+    border-bottom: 1px solid transparent;
+}
+.action-link:hover {
+    border-bottom-color: var(--accent);
+}
+
+.sermon-card-modern:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+</style>
 {% endblock %}
