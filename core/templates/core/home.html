@@ -68,6 +68,35 @@
     </div>
 </section>
 
+<!-- Testimonies Section -->
+<section style="margin: 3rem 1.5rem 2.5rem;">
+    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.5rem;">
+        <h3 style="font-family: var(--font-heading); font-size: 1.5rem; color: var(--text-primary); margin: 0;">Testimonies</h3>
+        <a href="{% url 'submit_testimony' %}" style="font-size: 0.85rem; color: var(--accent); text-decoration: none; font-weight: 500;">Share Yours &rarr;</a>
+    </div>
+
+    {% if testimonies %}
+        <div style="display: flex; overflow-x: auto; gap: 1rem; padding-bottom: 1rem; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;">
+            {% for testimony in testimonies %}
+            <div style="flex: 0 0 280px; scroll-snap-align: start; background: #fff; padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 4px; display: flex; flex-direction: column;">
+                <p style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.5; flex-grow: 1;">"{{ testimony.content|truncatewords:20 }}"</p>
+                <div>
+                    <strong style="display: block; font-size: 0.9rem; color: var(--text-primary);">{{ testimony.name|default:"Anonymous" }}</strong>
+                    {% if testimony.location %}
+                    <span style="font-size: 0.8rem; color: var(--text-secondary);">{{ testimony.location }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div style="background: #f4f6f7; padding: 2rem; border-radius: 8px; text-align: center;">
+            <p style="margin-bottom: 1rem; color: var(--text-secondary);">God is moving in our midst. Use your story to encourage others.</p>
+            <a href="{% url 'submit_testimony' %}" class="btn-primary" style="display: inline-block; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; font-size: 0.9rem;">Share Your Testimony</a>
+        </div>
+    {% endif %}
+</section>
+
 <!-- Quote Section -->
 <section class="mobile-only-section" style="margin: 3rem 1.5rem 2.5rem; padding: 2rem; background: #ffffff; border: 1px solid rgba(90, 112, 121, 0.2); border-radius: 8px; text-align: center;">
     <div class="text-center">

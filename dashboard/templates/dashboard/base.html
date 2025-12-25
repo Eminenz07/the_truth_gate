@@ -220,6 +220,9 @@
             <a href="{% url 'dashboard:contact_list' %}" class="nav-item {% if 'contact' in request.resolver_match.url_name %}active{% endif %}">
                 <i class="fas fa-envelope"></i> Messages
             </a>
+            <a href="{% url 'dashboard:testimony_list' %}" class="nav-item {% if 'testimony' in request.resolver_match.url_name %}active{% endif %}">
+                <i class="fas fa-hands-praying"></i> Testimonies
+            </a>
 
             <div style="margin: 1.5rem 0 0.5rem 1rem; text-transform: uppercase; font-size: 0.75rem; color: var(--text-light); font-weight: 600;">Configuration</div>
             <a href="{% url 'dashboard:giving_history' %}" class="nav-item {% if 'giving' in request.resolver_match.url_name %}active{% endif %}">

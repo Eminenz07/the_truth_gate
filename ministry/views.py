@@ -1,6 +1,26 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .models import PrayerRequest, ContactSubmission
+from .models import PrayerRequest, ContactSubmission, Testimony
+
+def submit_testimony(request):
+    if request.method == 'POST':
+        name = request.POST.get('name', '')
+        location = request.POST.get('location', '')
+        content = request.POST.get('content')
+        
+        if content:
+            Testimony.objects.create(
+                name=name,
+                location=location,
+                content=content,
+                is_approved=False # Default
+            )
+            messages.success(request, "Your testimony has been submitted for review. Thank you for sharing!")
+            return redirect('home') # Or wherever
+        else:
+             messages.error(request, "Please share your story.")
+             
+    return render(request, 'ministry/submit_testimony.html')
 
 def prayer_request_view(request):
     if request.method == 'POST':

@@ -1,9 +1,12 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Category, Sermon
+from ministry.models import Testimony
 
 def home(request):
     categories = Category.objects.all()
-    return render(request, 'core/home.html', {'categories': categories})
+    # Fetch latest 3 approved testimonies
+    testimonies = Testimony.objects.filter(is_approved=True).order_by('-created_at')[:3]
+    return render(request, 'core/home.html', {'categories': categories, 'testimonies': testimonies})
 
 def category_detail(request, slug):
     category = get_object_or_404(Category, slug=slug)

@@ -6,7 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm
 
 from sermons.models import Sermon
 from events.models import Event
-from ministry.models import PrayerRequest, ContactSubmission
+from ministry.models import PrayerRequest, ContactSubmission, Testimony
 from .models import SiteSettings
 from .forms import SermonForm, EventForm, SiteSettingsForm
 
@@ -113,9 +113,29 @@ def mark_prayed(request, pk):
     return redirect('dashboard:prayer_list')
 
 @staff_member_required
+@staff_member_required
 def contact_list(request):
     submissions = ContactSubmission.objects.all().order_by('-created_at')
     return render(request, 'dashboard/contact_list.html', {'submissions': submissions})
+
+@staff_member_required
+def testimony_list(request):
+    testimonies = Testimony.objects.all().order_by('-created_at')
+    return render(request, 'dashboard/testimony_list.html', {'testimonies': testimonies})
+
+@staff_member_required
+def approve_testimony(request, pk):
+    testimony = get_object_or_404(Testimony, pk=pk)
+    testimony.is_approved = not testimony.is_approved
+    testimony.save()
+    return redirect('dashboard:testimony_list')
+
+@staff_member_required
+def delete_testimony(request, pk):
+    testimony = get_object_or_404(Testimony, pk=pk)
+    if request.method == 'POST':
+        testimony.delete()
+    return redirect('dashboard:testimony_list')
 
 # --- Settings & Configuration ---
 

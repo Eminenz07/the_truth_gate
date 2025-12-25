@@ -21,3 +21,13 @@ class ContactSubmission(models.Model):
 
     def __str__(self):
         return f"{self.subject} - {self.name}"
+
+class Testimony(models.Model):
+    name = models.CharField(max_length=100, help_text="Name of the person sharing (or Anonymous)", blank=True)
+    location = models.CharField(max_length=100, blank=True, help_text="e.g. London, UK")
+    content = models.TextField()
+    is_approved = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Testimony by {self.name or 'Anonymous'} ({'Approved' if self.is_approved else 'Pending'})"

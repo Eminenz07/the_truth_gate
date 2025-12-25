@@ -19,6 +19,10 @@ urlpatterns = [
     path('prayer/<int:pk>/mark/', views.mark_prayed, name='mark_prayed'),
     path('inbox/', views.contact_list, name='contact_list'),
     
+    path('testimony/', views.testimony_list, name='testimony_list'),
+    path('testimony/<int:pk>/approve/', views.approve_testimony, name='approve_testimony'),
+    path('testimony/<int:pk>/delete/', views.delete_testimony, name='delete_testimony'),
+    
     path('settings/', views.settings_view, name='settings'),
     path('giving/', views.giving_history, name='giving_history'),
 ]
