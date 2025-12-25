@@ -1,0 +1,65 @@
+{% extends 'dashboard/base.html' %}
+
+{% block header_title %}Testimony Detail{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 2rem;">
+    <a href="{% url 'dashboard:testimony_list' %}" class="btn-ghost" style="display: inline-flex; align-items: center; gap: 0.5rem;">
+        <i class="fas fa-arrow-left"></i> Back to List
+    </a>
+</div>
+
+<div class="card" style="max-width: 800px; margin: 0 auto;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border-color);">
+        <div>
+            <h1 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Testimony from {{ testimony.name|default:"Anonymous" }}</h1>
+            <div style="color: var(--text-light); font-size: 0.9rem;">
+                <span style="margin-right: 1rem;"><i class="far fa-calendar"></i> {{ testimony.created_at|date:"F d, Y" }}</span>
+                {% if testimony.location %}
+                <span><i class="fas fa-map-marker-alt"></i> {{ testimony.location }}</span>
+                {% endif %}
+            </div>
+        </div>
+        <div>
+            {% if testimony.is_approved %}
+            <span class="badge badge-success">On Website</span>
+            {% else %}
+            <span class="badge badge-warning">Pending Review</span>
+            {% endif %}
+        </div>
+    </div>
+
+    <div style="font-size: 1.1rem; line-height: 1.8; color: var(--text-main); margin-bottom: 3rem; white-space: pre-wrap;">{{ testimony.content }}</div>
+
+    <div style="display: flex; gap: 1rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color);">
+        <!-- Approve/Unpublish Toggle -->
+        <a href="{% url 'dashboard:approve_testimony' testimony.pk %}" class="btn {% if testimony.is_approved %}btn-outline{% else %}btn-primary{% endif %}" style="flex: 1; text-align: center; text-decoration: none; padding: 1rem; border-radius: 6px; font-weight: 500;">
+            {% if testimony.is_approved %}
+            <i class="fas fa-eye-slash"></i> Unpublish (Hide from Site)
+            {% else %}
+            <i class="fas fa-check"></i> Approve & Publish
+            {% endif %}
+        </a>
+
+        <!-- Delete Action -->
+        <form action="{% url 'dashboard:delete_testimony' testimony.pk %}" method="POST" onsubmit="return confirm('Are you sure you want to PERMANENTLY delete this testimony?');" style="flex: 1;">
+            {% csrf_token %}
+            <button type="submit" class="btn-danger" style="width: 100%; padding: 1rem; border-radius: 6px; font-weight: 500; cursor: pointer; border: none; font-size: 1rem;">
+                <i class="fas fa-trash"></i> Delete Testimony
+            </button>
+        </form>
+    </div>
+</div>
+
+<style>
+.badge { padding: 0.5rem 1rem; border-radius: 50px; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; }
+.badge-success { background: #d4edda; color: #155724; }
+.badge-warning { background: #fff3cd; color: #856404; }
+.btn-primary { background: var(--primary); color: white; border: 1px solid var(--primary); }
+.btn-primary:hover { opacity: 0.9; }
+.btn-outline { background: white; color: var(--text-light); border: 1px solid var(--border-color); }
+.btn-outline:hover { background: #f8f9fa; color: var(--text-main); }
+.btn-danger { background: #fff5f5; color: #e53e3e; }
+.btn-danger:hover { background: #fed7d7; }
+</style>
+{% endblock %}

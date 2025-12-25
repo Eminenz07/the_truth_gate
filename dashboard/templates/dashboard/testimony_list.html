@@ -14,38 +14,28 @@
                 <tr>
                     <th>Date</th>
                     <th>Name</th>
-                    <th>Location</th>
-                    <th>Content</th>
+                    <th>Preview</th>
                     <th>Status</th>
-                    <th>Actions</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 {% for testimony in testimonies %}
-                <tr>
-                    <td>{{ testimony.created_at|date:"M d, Y" }}</td>
+                <tr onclick="window.location='{% url 'dashboard:testimony_detail' testimony.pk %}';" style="cursor: pointer; transition: background 0.1s;">
+                    <td>{{ testimony.created_at|date:"M d" }}</td>
                     <td>{{ testimony.name|default:"Anonymous" }}</td>
-                    <td>{{ testimony.location }}</td>
-                    <td style="max-width: 400px;">
-                        <p style="margin: 0; font-size: 0.9rem;">{{ testimony.content|truncatechars:150 }}</p>
+                    <td style="color: var(--text-light);">
+                        {{ testimony.content|truncatechars:60 }}
                     </td>
                     <td>
                         {% if testimony.is_approved %}
-                        <span class="badge badge-success">Published</span>
+                        <span class="badge badge-success"><i class="fas fa-check"></i></span>
                         {% else %}
                         <span class="badge badge-warning">Pending</span>
                         {% endif %}
                     </td>
-                    <td>
-                        <div class="actions">
-                            <a href="{% url 'dashboard:approve_testimony' testimony.pk %}" class="btn-sm {% if testimony.is_approved %}btn-outline{% else %}btn-primary{% endif %}">
-                                {% if testimony.is_approved %}Unpublish{% else %}Approve{% endif %}
-                            </a>
-                            <form action="{% url 'dashboard:delete_testimony' testimony.pk %}" method="POST" onsubmit="return confirm('Are you sure?');" style="display:inline;">
-                                {% csrf_token %}
-                                <button type="submit" class="btn-sm btn-danger">Delete</button>
-                            </form>
-                        </div>
+                    <td class="text-right">
+                        <i class="fas fa-chevron-right" style="color: var(--border-color);"></i>
                     </td>
                 </tr>
                 {% empty %}

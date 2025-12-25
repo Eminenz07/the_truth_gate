@@ -124,11 +124,19 @@ def testimony_list(request):
     return render(request, 'dashboard/testimony_list.html', {'testimonies': testimonies})
 
 @staff_member_required
+def testimony_detail(request, pk):
+    testimony = get_object_or_404(Testimony, pk=pk)
+    return render(request, 'dashboard/testimony_detail.html', {'testimony': testimony})
+
+@staff_member_required
 def approve_testimony(request, pk):
     testimony = get_object_or_404(Testimony, pk=pk)
+    # Toggle logic: if approved, unapprove; if pending, approve.
+    # But for clarity in UI, let's keep it as toggle.
     testimony.is_approved = not testimony.is_approved
     testimony.save()
-    return redirect('dashboard:testimony_list')
+    # Redirect back to where they came from if possible, or list
+    return redirect('dashboard:testimony_detail', pk=pk) # Better UX to stay on detail if that's where we were
 
 @staff_member_required
 def delete_testimony(request, pk):

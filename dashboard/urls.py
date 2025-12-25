@@ -20,6 +20,7 @@ urlpatterns = [
     path('inbox/', views.contact_list, name='contact_list'),
     
     path('testimony/', views.testimony_list, name='testimony_list'),
+    path('testimony/<int:pk>/', views.testimony_detail, name='testimony_detail'),
     path('testimony/<int:pk>/approve/', views.approve_testimony, name='approve_testimony'),
     path('testimony/<int:pk>/delete/', views.delete_testimony, name='delete_testimony'),
     
