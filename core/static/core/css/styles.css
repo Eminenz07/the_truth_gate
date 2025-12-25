@@ -150,10 +150,26 @@ body {
 }
 
 @media (min-width: 769px) {
-    .mobile-header, .bottom-nav { display: none !important; }
+    .mobile-header, .bottom-nav, .mobile-only-section { display: none !important; }
     .desktop-only { display: block !important; }
     body { padding-bottom: 0; }
     .site-nav { display: flex !important; }
+    
+    /* Ensure Container Centering on Desktop */
+    .container {
+        max-width: var(--container-width);
+        margin: 0 auto;
+        padding: 0 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Center content horizontally */
+    }
+    
+    /* Fix for when container itself is flex column, children width */
+    .container > * {
+         width: 100%;
+         max-width: 100%;
+    }
 }
 
 /* Header - Desktop */

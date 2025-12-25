@@ -1,6 +1,6 @@
 from django.views.generic import ListView, DetailView
 from django.db.models import Q
-from .models import Sermon, Series
+from .models import Sermon, Series, Topic
 
 class SermonListView(ListView):
     model = Sermon
@@ -30,6 +30,8 @@ class SermonListView(ListView):
             queryset = queryset.order_by('-title')
         else: # latest
             queryset = queryset.order_by('-date_preached')
+        
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
