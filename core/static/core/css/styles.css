@@ -1,19 +1,21 @@
 :root {
-    /* Color System: Peaceful & Trustworthy */
-    --bg-color: #faf9f6; /* Warm Alabaster/Off-white */
-    --card-bg: #ffffff;
-    --text-primary: #2d2d2d; /* Soft Charcoal */
-    --text-secondary: #666666; /* Warm Grey */
-    --accent: #546e7a; /* Muted Slate - Calm & Strong */
-    --border-color: #eaeaea; /* Very soft border */
+    /* Color System: Muted Slate & Gold Accent */
+    --bg-color: #F9F9F7;
+    --card-bg: #FFFFFF;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --accent: #5A7079; /* Muted Slate */
+    --accent-gold: #D4B483; /* Spiritual Gold */
+    --border-color: #E5E5E5;
     
     /* Spacing */
-    --spacing-unit: 1.5rem; /* Increased base spacing */
-    --container-width: 840px; /* Slightly wider for reading comfort */
-    --section-gap: 5rem; /* Generous breathing room */
+    --spacing-unit: 1.5rem;
+    --container-width: 840px;
+    --section-gap: 5rem;
+    --header-height: 60px;
 
     /* Typography */
-    --font-heading: 'Lora', serif;
+    --font-heading: 'Playfair Display', serif;
     --font-body: 'Inter', sans-serif;
 }
 
@@ -27,33 +29,138 @@ body {
     background-color: var(--bg-color);
     color: var(--text-primary);
     font-family: var(--font-body);
-    line-height: 1.7; /* Increased for readability */
-    font-size: 1.125rem; /* 18px body text */
+    line-height: 1.6;
+    font-size: 1rem;
     -webkit-font-smoothing: antialiased;
+    padding-bottom: 80px; /* Space for bottom nav */
 }
 
-a {
-    color: inherit;
-    text-decoration: none;
-    transition: all 0.2s ease;
+/* --- Mobile Components --- */
+
+/* Mobile Header */
+.mobile-header {
+    display: none; /* Hidden on desktop */
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(249, 249, 247, 0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.75rem 1.5rem;
+    align-items: center;
+    justify-content: space-between;
 }
 
-a:hover {
+.brand-logo {
+    font-family: var(--font-heading);
     color: var(--accent);
-    opacity: 0.9;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+    text-decoration: none;
 }
 
-.container {
-    max-width: var(--container-width);
-    margin: 0 auto;
-    padding: 0 2rem;
+.icon-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    padding: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Header - Anchored & Calm */
+.header-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Bottom Nav */
+.bottom-nav {
+    display: none; /* Hidden on desktop */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    border-top: 1px solid var(--border-color);
+    padding: 0.5rem 1.5rem;
+    padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+    justify-content: space-between;
+    z-index: 50;
+    box-shadow: 0 -4px 6px -1px rgba(0,0,0,0.05);
+}
+
+.bottom-nav .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text-secondary);
+    gap: 4px;
+}
+
+.bottom-nav .nav-item .material-icons-round {
+    font-size: 24px;
+}
+
+.bottom-nav .nav-item .label {
+    font-size: 10px;
+    font-weight: 500;
+}
+
+.bottom-nav .nav-item:hover, .bottom-nav .nav-item.active {
+    color: var(--accent);
+}
+
+/* Mobile Drawer */
+.mobile-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    background: var(--bg-color);
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 6rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    box-shadow: 5px 0 15px rgba(0,0,0,0.1);
+}
+
+.mobile-drawer.active {
+    transform: translateX(0);
+}
+
+.mobile-drawer a {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+/* Desktop Only Helpers */
+.desktop-only {
+    display: none;
+}
+
+@media (min-width: 769px) {
+    .mobile-header, .bottom-nav { display: none !important; }
+    .desktop-only { display: block !important; }
+    body { padding-bottom: 0; }
+    .site-nav { display: flex !important; }
+}
+
+/* Header - Desktop */
 .site-header {
     padding: 3rem 0;
     text-align: center;
-    background-color: var(--bg-color); /* Ensure opaque background for sticky/fixed contexts if needed */
+    background-color: var(--bg-color);
 }
 
 .logo {

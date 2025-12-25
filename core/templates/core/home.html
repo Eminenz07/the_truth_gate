@@ -3,80 +3,141 @@
 
 {% block content %}
 <!-- Hero Section -->
-<section class="hero text-center" style="padding: 6rem 0; background: var(--bg-color);">
-    <div class="container">
-        <h1 style="font-size: 3.5rem; margin-bottom: 1.5rem; letter-spacing: -0.02em;">The Truth Shall make you Free</h1>
-        <p style="font-size: 1.25rem; color: var(--text-secondary); margin-bottom: 3rem;">We are a bible believing church, we believe in the death and resurrection of Christ.</p>
-        <a href="{% url 'sermon_list' %}" class="btn btn-hero" style="background: var(--text-primary); color: white; padding: 1rem 2.5rem; font-size: 1rem; border: none;">Watch Latest Sermon</a>
+<section class="hero text-center fade-in" style="padding: 3rem 1.5rem;">
+    <div style="margin-bottom: 1.5rem; opacity: 0.8;">
+        <span class="material-icons-round" style="font-size: 48px; color: var(--accent);">church</span>
+    </div>
+    <h2 style="font-family: var(--font-heading); font-size: 2.5rem; line-height: 1.2; color: #1a1d21; margin-bottom: 0.75rem;">
+        Ye shall know the truth
+    </h2>
+    <p style="font-family: var(--font-heading); font-style: italic; font-size: 1.125rem; color: var(--text-secondary); margin-bottom: 2.5rem; max-width: 300px; margin-left: auto; margin-right: auto;">
+        And the truth shall make you free.
+    </p>
+    <a href="{% url 'sermon_list' %}" class="btn-primary" style="display: block; width: 100%; max-width: 320px; margin: 0 auto; padding: 1rem; text-transform: uppercase; font-size: 0.875rem; letter-spacing: 0.05em; border-radius: 4px; text-decoration: none;">
+        Watch Latest Sermon
+    </a>
+</section>
+
+<!-- Scroll Nav -->
+<section style="margin-bottom: 2.5rem; border-bottom: 1px solid var(--border-color);">
+    <div class="no-scrollbar" style="display: flex; overflow-x: auto; padding: 0 1.5rem; gap: 2rem;">
+        <a href="{% url 'home' %}" style="padding-bottom: 0.75rem; font-size: 0.875rem; font-weight: 600; color: var(--accent); border-bottom: 2px solid var(--accent); white-space: nowrap;">Home</a>
+        <a href="{% url 'sermon_list' %}" style="padding-bottom: 0.75rem; font-size: 0.875rem; font-weight: 500; color: var(--text-secondary); white-space: nowrap;">Sermons</a>
+        <a href="{% url 'event_list' %}" style="padding-bottom: 0.75rem; font-size: 0.875rem; font-weight: 500; color: var(--text-secondary); white-space: nowrap;">Events</a>
+        <a href="{% url 'give' %}" style="padding-bottom: 0.75rem; font-size: 0.875rem; font-weight: 500; color: var(--text-secondary); white-space: nowrap;">Give</a>
+        <a href="{% url 'prayer_request' %}" style="padding-bottom: 0.75rem; font-size: 0.875rem; font-weight: 500; color: var(--text-secondary); white-space: nowrap;">Prayer</a>
     </div>
 </section>
 
-<!-- Sermon Previews -->
-<section class="latest-sermons" style="padding: 5rem 0; border-top: 1px solid var(--border-color);">
-    <div class="container">
-        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3rem;">
-            <h2 style="font-size: 2rem; margin: 0;">Latest Messages</h2>
-            <a href="{% url 'sermon_list' %}" class="action-link">View All</a>
-        </div>
+<!-- Featured Topics (Cards) -->
+<section class="container" style="padding: 0 1.5rem; display: flex; flex-direction: column; gap: 1.25rem;">
+    <!-- Hardcoded Topics for UI Match (Functionality mapped to search or category detail) -->
+    
+    <!-- Card 1 -->
+    <div class="topic-card">
+        <div class="card-icon"><span class="material-icons-round">psychology</span></div>
+        <h3>Faith & Doubt</h3>
+        <p>When you question if God is there or if He really cares about your situation.</p>
+        <a href="{% url 'sermon_list' %}?q=Faith" class="read-more">Read Guide <span class="material-icons-round" style="font-size: 14px;">arrow_forward</span></a>
+    </div>
 
-        <div class="sermon-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
-            <!-- We need to fetch these in the view, currently view passes 'categories'. 
-                 Ideally, we'd update views.py to pass 'latest_sermons'. 
-                 For now, if categories exist, we loop them, BUT the requirement is 'Sermon Previews'.
-                 I will assume the backend has been updated or I need to update it. 
-                 Wait, I didn't update core/views.py yet. I should do that.
-                 For this safe step, I will use valid Django template logic to avoid errors if context is missing.
-            -->
-            {% for category in categories|slice:":3" %} 
-                <!-- Fallback: Showing categories as 'Featured Topics' if sermons aren't passed yet.
-                     Wait, the user wants 'Sermon Previews'. I must update core/views.py first to pass 'latest_sermons'.
-                     I will write this template assuming 'latest_sermons' is available.
-                -->
-                {% for sermon in category.sermons.all|slice:":1" %}
-                <div class="sermon-card-modern" style="border: 1px solid var(--border-color); padding: 2rem; border-radius: 4px;">
-                     <div class="mb-1">
-                        <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--accent); font-weight: 600;">
-                            {{ category.name }}
-                        </span>
-                    </div>
-                    <h3 style="font-size: 1.5rem; margin-bottom: 0.75rem;">
-                        <a href="{% url 'sermon_detail' category.slug sermon.slug %}" style="text-decoration: none;">{{ sermon.title }}</a>
-                    </h3>
-                    <p style="margin-bottom: 1.5rem; font-size: 0.95rem;">{{ sermon.description|truncatewords:20 }}</p>
-                    <a href="{% url 'sermon_detail' category.slug sermon.slug %}" class="action-link">Watch Now</a>
-                </div>
-                {% endfor %}
-            {% endfor %}
-        </div>
+    <!-- Card 2 -->
+    <div class="topic-card">
+        <div class="card-icon"><span class="material-icons-round">waves</span></div>
+        <h3>Fear, Anxiety & Peace</h3>
+        <p>Finding calm when your mind won't stop racing and the world feels heavy.</p>
+        <a href="{% url 'sermon_list' %}?q=Peace" class="read-more">Find Peace <span class="material-icons-round" style="font-size: 14px;">arrow_forward</span></a>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="topic-card">
+        <div class="card-icon"><span class="material-icons-round">account_balance_wallet</span></div>
+        <h3>Financial Pressure</h3>
+        <p>Trusting God when the numbers don't add up and resources seem scarce.</p>
+        <a href="{% url 'sermon_list' %}?q=Finance" class="read-more">Learn More <span class="material-icons-round" style="font-size: 14px;">arrow_forward</span></a>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="topic-card">
+        <div class="card-icon"><span class="material-icons-round">explore</span></div>
+        <h3>Purpose & Direction</h3>
+        <p>Figuring out what you're supposed to do with your life and finding your calling.</p>
+        <a href="{% url 'sermon_list' %}?q=Purpose" class="read-more">Discover <span class="material-icons-round" style="font-size: 14px;">arrow_forward</span></a>
     </div>
 </section>
 
-<!-- Events Preview -->
-<section class="events-preview" style="padding: 5rem 0; background: #ffffff;">
-    <div class="container text-center">
-        <h2 style="margin-bottom: 1rem;">Upcoming Events</h2>
-        <p class="text-secondary mb-4">Gather with us in person.</p>
+<!-- Quote Section -->
+<section style="margin: 3rem 1.5rem 2.5rem; padding: 2rem; background: #ffffff; border: 1px solid rgba(90, 112, 121, 0.2); border-radius: 8px; text-center;">
+    <div class="text-center">
+        <span class="material-icons-round" style="color: var(--accent); font-size: 32px; margin-bottom: 1rem;">format_quote</span>
+        <p style="font-family: var(--font-heading); font-size: 1.125rem; font-style: italic; color: #1a1d21; margin-bottom: 1.5rem;">
+            "The light shines in the darkness, and the darkness has not overcome it."
+        </p>
+        <p style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-secondary); margin-bottom: 1.5rem;">John 1:5</p>
         
-        <!-- Placeholder for Events Loop if available in context, else link -->
-        <a href="{% url 'event_list' %}" class="btn" style="margin-top: 1rem;">View Calendar</a>
-    </div>
-</section>
-
-<!-- Giving CTA -->
-<section class="giving-cta" style="padding: 6rem 0; background: var(--bg-color); border-top: 1px solid var(--border-color);">
-    <div class="container text-center" style="max-width: 600px;">
-        <h2 style="margin-bottom: 1.5rem;">Partner with the Ministry</h2>
-        <p class="text-secondary mb-4">Your generosity helps us share the truth with more people around the world.</p>
-        <a href="{% url 'give' %}" class="btn" style="border-color: var(--accent); color: var(--accent);">Give Online</a>
+        <form class="subscribe-form" style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <input type="email" placeholder="Join our weekly devotional" style="width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--border-color); border-radius: 4px; text-align: center; font-size: 0.875rem;">
+            <button type="button" class="btn-outline">Subscribe</button>
+        </form>
     </div>
 </section>
 
 <style>
-/* Shared styles from sermon list */
-.action-link {
-    font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; color: var(--accent);
-    border-bottom: 1px solid transparent;
+/* Local Styles for Home */
+.topic-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    position: relative;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
-.action-link:hover { border-bottom-color: var(--accent); }
+
+.card-icon {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    opacity: 0.1;
+}
+.card-icon span { font-size: 48px; color: var(--accent); }
+
+.topic-card h3 {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #1a1d21;
+}
+
+.topic-card p {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.read-more {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    text-decoration: none;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 0.75rem;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+}
 </style>
 {% endblock %}
