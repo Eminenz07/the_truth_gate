@@ -45,11 +45,11 @@ class SermonListView(ListView):
         
         # Only fetch topics structure if we are in the 'all' (grouped) view
         if sort_by == 'all':
-            from django.db.models import Prefetch
-            # Fetch topics that actually have published sermons
-            context['grouped_topics'] = Topic.objects.filter(
-                sermon__status='published'
-            ).distinct().prefetch_related(
+            from django.db.models import Prefetch, Count
+            # Fetch ALL topics, but still prefetch latest sermons if any
+            context['grouped_topics'] = Topic.objects.annotate(
+                published_count=Count('sermon', filter=Q(sermon__status='published'))
+            ).prefetch_related(
                 Prefetch('sermon_set', 
                          queryset=Sermon.objects.filter(status='published').order_by('-date_preached')[:4],
                          to_attr='latest_sermons')
