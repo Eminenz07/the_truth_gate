@@ -157,8 +157,17 @@
             <!-- Topics -->
             <div class="card">
                 <h2>Topics</h2>
-                <div class="form-group topic-selector" style="max-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.5rem;">
-                    {{ form.topics }}
+                
+                <!-- Custom Multi-Select Dropdown -->
+                <div class="custom-dropdown" style="position: relative;">
+                    <button type="button" id="topicDropdownBtn" onclick="toggleTopicDropdown()" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 6px; background: white; text-align: left; display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+                        <span id="topicBtnText">Select Topics...</span>
+                        <span class="material-icons-round" style="font-size: 18px;">arrow_drop_down</span>
+                    </button>
+                    
+                    <div id="topicDropdownContent" class="form-group topic-selector" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid var(--border-color); border-radius: 6px; padding: 1rem; z-index: 100; max-height: 250px; overflow-y: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-top: 4px;">
+                        {{ form.topics }}
+                    </div>
                 </div>
             </div>
 
@@ -180,23 +189,61 @@
 </form>
 
 <script>
+    // Status Logic
     function submitForm(status) {
-        // Set hidden status field
         document.querySelector('select[name="status"]').value = status;
-        
-        // If "Publish" is clicked, ensure date is set (default to today if empty? Model form might handle it)
-        // Submit
         document.querySelector('form').submit();
     }
 
-    // Schedule logic: toggle focus on date picker
+    // Schedule Logic
     document.querySelector('.schedule-btn').addEventListener('click', function() {
         const dateInput = document.querySelector('input[name="date_preached"]');
         dateInput.focus();
-        dateInput.click(); // Try to open picker
-        // We assume user picks a date and then clicks "Publish".
-        // Or we could change "Publish" text to "Schedule" if date > today.
+        dateInput.click(); 
     });
+
+    // Topic Dropdown Logic
+    function toggleTopicDropdown() {
+        const display = document.getElementById('topicDropdownContent').style.display;
+        document.getElementById('topicDropdownContent').style.display = (display === 'none') ? 'block' : 'none';
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        const dropdown = document.querySelector('.custom-dropdown');
+        if (!dropdown.contains(event.target)) {
+            document.getElementById('topicDropdownContent').style.display = 'none';
+        }
+    });
+
+    // Update Button Text Logic
+    function updateTopicLabel() {
+        const checkboxes = document.querySelectorAll('.topic-selector input[type="checkbox"]');
+        const selected = [];
+        checkboxes.forEach(cb => {
+            if (cb.checked) {
+                // Find the label text next to the checkbox
+                selected.push(cb.parentNode.textContent.trim());
+            }
+        });
+        
+        const btnText = document.getElementById('topicBtnText');
+        if (selected.length === 0) {
+            btnText.textContent = "Select Topics...";
+        } else if (selected.length <= 2) {
+            btnText.textContent = selected.join(', ');
+        } else {
+            btnText.textContent = `${selected.length} Topics Selected`;
+        }
+    }
+
+    // Init & Listeners
+    const topicCheckboxes = document.querySelectorAll('.topic-selector input[type="checkbox"]');
+    topicCheckboxes.forEach(cb => {
+        cb.addEventListener('change', updateTopicLabel);
+    });
+    // Run once on load
+    updateTopicLabel();
 </script>
     </div>
 </form>
