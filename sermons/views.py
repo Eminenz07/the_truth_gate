@@ -21,6 +21,11 @@ class SermonListView(ListView):
                 Q(series__title__icontains=query)
             )
 
+        # Topic Filtering
+        topic_slug = self.request.GET.get('topic')
+        if topic_slug:
+            queryset = queryset.filter(topics__slug=topic_slug)
+
         # Sorting Logic
         if sort_by == 'oldest':
             queryset = queryset.order_by('date_preached')
