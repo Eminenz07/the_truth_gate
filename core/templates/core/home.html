@@ -47,9 +47,9 @@
     <!-- Sermon Feed -->
     <div id="browse-feed" style="display: flex; flex-direction: column; gap: 1rem;">
         {% for sermon in recent_sermons %}
-        <div class="sermon-card-mobile fade-in" data-category="{{ sermon.category.slug|default:'uncategorized' }}">
+        <div class="sermon-card-mobile fade-in" data-category="{{ sermon.topics.first.slug|default:'uncategorized' }}">
             <div style="margin-bottom: 0.75rem;">
-                <span class="category-tag">{{ sermon.category.name|default:"Message" }}</span>
+                <span class="category-tag">{{ sermon.topics.first.name|default:"Message" }}</span>
             </div>
             <h4 style="font-family: var(--font-heading); font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--text-primary);">
                 <a href="{% url 'sermon_detail' sermon.slug %}" style="text-decoration: none; color: inherit;">{{ sermon.title }}</a>
@@ -59,10 +59,17 @@
             </p>
             
             <div class="action-bar">
+                <!-- V2 Logic: Check available media -->
+                {% if sermon.video_url %}
                 <a href="{% url 'sermon_detail' sermon.slug %}" class="action-link"><i class="fas fa-play"></i> Watch</a>
                 <span class="divider">|</span>
+                {% endif %}
+                
+                {% if sermon.audio_file %}
                 <a href="{% url 'sermon_detail' sermon.slug %}" class="action-link"><i class="fas fa-headphones"></i> Listen</a>
                 <span class="divider">|</span>
+                {% endif %}
+                
                 <a href="{% url 'sermon_detail' sermon.slug %}" class="action-link"><i class="fas fa-align-left"></i> Read</a>
             </div>
         </div>

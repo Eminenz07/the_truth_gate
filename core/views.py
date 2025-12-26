@@ -1,13 +1,15 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Category, Sermon
+from .models import Category
+from sermons.models import Sermon, Topic
 from ministry.models import Testimony
 
 def home(request):
-    categories = Category.objects.all()
+    # Use Topics as Categories for the filter tabs
+    categories = Topic.objects.all()
     # Fetch latest 3 approved testimonies
     testimonies = Testimony.objects.filter(is_approved=True).order_by('-created_at')[:3]
-    # Fetch recent sermons for "Browse by Topic"
-    recent_sermons = Sermon.objects.all().order_by('-date')[:10]
+    # Fetch recent sermons (V2)
+    recent_sermons = Sermon.objects.all().order_by('-date_preached')[:10]
     return render(request, 'core/home.html', {
         'categories': categories, 
         'testimonies': testimonies,
