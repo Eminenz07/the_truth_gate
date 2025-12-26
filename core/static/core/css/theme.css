@@ -39,7 +39,7 @@ body {
 
 /* Mobile Header */
 .mobile-header {
-    display: none; /* Hidden on desktop */
+    display: flex; /* Visible by default (Mobile First) */
     position: sticky;
     top: 0;
     z-index: 50;
@@ -79,7 +79,7 @@ body {
 
 /* Bottom Nav */
 .bottom-nav {
-    display: none; /* Hidden on desktop */
+    display: flex; /* Visible by default (Mobile First) */
     position: fixed;
     bottom: 0;
     left: 0;

@@ -6,7 +6,13 @@ def home(request):
     categories = Category.objects.all()
     # Fetch latest 3 approved testimonies
     testimonies = Testimony.objects.filter(is_approved=True).order_by('-created_at')[:3]
-    return render(request, 'core/home.html', {'categories': categories, 'testimonies': testimonies})
+    # Fetch recent sermons for "Browse by Topic"
+    recent_sermons = Sermon.objects.all().order_by('-date')[:10]
+    return render(request, 'core/home.html', {
+        'categories': categories, 
+        'testimonies': testimonies,
+        'recent_sermons': recent_sermons
+    })
 
 def category_detail(request, slug):
     category = get_object_or_404(Category, slug=slug)
