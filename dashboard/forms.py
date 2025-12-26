@@ -32,6 +32,41 @@ class SermonForm(forms.ModelForm):
             'topics': forms.CheckboxSelectMultiple(),
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Make fields optional by default (for drafts)
+        self.fields['series'].required = False
+        self.fields['video_url'].required = False
+        self.fields['audio_file'].required = False
+        self.fields['description'].required = False
+        self.fields['scripture_reference'].required = False
+        self.fields['date_preached'].required = False # Will handle in clean
+        self.fields['speaker'].required = False
+
+    def clean(self):
+        cleaned_data = super().clean()
+        status = cleaned_data.get('status')
+        title = cleaned_data.get('title')
+        
+        # If no date provided for draft, default to today to satisfy Model
+        if not cleaned_data.get('date_preached'):
+            from django.utils import timezone
+            cleaned_data['date_preached'] = timezone.now().date()
+        
+        # Validation for Published Sermons
+        if status == 'published':
+            errors = {}
+            if not cleaned_data.get('description'):
+                errors['description'] = "Description is required for published sermons."
+            if not cleaned_data.get('scripture_reference'):
+                errors['scripture_reference'] = "Scripture reference is required for published sermons."
+            # Series and Media explicitly requested as OPTIONAL even for published.
+            
+            if errors:
+                raise forms.ValidationError(errors)
+        
+        return cleaned_data
+
 class EventForm(forms.ModelForm):
     description = forms.CharField(widget=CKEditorWidget())
     start_time = forms.DateTimeField(

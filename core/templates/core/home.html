@@ -32,72 +32,17 @@
 </section>
 
 <!-- Featured Topics (Cards) -->
-<!-- Browse by Topic -->
-<section class="container mobile-only-section" style="padding: 0 1.5rem; margin-bottom: 2rem;">
-    <h3 style="font-family: var(--font-heading); font-size: 0.8rem; letter-spacing: 0.1em; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 1rem; font-weight: 600;">Browse by Topic</h3>
-    
-    <!-- Filter Chips -->
-    <div class="no-scrollbar" style="display: flex; gap: 0.75rem; overflow-x: auto; padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
-        <button class="topic-chip active" data-filter="all" onclick="filterTopic('all', this)">All</button>
-        {% for cat in categories %}
-        <button class="topic-chip" data-filter="{{ cat.slug }}" onclick="filterTopic('{{ cat.slug }}', this)">{{ cat.name }}</button>
-        {% endfor %}
+<!-- Topic Cards (Mobile) -->
+<section class="container mobile-only-section" style="padding: 0 1.5rem; display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem;">
+    {% for cat in categories %}
+    <div class="topic-card">
+        <h3>{{ cat.name }}</h3>
+        <!-- Description would be nice if Topic has it, assuming blank otherwise -->
+        <p>Explore biblical teachings on {{ cat.name|lower }}.</p>
+        <a href="{% url 'sermon_list' %}?topic={{ cat.slug }}" class="read-more">Read <span class="material-icons-round" style="font-size: 14px;">arrow_forward</span></a>
     </div>
-
-    <!-- Sermon Feed -->
-    <div id="browse-feed" style="display: flex; flex-direction: column; gap: 1rem;">
-        {% for sermon in recent_sermons %}
-        <div class="sermon-card-mobile fade-in" data-category="{{ sermon.topics.first.slug|default:'uncategorized' }}">
-            <div style="margin-bottom: 0.75rem;">
-                <span class="category-tag">{{ sermon.topics.first.name|default:"Message" }}</span>
-            </div>
-            <h4 style="font-family: var(--font-heading); font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--text-primary);">
-                <a href="{% url 'sermon_detail' sermon.slug %}" style="text-decoration: none; color: inherit;">{{ sermon.title }}</a>
-            </h4>
-            <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1rem;">
-                {{ sermon.description|truncatewords:15 }}
-            </p>
-            
-            <div class="action-bar">
-                <!-- V2 Logic: Check available media -->
-                {% if sermon.video_url %}
-                <a href="{% url 'sermon_detail' sermon.slug %}" class="action-link"><i class="fas fa-play"></i> Watch</a>
-                <span class="divider">|</span>
-                {% endif %}
-                
-                {% if sermon.audio_file %}
-                <a href="{% url 'sermon_detail' sermon.slug %}" class="action-link"><i class="fas fa-headphones"></i> Listen</a>
-                <span class="divider">|</span>
-                {% endif %}
-                
-                <a href="{% url 'sermon_detail' sermon.slug %}" class="action-link"><i class="fas fa-align-left"></i> Read</a>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-    
-    <div style="text-align: center; margin-top: 1.5rem;">
-        <a href="{% url 'sermon_list' %}" class="btn-outline" style="width: 100%; display: block; text-align: center;">View Full Archive &rarr;</a>
-    </div>
+    {% endfor %}
 </section>
-
-<script>
-function filterTopic(slug, btn) {
-    // Update Active Chip
-    document.querySelectorAll('.topic-chip').forEach(el => el.classList.remove('active'));
-    btn.classList.add('active');
-
-    // Filter Items
-    const items = document.querySelectorAll('.sermon-card-mobile');
-    items.forEach(item => {
-        if (slug === 'all' || item.dataset.category === slug) {
-            item.style.display = 'block';
-        } else {
-            item.style.display = 'none';
-        }
-    });
-}
-</script>
 
 <!-- Testimonies Section -->
 <section style="margin: 3rem 1.5rem 2.5rem;">
@@ -126,22 +71,6 @@ function filterTopic(slug, btn) {
             <a href="{% url 'submit_testimony' %}" class="btn-primary" style="display: inline-block; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; font-size: 0.9rem;">Share Your Testimony</a>
         </div>
     {% endif %}
-</section>
-
-<!-- Quote Section -->
-<section class="mobile-only-section" style="margin: 3rem 1.5rem 2.5rem; padding: 2rem; background: #ffffff; border: 1px solid rgba(90, 112, 121, 0.2); border-radius: 8px; text-align: center;">
-    <div class="text-center">
-        <span class="material-icons-round" style="color: var(--accent); font-size: 32px; margin-bottom: 1rem;">format_quote</span>
-        <p style="font-family: var(--font-heading); font-size: 1.125rem; font-style: italic; color: #1a1d21; margin-bottom: 1.5rem;">
-            "The light shines in the darkness, and the darkness has not overcome it."
-        </p>
-        <p style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-secondary); margin-bottom: 1.5rem;">John 1:5</p>
-        
-        <form class="subscribe-form" style="display: flex; flex-direction: column; gap: 0.75rem;">
-            <input type="email" placeholder="Join our weekly devotional" style="width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--border-color); border-radius: 4px; text-align: center; font-size: 0.875rem;">
-            <button type="button" class="btn-outline">Subscribe</button>
-        </form>
-    </div>
 </section>
 
 <style>
