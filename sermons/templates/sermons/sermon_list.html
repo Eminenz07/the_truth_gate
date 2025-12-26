@@ -24,7 +24,7 @@
             {% for topic in grouped_topics %}
             <div class="topic-card">
                 <h3>{{ topic.name }}</h3>
-                <p>Explore biblical teachings on {{ topic.name|lower }}. Included in {{ topic.sermon_set.count }} sermons.</p>
+                <p>Explore biblical teachings on {{ topic.name|lower }}. Included in {{ topic.published_count }} sermons.</p>
                 <a href="?topic={{ topic.slug }}" class="read-more">View Sermons <span class="material-icons-round" style="font-size: 14px;">arrow_forward</span></a>
             </div>
             {% empty %}
@@ -32,12 +32,12 @@
             {% endfor %}
         </div>
     {% else %}
-        <!-- Flat List View -->
-        <div class="sermon-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
+        <!-- Flat List View (Vertical Feed) -->
+        <div class="sermon-grid" style="display: flex; flex-direction: column; gap: 1.5rem; max-width: 600px; margin: 0 auto;">
             {% for sermon in sermons %}
                 {% include "sermons/_sermon_card.html" with sermon=sermon %}
             {% empty %}
-            <p class="text-center text-secondary" style="grid-column: 1/-1;">No sermons found matching your criteria.</p>
+            <p class="text-center text-secondary">No sermons found matching your criteria.</p>
             {% endfor %}
         </div>
     {% endif %}
