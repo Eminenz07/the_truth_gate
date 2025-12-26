@@ -21,7 +21,7 @@ class SermonForm(forms.ModelForm):
         model = Sermon
         fields = [
             'title', 'series', 'speaker', 'date_preached', 
-            'sermon_type', 'video_url', 'audio_file',
+            'sermon_type', 'topics', 'video_url', 'audio_file',
             'scripture_reference', 'description', 'notes', 'status'
         ]
         widgets = {
@@ -29,6 +29,7 @@ class SermonForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'class': 'form-input', 'rows': 3}),
             'scripture_reference': forms.TextInput(attrs={'class': 'form-input'}),
             'video_url': forms.URLInput(attrs={'class': 'form-input', 'placeholder': 'https://youtube.com/...'}),
+            'topics': forms.CheckboxSelectMultiple(),
         }
 
 class EventForm(forms.ModelForm):
