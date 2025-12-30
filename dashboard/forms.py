@@ -58,9 +58,15 @@ class SermonForm(forms.ModelForm):
             errors = {}
             if not cleaned_data.get('description'):
                 errors['description'] = "Description is required for published sermons."
+            # Description implies content, but we can be loose.
+            if not cleaned_data.get('description'):
+                errors['description'] = "Description is required for published sermons."
+            
+            # Scripture reference is REQUIRED for published sermons.
             if not cleaned_data.get('scripture_reference'):
                 errors['scripture_reference'] = "Scripture reference is required for published sermons."
-            # Series and Media explicitly requested as OPTIONAL even for published.
+            
+            # Series and Media are OPTIONAL even for published.
             
             if errors:
                 raise forms.ValidationError(errors)
