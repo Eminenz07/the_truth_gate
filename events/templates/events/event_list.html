@@ -19,11 +19,11 @@
             <div class="event-details">
                 <h3 style="margin-top: 0;">{{ event.title }}</h3>
                 <p class="text-secondary mb-1">
-                    {{ event.start_time|date:"g:i A" }} - {{ event.end_time|date:"g:i A" }} • {{ event.location }}
+                    {{ event.start_time|date:"g:i A" }} - {{ event.end_time|date:"g:i A" }} WAT • {{ event.location }}
                 </p>
                 <div class="content">
                     {% if event.image %}
-                    <img src="{{ event.image.url }}" alt="{{ event.title }}" style="width: 100%; max-width: 600px; height: auto; border-radius: 4px; margin-bottom: 1rem; object-fit: cover;">
+                    <img src="{{ event.image.url }}" alt="{{ event.title }}" loading="lazy" style="width: 100%; max-width: 600px; height: auto; border-radius: 4px; margin-bottom: 1rem; object-fit: cover; display: block;">
                     {% endif %}
                     {{ event.description|safe }}
                 </div>
