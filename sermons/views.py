@@ -55,6 +55,7 @@ class SermonListView(ListView):
                          to_attr='latest_sermons')
             )
             
+        topic_slug = self.request.GET.get('topic')
         if topic_slug:
             try:
                 context['current_topic'] = Topic.objects.get(slug=topic_slug)
