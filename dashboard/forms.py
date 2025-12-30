@@ -86,7 +86,8 @@ class EventForm(forms.ModelForm):
 
     class Meta:
         model = Event
-        fields = ['title', 'start_time', 'end_time', 'location', 'description', 'image']
+        # Image upload disabled for now (User request Step 1792)
+        fields = ['title', 'start_time', 'end_time', 'location', 'description'] # Removed 'image'
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-input'}),
             'location': forms.TextInput(attrs={'class': 'form-input'}),
