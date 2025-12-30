@@ -2,6 +2,14 @@
 {% load static %}
 
 {% block content %}
+<!-- Live Stream Banner -->
+{% if settings.is_live_now %}
+<a href="{{ settings.live_stream_url }}" target="_blank" style="display: block; background: #e53935; color: white; text-align: center; padding: 0.75rem; text-decoration: none; font-weight: 600; font-size: 0.9rem; letter-spacing: 0.05em;">
+    <span class="material-icons-round" style="vertical-align: middle; font-size: 18px; margin-right: 0.5rem;">live_tv</span>
+    WE ARE LIVE NOW - JOIN THE SERVICE &rarr;
+</a>
+{% endif %}
+
 <!-- Hero Section -->
 <section class="hero text-center fade-in" style="padding: 3rem 1.5rem;">
     <div style="margin-bottom: 1.5rem; opacity: 0.8;">

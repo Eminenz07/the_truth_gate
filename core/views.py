@@ -3,6 +3,8 @@ from .models import Category
 from sermons.models import Sermon, Topic
 from ministry.models import Testimony
 
+from dashboard.models import SiteSettings
+
 def home(request):
     # Use Topics as Categories for the filter tabs
     categories = Topic.objects.all()
@@ -10,10 +12,14 @@ def home(request):
     testimonies = Testimony.objects.filter(is_approved=True).order_by('-created_at')[:3]
     # Fetch recent sermons (V2)
     recent_sermons = Sermon.objects.all().order_by('-date_preached')[:10]
+    # Fetch Site Settings for Live Banner
+    settings = SiteSettings.load()
+    
     return render(request, 'core/home.html', {
         'categories': categories, 
         'testimonies': testimonies,
-        'recent_sermons': recent_sermons
+        'recent_sermons': recent_sermons,
+        'settings': settings
     })
 
 def category_detail(request, slug):
