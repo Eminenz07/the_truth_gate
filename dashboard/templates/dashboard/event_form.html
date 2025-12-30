@@ -60,6 +60,12 @@
             {{ form.location }}
         </div>
 
+        <div class="form-group" style="display: flex; align-items: center; gap: 0.75rem; background: #f8fafc; padding: 1rem; border: 1px solid var(--border-color); border-radius: 6px;">
+            {{ form.is_completed }}
+            <label for="{{ form.is_completed.id_for_label }}" style="margin: 0; font-weight: 500;">Mark as Completed</label>
+            <span style="font-size: 0.85rem; color: var(--text-light);">(Removes from public site)</span>
+        </div>
+
         <div class="form-group">
             <label>Event Details</label>
             {{ form.description }}

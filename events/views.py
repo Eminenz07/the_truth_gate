@@ -8,5 +8,5 @@ class EventListView(ListView):
     context_object_name = 'events'
 
     def get_queryset(self):
-        # Show future events first
-        return Event.objects.all().order_by('-start_time')
+        # Show future events first, exclude completed ones
+        return Event.objects.filter(is_completed=False).order_by('-start_time')

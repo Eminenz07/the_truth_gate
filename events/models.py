@@ -14,6 +14,8 @@ class Event(models.Model):
     is_recurring = models.BooleanField(default=False)
     recurrence_rule = models.CharField(max_length=100, blank=True, help_text="e.g. 'Weekly on Sundays'")
 
+    is_completed = models.BooleanField(default=False, help_text="Mark as completed to hide from public view.")
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

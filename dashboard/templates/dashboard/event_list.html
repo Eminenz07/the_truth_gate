@@ -23,9 +23,14 @@
         </thead>
         <tbody>
             {% for event in events %}
-            <tr style="border-bottom: 1px solid var(--border-color);">
+            <tr style="border-bottom: 1px solid var(--border-color); {% if event.is_completed %}opacity: 0.6; background: #f9f9f9;{% endif %}">
                 <td style="padding: 1rem;">
-                    <div style="font-weight: 500;">{{ event.title }}</div>
+                    <div style="font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
+                        {{ event.title }} 
+                        {% if event.is_completed %}
+                        <span style="font-size: 0.7rem; background: #9e9e9e; color: white; padding: 2px 6px; border-radius: 4px; text-transform: uppercase;">Completed</span>
+                        {% endif %}
+                    </div>
                 </td>
                 <td style="padding: 1rem;">
                     <div>{{ event.start_time|date:"M d, Y" }}</div>
