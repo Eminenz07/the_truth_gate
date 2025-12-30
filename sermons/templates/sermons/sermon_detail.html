@@ -15,26 +15,7 @@
         {% endif %}
     </header>
 
-    <!-- Media Player -->
-    <section class="media-section mb-large text-center">
-        {% if sermon.sermon_type == 'video' and sermon.video_url %}
-            <div class="video-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; background: #000;">
-                <!-- Very basic embed logic - would need robust parsing for production -->
-                {% if "youtube" in sermon.video_url %}
-                    <iframe src="{{ sermon.video_url|cut:'watch?v='|cut:'https://www.youtube.com/'|add:'https://www.youtube.com/embed/' }}" 
-                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" 
-                            frameborder="0" allowfullscreen></iframe>
-                {% else %}
-                    <a href="{{ sermon.video_url }}" target="_blank" class="btn btn-primary">Watch Video</a>
-                {% endif %}
-            </div>
-        {% elif sermon.sermon_type == 'audio' and sermon.audio_file %}
-            <audio controls style="width: 100%;">
-                <source src="{{ sermon.audio_file.url }}" type="audio/mpeg">
-                Your browser does not support the audio element.
-            </audio>
-        {% endif %}
-    </section>
+    <!-- Media removed from top (User request Step 1822) -->
 
     <!-- Notes/Content -->
     <section class="sermon-content">
@@ -50,6 +31,65 @@
             {{ sermon.notes|safe }}
         </div>
     </section>
+
+    <!-- Sermon Actions (Watch/Listen) -->
+    <section class="sermon-actions text-center" style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+        <h3 style="margin-bottom: 1.5rem; font-size: 1.2rem;">Media Resources</h3>
+        
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;">
+            <!-- Watch Button -->
+            {% if sermon.video_url %}
+            <a href="{{ sermon.video_url }}" target="_blank" class="btn-watch">
+                <span class="material-icons-round">play_circle</span> Watch Sermon
+            </a>
+            {% else %}
+            <button class="btn-watch disabled" onclick="this.innerText = 'Video Unavailable'; this.style.opacity = '0.7';">
+                <span class="material-icons-round">videocam_off</span> Watch Sermon
+            </button>
+            {% endif %}
+
+            <!-- Listen Button / Player -->
+            {% if sermon.audio_file %}
+            <div style="width: 100%; max-width: 400px; margin-top: 1rem;">
+                <audio controls style="width: 100%;">
+                    <source src="{{ sermon.audio_file.url }}" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <style>
+        .btn-watch {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: #e53935; /* Red */
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            border: 2px solid #e53935;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .btn-watch:hover {
+            background-color: white;
+            color: #e53935;
+        }
+        .btn-watch.disabled {
+            background-color: #f5f5f5;
+            border-color: #dcdcdc;
+            color: #999;
+            cursor: not-allowed;
+        }
+        .btn-watch.disabled:hover {
+            background-color: #f5f5f5;
+            color: #999;
+        }
+    </style>
 
     <div class="sermon-footer text-center mt-4">
         <a href="{% url 'sermon_list' %}" class="back-link">&larr; Back to Library</a>

@@ -23,12 +23,7 @@
     <p style="margin-bottom: 1.5rem; font-size: 0.95rem;">{{ sermon.description|truncatewords:20 }}</p>
 
     <div class="actions" style="display: flex; gap: 1rem;">
-        {% if sermon.video_url %}
-        <a href="{% url 'sermon_detail' sermon.slug %}" class="action-link">Watch</a>
-        {% endif %}
-        {% if sermon.audio_file %}
-        <a href="{% url 'sermon_detail' sermon.slug %}" class="action-link">Listen</a>
-        {% endif %}
-        <a href="{% url 'sermon_detail' sermon.slug %}" class="action-link">Read</a>
+        <a href="{% url 'sermon_detail' sermon.slug %}" class="action-link">Read Message</a>
+        <span style="color: var(--text-light); font-size: 0.85rem;">&rarr;</span>
     </div>
 </div>

@@ -5,8 +5,16 @@
 {% block content %}
 <div class="container site-main">
     <header class="text-center mb-4">
-        <h1 class="page-title">Sermon Library</h1>
-        <p class="text-secondary">Explore God's truth for your life.</p>
+        {% if current_topic %}
+            <div style="margin-bottom: 1rem;">
+                <a href="{% url 'sermon_list' %}?sort=all" style="text-decoration: none; color: var(--text-secondary); font-size: 0.9rem;">&larr; All Topics</a>
+            </div>
+            <h1 class="page-title">{{ current_topic.name }}</h1>
+            <p class="text-secondary">Sermons on {{ current_topic.name|lower }}</p>
+        {% else %}
+            <h1 class="page-title">Sermon Library</h1>
+            <p class="text-secondary">Explore God's truth for your life.</p>
+        {% endif %}
     </header>
 
     <!-- Filters -->

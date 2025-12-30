@@ -55,6 +55,12 @@ class SermonListView(ListView):
                          to_attr='latest_sermons')
             )
             
+        if topic_slug:
+            try:
+                context['current_topic'] = Topic.objects.get(slug=topic_slug)
+            except Topic.DoesNotExist:
+                pass
+            
         return context
 
 class SermonDetailView(DetailView):
