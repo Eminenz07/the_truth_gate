@@ -1,0 +1,33 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Testimony | The Truth Gate{% endblock %}
+
+{% block content %}
+<div class="container site-main" style="max-width: 680px; margin: 0 auto; padding-top: 4rem;">
+    <div style="margin-bottom: 2rem;">
+        <a href="{% url 'home' %}" style="text-decoration: none; color: var(--text-secondary); font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.25rem;">
+            <span class="material-icons-round" style="font-size: 16px;">arrow_back</span> Back to Home
+        </a>
+    </div>
+
+    <article style="background: #ffffff; padding: 3rem; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+        <header style="text-align: center; margin-bottom: 2.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 2rem;">
+            <span style="display: block; font-family: var(--font-heading); color: var(--accent); font-size: 1.1rem; margin-bottom: 0.5rem; letter-spacing: 0.05em; text-transform: uppercase;">Testimony</span>
+            <h1 style="font-size: 2rem; margin-bottom: 0.5rem; color: var(--text-primary);">{{ testimony.name }}</h1>
+            {% if testimony.location %}
+            <p style="color: var(--text-secondary); margin: 0; font-size: 1rem;">from {{ testimony.location }}</p>
+            {% endif %}
+            <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 0.5rem;">Shared on {{ testimony.created_at|date:"F j, Y" }}</p>
+        </header>
+
+        <div class="content" style="font-size: 1.125rem; line-height: 1.8; color: var(--text-primary);">
+            {{ testimony.content|linebreaks }}
+        </div>
+        
+        <div style="margin-top: 3rem; text-align: center; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+            <p style="margin-bottom: 1rem; color: var(--text-secondary); font-size: 0.95rem;">Has God done something in your life?</p>
+            <a href="{% url 'ministry:submit_testimony' %}" class="btn-primary" style="display: inline-block; padding: 0.75rem 1.5rem; text-decoration: none; border-radius: 4px;">Share Your Story</a>
+        </div>
+    </article>
+</div>
+{% endblock %}

@@ -1,6 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import PrayerRequest, ContactSubmission, Testimony
+
+def testimony_detail(request, pk):
+    testimony = get_object_or_404(Testimony, pk=pk, is_approved=True)
+    return render(request, 'ministry/testimony_detail.html', {'testimony': testimony})
 
 def submit_testimony(request):
     if request.method == 'POST':

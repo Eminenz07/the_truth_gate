@@ -54,7 +54,7 @@
     {% if testimonies %}
         <div style="display: flex; overflow-x: auto; gap: 1rem; padding-bottom: 1rem; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;">
             {% for testimony in testimonies %}
-            <div style="flex: 0 0 280px; scroll-snap-align: start; background: #fff; padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 4px; display: flex; flex-direction: column;">
+            <a href="{% url 'testimony_detail' testimony.pk %}" style="display: flex; flex-direction: column; text-decoration: none; color: inherit; flex: 0 0 280px; scroll-snap-align: start; background: #fff; padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 4px; transition: transform 0.2s, box-shadow 0.2s;">
                 <p style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.5; flex-grow: 1;">"{{ testimony.content|truncatewords:20 }}"</p>
                 <div>
                     <strong style="display: block; font-size: 0.9rem; color: var(--text-primary);">{{ testimony.name|default:"Anonymous" }}</strong>
@@ -62,7 +62,7 @@
                     <span style="font-size: 0.8rem; color: var(--text-secondary);">{{ testimony.location }}</span>
                     {% endif %}
                 </div>
-            </div>
+            </a>
             {% endfor %}
         </div>
     {% else %}
