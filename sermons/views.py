@@ -40,7 +40,12 @@ class SermonListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        sort_by = self.request.GET.get('sort', 'all') 
+        
+        # If filtering by topic, we should show the list view ('latest'), not the 'all' topic groups.
+        topic_slug = self.request.GET.get('topic')
+        default_sort = 'latest' if topic_slug else 'all'
+        
+        sort_by = self.request.GET.get('sort', default_sort) 
         context['current_sort'] = sort_by
         
         # Only fetch topics structure if we are in the 'all' (grouped) view
