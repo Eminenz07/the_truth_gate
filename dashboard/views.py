@@ -42,11 +42,7 @@ def dashboard_home(request):
 
 @staff_member_required
 def sermon_list(request):
-    sermon_list = Sermon.objects.all().order_by('-date_preached')
-    from django.core.paginator import Paginator
-    paginator = Paginator(sermon_list, 10) # Show 10 sermons per page
-    page_number = request.GET.get('page')
-    sermons = paginator.get_page(page_number)
+    sermons = Sermon.objects.all().order_by('-date_preached')
     return render(request, 'dashboard/sermon_list.html', {'sermons': sermons})
 
 @staff_member_required

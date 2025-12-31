@@ -1,3 +1,7 @@
+{% extends 'dashboard/base.html' %}
+
+{% block header_title %}Sermons{% endblock %}
+
 {% block extra_css %}
 <style>
     .status-badge {
@@ -62,23 +66,5 @@
     </table>
 </div>
 
-<div style="margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
-    <div style="font-size: 0.9rem; color: var(--text-light);">
-        Showing page {{ sermons.number }} of {{ sermons.paginator.num_pages }}
-    </div>
-    
-    <div style="display: flex; gap: 0.5rem;">
-        {% if sermons.has_previous %}
-        <a href="?page={{ sermons.previous_page_number }}" style="padding: 0.5rem 1rem; border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--text-main); font-size: 0.9rem; background: white;">Previous</a>
-        {% else %}
-        <span style="padding: 0.5rem 1rem; border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-light); font-size: 0.9rem; background: #f9f9f9; cursor: not-allowed;">Previous</span>
-        {% endif %}
-
-        {% if sermons.has_next %}
-        <a href="?page={{ sermons.next_page_number }}" style="padding: 0.5rem 1rem; border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--text-main); font-size: 0.9rem; background: white;">Next</a>
-        {% else %}
-        <span style="padding: 0.5rem 1rem; border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-light); font-size: 0.9rem; background: #f9f9f9; cursor: not-allowed;">Next</span>
-        {% endif %}
-    </div>
-</div>
+<!-- Pagination Removed (User request Step 2133) -->
 {% endblock %}
