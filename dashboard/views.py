@@ -33,7 +33,7 @@ def custom_logout(request):
 def dashboard_home(request):
     context = {
         'total_sermons': Sermon.objects.count(),
-        'upcoming_events': Event.objects.count(),
+        'upcoming_events': Event.objects.filter(is_completed=False).count(),
         'prayer_requests': PrayerRequest.objects.filter(is_prayed_for=False).count(),
     }
     return render(request, 'dashboard/home.html', context)
@@ -42,7 +42,11 @@ def dashboard_home(request):
 
 @staff_member_required
 def sermon_list(request):
-    sermons = Sermon.objects.all().order_by('-date_preached')
+    sermon_list = Sermon.objects.all().order_by('-date_preached')
+    from django.core.paginator import Paginator
+    paginator = Paginator(sermon_list, 10) # Show 10 sermons per page
+    page_number = request.GET.get('page')
+    sermons = paginator.get_page(page_number)
     return render(request, 'dashboard/sermon_list.html', {'sermons': sermons})
 
 @staff_member_required
