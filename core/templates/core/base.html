@@ -38,11 +38,11 @@
       </button>
       <a href="{% url 'home' %}" class="brand-logo">THE TRUTH GATE</a>
       <div class="header-actions">
-        {% if user.is_authenticated %}
+        {% if user.is_authenticated %} {% if user.is_staff %}
         <a href="{% url 'dashboard:home' %}" class="icon-btn"
           ><span class="material-icons-round">dashboard</span></a
         >
-        {% else %}
+        {% endif %} {% else %}
         <a href="{% url 'login' %}" class="icon-btn"
           ><span class="material-icons-round">account_circle</span></a
         >
@@ -83,7 +83,7 @@
           <li><a href="{% url 'give' %}">Give</a></li>
           <li><a href="{% url 'contact' %}">Contact</a></li>
 
-          {% if user.is_authenticated %}
+          {% if user.is_authenticated %} {% if user.is_staff %}
           <li>
             <a
               href="{% url 'dashboard:home' %}"
@@ -91,6 +91,30 @@
               style="padding: 0.5rem 1.25rem; font-size: 0.85rem"
               >Dashboard</a
             >
+          </li>
+          {% endif %}
+          <li>
+            <form
+              action="{% url 'logout' %}"
+              method="post"
+              style="display: inline"
+            >
+              {% csrf_token %}
+              <button
+                type="submit"
+                style="
+                  background: none;
+                  border: none;
+                  font-weight: 600;
+                  cursor: pointer;
+                  color: var(--text-primary);
+                  font-family: inherit;
+                  font-size: inherit;
+                "
+              >
+                Log Out
+              </button>
+            </form>
           </li>
           {% else %}
           <li>
@@ -232,13 +256,14 @@
             padding-top: 1rem;
           "
         >
-          {% if user.is_authenticated %}
+          {% if user.is_authenticated %} {% if user.is_staff %}
           <a
             href="{% url 'dashboard:home' %}"
             class="btn-primary"
             style="display: block; text-align: center"
             >Dashboard</a
           >
+          {% endif %}
           <a
             href="{% url 'logout' %}"
             style="
