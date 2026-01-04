@@ -579,7 +579,71 @@ p {
     border-top: 1px solid var(--border-color);
 }
 
-/* Forms & Buttons (Placeholder for future) */
+/* Forms */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+textarea,
+select {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 0 4px rgba(244, 114, 182, 0.1);
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.help-text {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+    display: block;
+}
+
+.help-text ul {
+    margin: 0.5rem 0 0 1.2rem;
+    padding: 0;
+    list-style-type: disc;
+}
+
+.help-text li {
+    margin-bottom: 0.25rem;
+    color: var(--text-secondary);
+}
+
+.error-list {
+    color: #ef4444; /* Red 500 */
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+    list-style: none;
+    padding: 0;
+}
+
+/* Buttons (Placeholder for future) */
 .btn {
     display: inline-block;
     padding: 0.75rem 1.5rem;
@@ -595,7 +659,7 @@ p {
 
 .btn:hover {
     background: var(--text-primary);
-    color: #fff;
+    color: var(--bg-body); /* Inverted for readability */
     border-color: var(--text-primary);
 }
 
