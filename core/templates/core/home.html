@@ -76,8 +76,6 @@
     </a>
     {% if not user.is_authenticated %}
     <a href="{% url 'signup' %}" class="btn-glass">Join Community</a>
-    {% elif user.is_staff %}
-    <a href="{% url 'dashboard:home' %}" class="btn-glass">Dashboard</a>
     {% endif %}
   </div>
 </section>
