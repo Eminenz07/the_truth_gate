@@ -1,36 +1,69 @@
-{% extends 'core/base.html' %}
-{% block title %}Join Us | The Truth Gate{% endblock %}
-
-{% block content %}
-<div class="container" style="min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 2rem;">
-  <div class="glass-card" style="max-width: 450px; width: 100%; padding: 2.5rem;">
-    <h2 style="text-align: center; margin-bottom: 2rem;">Join Community</h2>
+{% extends 'core/base.html' %} {% block title %}Join Us | The Truth Gate{%
+endblock %} {% block content %}
+<div
+  class="container"
+  style="
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  "
+>
+  <div
+    class="glass-card"
+    style="max-width: 450px; width: 100%; padding: 2.5rem"
+  >
+    <h2 style="text-align: center; margin-bottom: 2rem">Join Community</h2>
 
     <form method="post">
-      {% csrf_token %} 
-      {% for field in form %}
+      {% csrf_token %} {% if form.non_field_errors %}
+      <div
+        class="glass-card"
+        style="
+          padding: 1rem;
+          background: rgba(239, 68, 68, 0.1);
+          border: 1px solid rgba(239, 68, 68, 0.2);
+          margin-bottom: 1.5rem;
+        "
+      >
+        <ul class="error-list" style="margin: 0">
+          {% for error in form.non_field_errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %} {% for field in form %}
       <div class="form-group">
         <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-        {{ field }} 
-        {% if field.help_text %}
+        {{ field }} {% if field.help_text %}
         <small class="help-text">{{ field.help_text|safe }}</small>
-        {% endif %} 
-        {% if field.errors %}
-        <div class="error-list">
-          {{ field.errors }}
-        </div>
+        {% endif %} {% if field.errors %}
+        <div class="error-list">{{ field.errors }}</div>
         {% endif %}
       </div>
       {% endfor %}
 
-      <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem; border-radius: 8px;">
+      <button
+        type="submit"
+        class="btn btn-primary"
+        style="width: 100%; margin-top: 1rem; border-radius: 8px"
+      >
         Create Account
       </button>
     </form>
 
-    <p style="text-align: center; margin-top: 1.5rem; color: var(--text-secondary);">
+    <p
+      style="
+        text-align: center;
+        margin-top: 1.5rem;
+        color: var(--text-secondary);
+      "
+    >
       Already have an account?
-      <a href="{% url 'login' %}" style="color: var(--accent); font-weight: 600;">Log in</a>
+      <a href="{% url 'login' %}" style="color: var(--accent); font-weight: 600"
+        >Log in</a
+      >
     </p>
   </div>
 </div>
