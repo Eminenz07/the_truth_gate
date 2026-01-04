@@ -1,148 +1,305 @@
-{% extends 'core/base.html' %}
-{% load static %}
-
-{% block content %}
+{% extends 'core/base.html' %} {% load static %} {% block content %}
 <!-- Live Stream Banner -->
 {% if settings.is_live_now %}
-<a href="{{ settings.live_stream_url }}" target="_blank" style="display: block; background: #e53935; color: white; text-align: center; padding: 0.75rem; text-decoration: none; font-weight: 600; font-size: 0.9rem; letter-spacing: 0.05em;">
-    <span class="material-icons-round" style="vertical-align: middle; font-size: 18px; margin-right: 0.5rem;">live_tv</span>
-    WE ARE LIVE NOW - JOIN THE SERVICE &rarr;
+<a
+  href="{{ settings.live_stream_url }}"
+  target="_blank"
+  class="live-banner reveal"
+>
+  <span class="pulse-icon"></span>
+  LIVE NOW: Join the Service &rarr;
 </a>
 {% endif %}
 
-<!-- Hero Section -->
-<section class="hero text-center fade-in" style="padding: 3rem 1.5rem;">
-    <div style="margin-bottom: 1.5rem; opacity: 0.8;">
-        <span class="material-icons-round" style="font-size: 48px; color: var(--accent);">church</span>
-    </div>
-    <h2 style="font-family: var(--font-heading); font-size: 2.5rem; line-height: 1.2; color: #1a1d21; margin-bottom: 0.75rem;">
-        Ye shall know the truth
-    </h2>
-    <p style="font-family: var(--font-heading); font-style: italic; font-size: 1.125rem; color: var(--text-secondary); margin-bottom: 2.5rem; max-width: 300px; margin-left: auto; margin-right: auto;">
-        And the truth shall make you free.
-    </p>
-    <a href="{% url 'sermon_list' %}?sort=latest" class="btn-primary" style="display: block; width: 100%; max-width: 320px; margin: 0 auto; padding: 1rem; text-transform: uppercase; font-size: 0.875rem; letter-spacing: 0.05em; border-radius: 4px; text-decoration: none;">
-        Watch Latest Sermon
+<!-- Hero Section V2 -->
+<section
+  class="hero-v2 reveal"
+  style="
+    padding: 6rem 1.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  "
+>
+  <!-- Abstract Background Element -->
+  <div
+    style="
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(
+        circle,
+        rgba(79, 70, 229, 0.3) 0%,
+        transparent 70%
+      );
+      filter: blur(60px);
+      z-index: -1;
+    "
+  ></div>
+
+  <h1
+    style="
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    "
+  >
+    The Truth Gate
+  </h1>
+  <p
+    style="
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      margin-bottom: 3rem;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    "
+  >
+    Discover freedom in truth. Join a community dedicated to spiritual growth
+    and connection.
+  </p>
+
+  <div
+    style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap"
+  >
+    <a href="{% url 'sermon_list' %}?sort=latest" class="btn-primary">
+      <span
+        class="material-icons-round"
+        style="font-size: 20px; vertical-align: bottom; margin-right: 4px"
+        >play_arrow</span
+      >
+      Watch Latest Message
     </a>
+    {% if not user.is_authenticated %}
+    <a href="{% url 'signup' %}" class="btn-glass">Join Community</a>
+    {% else %}
+    <a href="{% url 'dashboard:home' %}" class="btn-glass">Dashboard</a>
+    {% endif %}
+  </div>
 </section>
 
+<!-- Scroll Nav (Glass) -->
+<section class="reveal" style="margin-bottom: 4rem; padding: 0 1.5rem">
+  <div
+    class="glass-card"
+    style="
+      padding: 1rem 2rem;
+      max-width: 600px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      overflow-x: auto;
+    "
+  >
+    <a href="{% url 'home' %}" style="color: var(--accent); font-weight: 700"
+      >Home</a
+    >
+    <a href="{% url 'sermon_list' %}">Sermons</a>
+    <a href="{% url 'event_list' %}">Events</a>
+    <a href="{% url 'give' %}">Give</a>
+    <a href="{% url 'prayer_request' %}">Prayer</a>
+  </div>
 </section>
 
-<!-- Scroll Nav -->
-<section class="mobile-only-section" style="margin-bottom: 2.5rem; border-bottom: 1px solid var(--border-color);">
-    <div class="no-scrollbar" style="display: flex; overflow-x: auto; padding: 0 1.5rem; gap: 2rem;">
-        <a href="{% url 'home' %}" style="padding-bottom: 0.75rem; font-size: 0.875rem; font-weight: 600; color: var(--accent); border-bottom: 2px solid var(--accent); white-space: nowrap;">Home</a>
-        <a href="{% url 'sermon_list' %}" style="padding-bottom: 0.75rem; font-size: 0.875rem; font-weight: 500; color: var(--text-secondary); white-space: nowrap;">Sermons</a>
-        <a href="{% url 'event_list' %}" style="padding-bottom: 0.75rem; font-size: 0.875rem; font-weight: 500; color: var(--text-secondary); white-space: nowrap;">Events</a>
-        <a href="{% url 'give' %}" style="padding-bottom: 0.75rem; font-size: 0.875rem; font-weight: 500; color: var(--text-secondary); white-space: nowrap;">Give</a>
-        <a href="{% url 'prayer_request' %}" style="padding-bottom: 0.75rem; font-size: 0.875rem; font-weight: 500; color: var(--text-secondary); white-space: nowrap;">Prayer</a>
-    </div>
-</section>
-
-<!-- Featured Topics (Cards) -->
-<!-- Topic Cards (Mobile) -->
-<section class="container mobile-only-section" style="padding: 0 1.5rem; display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem;">
-    {% for cat in categories %}
-    <div class="topic-card">
-        <h3>{{ cat.name }}</h3>
-        <!-- Description would be nice if Topic has it, assuming blank otherwise -->
-        <p>Explore biblical teachings on {{ cat.name|lower }}.</p>
-        <a href="{% url 'sermon_list' %}?topic={{ cat.slug }}" class="read-more">Read <span class="material-icons-round" style="font-size: 14px;">arrow_forward</span></a>
-    </div>
-    {% endfor %}
+<!-- Featured Topics (Glass Cards) -->
+<section
+  class="container reveal"
+  style="
+    margin-bottom: 4rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    padding: 0 1.5rem;
+  "
+>
+  {% for cat in categories %}
+  <div
+    class="glass-card topic-card-v2"
+    style="padding: 2rem; transition: transform 0.3s"
+  >
+    <h3 style="color: var(--primary); margin-bottom: 0.5rem">{{ cat.name }}</h3>
+    <p
+      style="
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
+      "
+    >
+      Explore biblical teachings on {{ cat.name|lower }}.
+    </p>
+    <a
+      href="{% url 'sermon_list' %}?topic={{ cat.slug }}"
+      style="
+        color: var(--accent);
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      "
+      >Explore &rarr;</a
+    >
+  </div>
+  {% endfor %}
 </section>
 
 <!-- Testimonies Section -->
-<section style="margin: 3rem 1.5rem 2.5rem;">
-    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.5rem;">
-        <h3 style="font-family: var(--font-heading); font-size: 1.5rem; color: var(--text-primary); margin: 0;">Testimonies</h3>
-        <a href="{% url 'submit_testimony' %}" style="font-size: 0.85rem; color: var(--accent); text-decoration: none; font-weight: 500;">Share Yours &rarr;</a>
-    </div>
+<section class="reveal" style="margin: 3rem 1.5rem 6rem">
+  <div style="text-align: center; margin-bottom: 2rem">
+    <h3 style="font-size: 2rem; margin-bottom: 0.5rem">Stories of Grace</h3>
+    <p style="color: var(--text-secondary)">
+      See how God is moving in our lives.
+    </p>
+  </div>
 
-    {% if testimonies %}
-        <div style="display: flex; overflow-x: auto; gap: 1rem; padding-bottom: 1rem; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;">
-            {% for testimony in testimonies %}
-            <a href="{% url 'testimony_detail' testimony.pk %}" style="display: flex; flex-direction: column; text-decoration: none; color: inherit; flex: 0 0 280px; scroll-snap-align: start; background: #fff; padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 4px; transition: transform 0.2s, box-shadow 0.2s;">
-                <p style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.5; flex-grow: 1;">"{{ testimony.content|truncatewords:20 }}"</p>
-                <div>
-                    <strong style="display: block; font-size: 0.9rem; color: var(--text-primary);">{{ testimony.name|default:"Anonymous" }}</strong>
-                    {% if testimony.location %}
-                    <span style="font-size: 0.8rem; color: var(--text-secondary);">{{ testimony.location }}</span>
-                    {% endif %}
-                </div>
-            </a>
-            {% endfor %}
+  {% if testimonies %}
+  <div
+    style="
+      display: flex;
+      overflow-x: auto;
+      gap: 1.5rem;
+      padding: 1rem;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    "
+  >
+    {% for testimony in testimonies %}
+    <a
+      href="{% url 'testimony_detail' testimony.pk %}"
+      class="glass-card"
+      style="
+        display: block;
+        text-decoration: none;
+        min-width: 300px;
+        padding: 2rem;
+        scroll-snap-align: center;
+      "
+    >
+      <p
+        style="
+          font-size: 1.1rem;
+          color: var(--text-primary);
+          font-style: italic;
+          margin-bottom: 1.5rem;
+        "
+      >
+        "{{ testimony.content|truncatewords:20 }}"
+      </p>
+      <div style="display: flex; align-items: center; gap: 0.75rem">
+        <div
+          style="
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+          "
+        >
+          {{ testimony.name|slice:":1" }}
         </div>
-    {% else %}
-        <div style="background: #f4f6f7; padding: 2rem; border-radius: 8px; text-align: center;">
-            <p style="margin-bottom: 1rem; color: var(--text-secondary);">God is moving in our midst. Use your story to encourage others.</p>
-            <a href="{% url 'submit_testimony' %}" class="btn-primary" style="display: inline-block; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; font-size: 0.9rem;">Share Your Testimony</a>
+        <div>
+          <strong
+            style="
+              display: block;
+              font-size: 0.9rem;
+              color: var(--text-primary);
+            "
+            >{{ testimony.name|default:"Anonymous" }}</strong
+          >
+          <span style="font-size: 0.8rem; color: var(--text-secondary)"
+            >{{ testimony.location|default:"Member" }}</span
+          >
         </div>
-    {% endif %}
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div
+    class="glass-card"
+    style="padding: 3rem; text-align: center; max-width: 600px; margin: 0 auto"
+  >
+    <p style="margin-bottom: 1.5rem; color: var(--text-secondary)">
+      God is moving in our midst. Use your story to encourage others.
+    </p>
+    <a href="{% url 'submit_testimony' %}" class="btn-primary"
+      >Share Your Testimony</a
+    >
+  </div>
+  {% endif %}
 </section>
 
 <style>
-/* Local Styles for Home */
-.topic-card {
-    background: #ffffff;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
+  /* Local Styles V2 */
+  .live-banner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(229, 57, 53, 0.9);
+    backdrop-filter: blur(8px);
     color: white;
-}
-
-.sermon-card-mobile {
-    background: #fff;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 1.5rem;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.02);
-}
-
-.category-tag {
-    background: #e0f2f1; /* Light teal bg */
-    color: #00695c; /* Teal text */
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.7rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.action-bar {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid #f0f0f0;
-}
-
-.action-link {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    font-weight: 600;
-    color: var(--text-light); /* Muted */
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-.action-link:hover { color: var(--primary); }
-
-.divider { color: #e0e0e0; font-size: 0.75rem; }
-
-.btn-outline {
-    background: transparent;
-    border: 1px solid var(--border-color);
-    color: var(--text-main);
     padding: 0.75rem;
-    text-transform: uppercase;
-    font-size: 0.75rem;
-    letter-spacing: 0.05em;
+    text-decoration: none;
     font-weight: 600;
-    border-radius: 4px;
-    cursor: pointer;
-}
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .pulse-icon {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+    margin-right: 10px;
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+    }
+    70% {
+      transform: scale(1);
+      box-shadow: 0 0 0 6px rgba(255, 255, 255, 0);
+    }
+    100% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+    }
+  }
+
+  .btn-glass {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 0.8rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+
+  .btn-glass:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: white;
+  }
+
+  .topic-card-v2:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.08); /* Slightly lighter on hover */
+  }
 </style>
 {% endblock %}

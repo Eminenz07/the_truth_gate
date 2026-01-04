@@ -7,97 +7,316 @@
     <title>{% block title %}The Truth Gate{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'core/css/theme.css' %}" />
     <!-- Fonts & Icons -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-    
-    <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
   <body>
-    <!-- Mobile Header (Sticky) -->
-    <header class="mobile-header">
-        <button class="icon-btn" onclick="toggleMobileMenu()">
-            <span class="material-icons-round">menu</span>
-        </button>
-        <a href="{% url 'home' %}" class="brand-logo">THE TRUTH GATE</a>
-        <div class="header-actions">
-            <button class="icon-btn"><span class="material-icons-round">search</span></button>
-            <button class="icon-btn"><span class="material-icons-round">account_circle</span></button>
-        </div>
+    <!-- Mobile Header (Sticky Glass) -->
+    <header
+      class="mobile-header glass-card"
+      style="
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+        border-top: none;
+      "
+    >
+      <button class="icon-btn" onclick="toggleMobileMenu()">
+        <span class="material-icons-round">menu</span>
+      </button>
+      <a href="{% url 'home' %}" class="brand-logo">THE TRUTH GATE</a>
+      <div class="header-actions">
+        {% if user.is_authenticated %}
+        <a href="{% url 'dashboard:home' %}" class="icon-btn"
+          ><span class="material-icons-round">dashboard</span></a
+        >
+        {% else %}
+        <a href="{% url 'login' %}" class="icon-btn"
+          ><span class="material-icons-round">account_circle</span></a
+        >
+        {% endif %}
+      </div>
     </header>
 
-    <!-- Desktop Header (Hidden on Mobile) -->
-    <header class="site-header desktop-only">
-        <div class="container relative">
-            <a href="{% url 'home' %}" class="logo">The Truth Gate</a>
-            <p class="tagline">Ye shall know the truth</p>
+    <!-- Desktop Header (Transparent) -->
+    <header
+      class="site-header desktop-only"
+      style="padding: 2rem 0; background: transparent"
+    >
+      <div
+        class="container relative"
+        style="
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          max-width: 1000px;
+        "
+      >
+        <div style="text-align: left">
+          <a href="{% url 'home' %}" class="logo" style="margin-bottom: 0"
+            >The Truth Gate</a
+          >
+          <p class="tagline" style="margin-bottom: 0">
+            Ye shall know the truth
+          </p>
         </div>
-        <ul class="site-nav">
-            <li><a href="{% url 'home' %}">Home</a></li>
-            <li><a href="{% url 'sermon_list' %}">Sermons</a></li>
-            <li><a href="{% url 'event_list' %}">Events</a></li>
-            <li><a href="{% url 'give' %}">Give</a></li>
-            <li><a href="{% url 'prayer_request' %}">Prayer</a></li>
-            <li><a href="{% url 'contact' %}">Contact</a></li>
+
+        <ul
+          class="site-nav"
+          style="margin: 0; gap: 2rem !important; align-items: center"
+        >
+          <li><a href="{% url 'home' %}">Home</a></li>
+          <li><a href="{% url 'sermon_list' %}">Sermons</a></li>
+          <li><a href="{% url 'event_list' %}">Events</a></li>
+          <li><a href="{% url 'give' %}">Give</a></li>
+          <li><a href="{% url 'contact' %}">Contact</a></li>
+
+          {% if user.is_authenticated %}
+          <li>
+            <a
+              href="{% url 'dashboard:home' %}"
+              class="btn-primary"
+              style="padding: 0.5rem 1.25rem; font-size: 0.85rem"
+              >Dashboard</a
+            >
+          </li>
+          {% else %}
+          <li>
+            <a href="{% url 'login' %}" style="font-weight: 600">Log In</a>
+          </li>
+          <li>
+            <a
+              href="{% url 'signup' %}"
+              class="btn-primary"
+              style="padding: 0.5rem 1.25rem; font-size: 0.85rem"
+              >Join</a
+            >
+          </li>
+          {% endif %}
         </ul>
+      </div>
     </header>
 
-    <!-- Mobile Drawer (Hidden by default) -->
+    <!-- Mobile Drawer -->
     <div class="mobile-overlay" onclick="toggleMobileMenu()"></div>
-    <nav class="mobile-drawer" style="padding: 2rem 1.5rem;">
-         <div style="margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color);">
-             <span style="font-family: var(--font-heading); font-size: 1.5rem; color: var(--text-primary);">The Truth Gate</span>
-         </div>
+    <nav
+      class="mobile-drawer"
+      style="
+        padding: 2rem 1.5rem;
+        background: var(--bg-body);
+        border-right: 1px solid var(--border-color);
+      "
+    >
+      <div
+        style="
+          margin-bottom: 2rem;
+          padding-bottom: 1rem;
+          border-bottom: 1px solid var(--border-color);
+        "
+      >
+        <span
+          style="
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            color: var(--text-primary);
+          "
+          >The Truth Gate</span
+        >
+      </div>
 
-         <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-             <a href="{% url 'home' %}" style="padding: 0.75rem 0; font-size: 1.1rem; font-weight: 500; color: var(--text-primary); text-decoration: none;">Home</a>
-             
-             <div style="margin-top: 1rem; font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.05em; font-weight: 600;">Content</div>
-             <a href="{% url 'sermon_list' %}" style="padding: 0.5rem 0; font-size: 1rem; color: var(--text-primary); text-decoration: none;">Sermons</a>
-             <a href="{% url 'event_list' %}" style="padding: 0.5rem 0; font-size: 1rem; color: var(--text-primary); text-decoration: none;">Events</a>
-             
-             <div style="margin-top: 1rem; font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.05em; font-weight: 600;">Connect</div>
-             <a href="{% url 'give' %}" style="padding: 0.5rem 0; font-size: 1rem; color: var(--text-primary); text-decoration: none;">Give</a>
-             <a href="{% url 'prayer_request' %}" style="padding: 0.5rem 0; font-size: 1rem; color: var(--text-primary); text-decoration: none;">Prayer</a>
-             <a href="{% url 'contact' %}" style="padding: 0.5rem 0; font-size: 1rem; color: var(--text-primary); text-decoration: none;">Contact</a>
-         </div>
+      <div style="display: flex; flex-direction: column; gap: 0.5rem">
+        <a
+          href="{% url 'home' %}"
+          style="
+            padding: 0.75rem 0;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            text-decoration: none;
+          "
+          >Home</a
+        >
+
+        <div
+          style="
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+            font-weight: 600;
+          "
+        >
+          Content
+        </div>
+        <a
+          href="{% url 'sermon_list' %}"
+          style="
+            padding: 0.5rem 0;
+            font-size: 1rem;
+            color: var(--text-primary);
+            text-decoration: none;
+          "
+          >Sermons</a
+        >
+        <a
+          href="{% url 'event_list' %}"
+          style="
+            padding: 0.5rem 0;
+            font-size: 1rem;
+            color: var(--text-primary);
+            text-decoration: none;
+          "
+          >Events</a
+        >
+
+        <div
+          style="
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+            font-weight: 600;
+          "
+        >
+          Connect
+        </div>
+        <a
+          href="{% url 'give' %}"
+          style="
+            padding: 0.5rem 0;
+            font-size: 1rem;
+            color: var(--text-primary);
+            text-decoration: none;
+          "
+          >Give</a
+        >
+        <a
+          href="{% url 'prayer_request' %}"
+          style="
+            padding: 0.5rem 0;
+            font-size: 1rem;
+            color: var(--text-primary);
+            text-decoration: none;
+          "
+          >Prayer</a
+        >
+        <a
+          href="{% url 'contact' %}"
+          style="
+            padding: 0.5rem 0;
+            font-size: 1rem;
+            color: var(--text-primary);
+            text-decoration: none;
+          "
+          >Contact</a
+        >
+
+        <div
+          style="
+            margin-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1rem;
+          "
+        >
+          {% if user.is_authenticated %}
+          <a
+            href="{% url 'dashboard:home' %}"
+            class="btn-primary"
+            style="display: block; text-align: center"
+            >Dashboard</a
+          >
+          <a
+            href="{% url 'logout' %}"
+            style="
+              display: block;
+              text-align: center;
+              margin-top: 1rem;
+              color: var(--text-secondary);
+              font-size: 0.9rem;
+            "
+            >Log Out</a
+          >
+          {% else %}
+          <a
+            href="{% url 'signup' %}"
+            class="btn-primary"
+            style="display: block; text-align: center"
+            >Join Community</a
+          >
+          <a
+            href="{% url 'login' %}"
+            style="
+              display: block;
+              text-align: center;
+              margin-top: 1rem;
+              color: var(--text-secondary);
+            "
+            >Log In</a
+          >
+          {% endif %}
+        </div>
+      </div>
     </nav>
 
     <main class="site-main">{% block content %}{% endblock %}</main>
 
-    <footer class="site-footer desktop-only">
+    <footer
+      class="site-footer desktop-only"
+      style="border-top: 1px solid var(--border-color)"
+    >
       <div class="container">
         <p>&copy; {% now "Y" %} The Truth Gate</p>
       </div>
     </footer>
 
-    <!-- Mobile Bottom Navigation -->
-    <div class="bottom-nav">
-        <a href="{% url 'home' %}" class="nav-item">
-            <span class="material-icons-round">home</span>
-            <span class="label">Home</span>
-        </a>
-        <a href="{% url 'sermon_list' %}" class="nav-item">
-            <span class="material-icons-round">menu_book</span>
-            <span class="label">Sermons</span>
-        </a>
-        <a href="{% url 'event_list' %}" class="nav-item">
-            <span class="material-icons-round">calendar_month</span>
-            <span class="label">Events</span>
-        </a>
-        <a href="{% url 'give' %}" class="nav-item">
-            <span class="material-icons-round">favorite</span>
-            <span class="label">Give</span>
-        </a>
+    <!-- Mobile Bottom Navigation (Glass) -->
+    <div
+      class="bottom-nav glass-card"
+      style="
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+        border-bottom: none;
+        background: rgba(15, 23, 42, 0.9);
+      "
+    >
+      <a href="{% url 'home' %}" class="nav-item">
+        <span class="material-icons-round">home</span>
+        <span class="label">Home</span>
+      </a>
+      <a href="{% url 'sermon_list' %}" class="nav-item">
+        <span class="material-icons-round">menu_book</span>
+        <span class="label">Sermons</span>
+      </a>
+      <a href="{% url 'event_list' %}" class="nav-item">
+        <span class="material-icons-round">calendar_month</span>
+        <span class="label">Events</span>
+      </a>
+      <a href="{% url 'give' %}" class="nav-item">
+        <span class="material-icons-round">favorite</span>
+        <span class="label">Give</span>
+      </a>
     </div>
 
     <script>
-        function toggleMobileMenu() {
-            document.querySelector('.mobile-overlay').classList.toggle('active');
-            document.querySelector('.mobile-drawer').classList.toggle('active');
-        }
+      function toggleMobileMenu() {
+        document.querySelector(".mobile-overlay").classList.toggle("active");
+        document.querySelector(".mobile-drawer").classList.toggle("active");
+      }
     </script>
   </body>
 </html>
