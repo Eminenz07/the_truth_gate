@@ -161,9 +161,9 @@ body {
     left: 0;
     bottom: 0;
     width: 280px;
-    background: rgba(255, 255, 255, 0.9); /* High opacity glass */
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.85) !important; /* Force Glass */
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
     border-right: 1px solid rgba(255, 255, 255, 0.5);
     z-index: 1000;
     transform: translateX(-100%);
