@@ -227,7 +227,7 @@ body {
 /* Header - Desktop */
 /* Header - Desktop Prominent */
 .site-header {
-    padding: 1rem 0;
+    padding: 0.75rem 0; /* Reduced from 1rem */
     text-align: left;
     background-color: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(12px);
@@ -242,13 +242,60 @@ body {
 
 .logo {
     font-family: var(--font-heading);
-    font-size: 2rem;
-    font-weight: 600; /* Slightly bolder for hierarchy */
+    font-size: 1.75rem; /* Reduced from 2rem */
+    font-weight: 600;
     letter-spacing: -0.02em;
     display: block;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
     color: var(--text-primary);
-    text-transform: uppercase; /* Modern minimalist touch */
+    text-transform: uppercase;
+}
+
+.tagline {
+    /* ... (unchanged) ... */
+    margin-bottom: 0; /* Compact */
+    display: none; /* Hide tagline on scroll/compact header if needed, but keeping for now */
+}
+
+/* ... (Site Nav skipped) ... */
+
+/* Mobile Bottom Nav (Glass) */
+.bottom-nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.9); /* Glass */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 0.8rem 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    border-top: 1px solid rgba(255,255,255,0.3);
+    z-index: 1000;
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+}
+
+/* Mobile Drawer (Glass) */
+.mobile-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 80%;
+    max-width: 300px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.95); /* High opacity glass */
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    z-index: 2000;
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 6rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.05);
+    border-left: 1px solid rgba(255,255,255,0.2);
 }
 
 .tagline {
