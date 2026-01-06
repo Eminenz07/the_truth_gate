@@ -5,21 +5,21 @@
     --accent: #ca8a04; /* Muted Gold (Yellow 700) - Authoritative, not shiny */
     --accent-glow: rgba(202, 138, 4, 0.15); /* Very subtle glow */
 
-    --bg-body: #f8fafc; /* Slate 50 (Paper White/Silver) */
-    --bg-card: #ffffff; /* Solid White (Trustworthy) */
-    --bg-glass: rgba(255, 255, 255, 0.85); /* High opacity glass (Privacy) */
+    --bg-body: #F1F5F9; /* Slate 100 (Light Silver Base) */
+    --bg-card: #ffffff;
+    --bg-glass: rgba(255, 255, 255, 0.85);
 
-    --text-primary: #1e293b; /* Slate 800 (High Contrast) */
-    --text-secondary: #64748b; /* Slate 500 (Calm Secondary) */
-    --border-color: #e2e8f0; /* Slate 200 (Structured) */
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --border-color: #cbd5e1; /* Slate 300 (Darker for contrast on silver) */
 
     --font-heading: 'Playfair Display', serif;
     --font-body: 'Inter', sans-serif;
 
-    --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); /* Minimal Elevation */
+    --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
     
     /* Spacing */
-    --spacing-unit: 2rem; /* More breathing room */
+    --spacing-unit: 2rem;
     --container-width: 900px;
     --section-gap: 6rem;
     --header-height: 80px;
@@ -35,10 +35,35 @@ body {
     font-family: var(--font-body);
     color: var(--text-primary);
     background-color: var(--bg-body);
-    /* Removed active gradients for stability */
-    line-height: 1.7; /* Increased for readability */
+    /* Silver Gradient */
+    background-image: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    background-attachment: fixed;
+    line-height: 1.7;
     overflow-x: hidden;
     padding-bottom: 80px; 
+}
+
+/* ... (Glassmorphism Utilities skipped) ... */
+
+/* --- Branding Animations --- */
+@keyframes float-pulse {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+    50% { transform: translate(-50%, -50%) scale(1.02); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+}
+
+.hero-brand-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 500px; /* Slightly smaller to not overwhelm */
+    height: auto;
+    z-index: -1;
+    animation: float-pulse 8s ease-in-out infinite;
+    pointer-events: none;
+    /* Removed heavy filters for clarity, kept slight opacity */
+    opacity: 0.9; 
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1)); /* Add depth instead of color shift */
 }
 
 /* Glassmorphism Utilities */
