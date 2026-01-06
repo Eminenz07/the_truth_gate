@@ -197,7 +197,10 @@
     
     <aside class="sidebar">
         <div class="sidebar-header" style="justify-content: space-between;">
-            <a href="{% url 'dashboard:home' %}" class="brand">Ministry Portal</a>
+            <a href="{% url 'dashboard:home' %}" class="brand" style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-main);">
+                <img src="{% static 'core/img/logo_branding.png' %}" alt="Logo" style="height: 32px; width: auto;">
+                <span>The Truth Gate</span>
+            </a>
             <button class="mobile-toggle-btn" style="font-size: 1.2rem;" onclick="toggleSidebar()">
                 <i class="fas fa-times"></i>
             </button>
