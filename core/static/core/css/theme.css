@@ -641,6 +641,40 @@ label {
     padding: 0;
 }
 
+/* --- Branding Animations --- */
+@keyframes float-pulse {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 0.1; }
+    50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.2; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 0.1; }
+}
+
+.hero-brand-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 600px; /* Adjust based on image size */
+    height: auto;
+    z-index: -1;
+    animation: float-pulse 8s ease-in-out infinite;
+    pointer-events: none;
+    filter: grayscale(100%) sepia(100%) hue-rotate(5deg) saturate(300%) opacity(0.5); /* Gold tint */
+}
+
+/* --- Branded Search Input --- */
+.search-input-branded {
+    background-image: url('../img/logo_branding.png');
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 24px; /* Icon size */
+    padding-right: 3rem !important; /* Space for icon */
+    transition: all 0.3s ease;
+}
+
+.search-input-branded:focus {
+    background-size: 28px; /* Subtle zoom on focus */
+    box-shadow: 0 0 0 4px rgba(202, 138, 4, 0.1);
+}
+
 /* Buttons */
 .btn, 
 .btn-primary, 

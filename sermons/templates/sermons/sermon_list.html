@@ -17,6 +17,23 @@
         {% endif %}
     </header>
 
+    </header>
+    
+    <!-- Search Bar -->
+    <div class="search-container mb-4" style="max-width: 500px; margin: 0 auto;">
+        <form method="get" action="{% url 'sermon_list' %}">
+            <input 
+                type="text" 
+                name="q" 
+                value="{{ request.GET.q|default:'' }}"
+                placeholder="Search sermons..." 
+                class="search-input-branded"
+                style="width: 100%; padding: 0.8rem 1.2rem; border-radius: 50px; border: 1px solid var(--border-color);"
+            >
+            <input type="hidden" name="sort" value="{{ current_sort }}">
+        </form>
+    </div>
+
     <!-- Filters -->
     <div class="filters-container mb-4" style="display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap;">
         <a href="?sort=all" class="filter-pill {% if current_sort == 'all' %}active{% endif %}">All</a>

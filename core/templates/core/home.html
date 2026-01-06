@@ -21,24 +21,12 @@
     overflow: hidden;
   "
 >
-  <!-- Abstract Background Element -->
-  <div
-    style="
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(
-        circle,
-        rgba(202, 138, 4, 0.08) 0%,
-        transparent 70%
-      );
-      filter: blur(80px); /* Softer blur */
-      z-index: -1;
-    "
-  ></div>
+  <!-- Branded Background Element -->
+  <img
+    src="{% static 'core/img/logo_branding.png' %}"
+    class="hero-brand-bg"
+    alt="The Truth Gate Logo"
+  />
 
   <h1
     style="
