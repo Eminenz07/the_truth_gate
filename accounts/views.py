@@ -9,7 +9,7 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            messages.success(request, f"Welcome to The Truth Gate, {user.first_name}!") # Use First Name
+            # User requested no welcome toast, homepage is enough
             
             # Smart Redirect (Handle 'next' parameter)
             next_url = request.GET.get('next')

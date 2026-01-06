@@ -44,13 +44,28 @@
       <a
         href="{% url 'home' %}"
         class="brand-logo"
-        style="display: flex; align-items: center; justify-content: center"
+        style="
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          text-decoration: none;
+        "
       >
         <img
           src="{% static 'core/img/logo_branding.png' %}"
           alt="The Truth Gate"
           style="height: 48px; width: auto"
         />
+        <span
+          style="
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--text-primary);
+          "
+          >THE TRUTH GATE</span
+        >
       </a>
       <div class="header-actions">
         {% if not user.is_authenticated %}
@@ -76,13 +91,28 @@
           <a
             href="{% url 'home' %}"
             class="logo"
-            style="margin-bottom: 0; display: block"
+            style="
+              margin-bottom: 0;
+              display: flex;
+              align-items: center;
+              gap: 1rem;
+              text-decoration: none;
+            "
           >
             <img
               src="{% static 'core/img/logo_branding.png' %}"
               alt="The Truth Gate"
               style="height: 64px; width: auto"
             />
+            <span
+              style="
+                font-family: 'Playfair Display', serif;
+                font-weight: 700;
+                color: var(--text-primary);
+                font-size: 1.5rem;
+              "
+              >The Truth Gate</span
+            >
           </a>
           <p class="tagline" style="margin-bottom: 0">
             Ye shall know the truth
@@ -382,6 +412,22 @@
         document.querySelector(".mobile-overlay").classList.toggle("active");
         document.querySelector(".mobile-drawer").classList.toggle("active");
       }
+
+      // Auto-dismiss Flash Messages
+      document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+          var messages = document.querySelectorAll(
+            '.glass-card[style*="border-left: 4px solid"]'
+          );
+          messages.forEach(function (msg) {
+            msg.style.transition = "opacity 0.5s ease";
+            msg.style.opacity = "0";
+            setTimeout(function () {
+              msg.remove();
+            }, 500);
+          });
+        }, 4000); // 4 seconds
+      });
     </script>
   </body>
 </html>
