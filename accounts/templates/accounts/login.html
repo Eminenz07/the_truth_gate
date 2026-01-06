@@ -1,45 +1,68 @@
-{% extends 'core/base.html' %} {% block title %}Login | The Truth Gate{%
-endblock %} {% block content %}
+{% extends 'core/base.html' %} {% block content %}
 <div
   class="container"
   style="
-    min-height: 80vh;
     display: flex;
-    align-items: center;
     justify-content: center;
-    padding: 2rem;
+    align-items: center;
+    min-height: 80vh;
   "
 >
   <div
     class="glass-card"
-    style="max-width: 400px; width: 100%; padding: 2.5rem"
+    style="width: 100%; max-width: 400px; padding: 2.5rem; border-radius: 12px"
   >
-    <h2 style="text-align: center; margin-bottom: 2rem">Welcome Back</h2>
+    <h2
+      style="
+        text-align: center;
+        margin-bottom: 2rem;
+        font-family: var(--font-heading);
+      "
+    >
+      Welcome Back
+    </h2>
 
     <form method="post">
       {% csrf_token %} {% if form.non_field_errors %}
       <div
-        class="glass-card"
         style="
-          padding: 1rem;
-          background: rgba(239, 68, 68, 0.1);
-          border: 1px solid rgba(239, 68, 68, 0.2);
-          margin-bottom: 1.5rem;
+          background: rgba(220, 38, 38, 0.1);
+          color: #dc2626;
+          padding: 0.75rem;
+          border-radius: 8px;
+          margin-bottom: 1rem;
+          font-size: 0.9rem;
         "
       >
-        <ul class="error-list" style="margin: 0">
-          {% for error in form.non_field_errors %}
+        {% for error in form.non_field_errors %} {{ error }} {% endfor %}
+      </div>
+      {% endif %} {% for field in form %}
+      <div class="form-group" style="margin-bottom: 1.5rem">
+        <label
+          for="{{ field.id_for_label }}"
+          style="
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+          "
+          >{{ field.label }}</label
+        >
+        {{ field }} {% if field.errors %}
+        <ul
+          class="errorlist"
+          style="
+            color: #dc2626;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+            list-style: none;
+            padding: 0;
+          "
+        >
+          {% for error in field.errors %}
           <li>{{ error }}</li>
           {% endfor %}
         </ul>
-      </div>
-      {% endif %} {% for field in form %}
-      <div class="form-group">
-        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-        {{ field }} {% if field.help_text %}
-        <small class="help-text">{{ field.help_text }}</small>
-        {% endif %} {% if field.errors %}
-        <div class="error-list">{{ field.errors }}</div>
         {% endif %}
       </div>
       {% endfor %}
@@ -47,26 +70,27 @@ endblock %} {% block content %}
       <button
         type="submit"
         class="btn btn-primary"
-        style="width: 100%; margin-top: 1rem; border-radius: 8px"
+        style="width: 100%; justify-content: center; margin-top: 1rem"
       >
         Log In
       </button>
     </form>
 
-    <p
+    <div
       style="
         text-align: center;
         margin-top: 1.5rem;
+        font-size: 0.9rem;
         color: var(--text-secondary);
       "
     >
       Don't have an account?
       <a
         href="{% url 'signup' %}"
-        style="color: var(--accent); font-weight: 600"
-        >Sign up</a
+        style="color: var(--accent); font-weight: 600; text-decoration: none"
+        >Join us</a
       >
-    </p>
+    </div>
   </div>
 </div>
 {% endblock %}
