@@ -90,16 +90,22 @@ body {
 
 /* Mobile Header */
 .mobile-header {
-    display: flex; /* Visible by default (Mobile First) */
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    background: rgba(249, 249, 247, 0.95);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--border-color);
-    padding: 0.75rem 1.5rem;
+    display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 0.75rem 1.5rem;
+    background: rgba(255, 255, 255, 0.85); /* Glass */
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    position: sticky;
+    top: 0;
+    z-index: 900;
+}
+
+.mobile-header.glass-card {
+    background: rgba(255, 255, 255, 0.85) !important; /* Override base glass-card if needed */
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
 }
 
 .brand-logo {
@@ -135,14 +141,38 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
-    background: var(--bg-card);
-    backdrop-filter: blur(10px);
-    border-top: 1px solid var(--border-color);
+    background: rgba(255, 255, 255, 0.85); /* Glass */
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
     padding: 0.5rem 1.5rem;
     padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
     justify-content: space-between;
     z-index: 50;
-    box-shadow: 0 -4px 6px -1px rgba(0,0,0,0.2);
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+}
+
+/* ... (Nav items skipped) ... */
+
+/* Mobile Drawer */
+.mobile-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    background: rgba(255, 255, 255, 0.9); /* High opacity glass */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(255, 255, 255, 0.5);
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 6rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    box-shadow: 5px 0 25px rgba(0,0,0,0.05);
 }
 
 .bottom-nav .nav-item {
@@ -167,23 +197,7 @@ body {
     color: var(--accent);
 }
 
-/* Mobile Drawer */
-.mobile-drawer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 280px;
-    background: var(--bg-color);
-    z-index: 1000;
-    transform: translateX(-100%);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    padding: 6rem 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    box-shadow: 5px 0 15px rgba(0,0,0,0.1);
-}
+
 
 .mobile-drawer.active {
     transform: translateX(0);
@@ -202,7 +216,7 @@ body {
 }
 
 @media (min-width: 769px) {
-    .mobile-header, .bottom-nav, .mobile-only-section { display: none !important; }
+    .mobile-header, .bottom-nav, .mobile-drawer, .mobile-overlay, .mobile-only-section { display: none !important; }
     .desktop-only { display: block !important; }
     body { padding-bottom: 0; }
     .site-nav { display: flex !important; }
@@ -229,73 +243,35 @@ body {
 .site-header {
     padding: 0.75rem 0; /* Reduced from 1rem */
     text-align: left;
-    background-color: rgba(255, 255, 255, 0.95);
+    background-color: rgba(255, 255, 255, 0.9); /* Slightly more transparent */
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     position: sticky;
     top: 0;
     z-index: 1000;
     border-bottom: 1px solid var(--border-color);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03); /* Softer shadow */
     transition: all 0.3s ease;
+}
+
+/* Base Glass Class for Mobile */
+.mobile-glass {
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
 }
 
 .logo {
     font-family: var(--font-heading);
-    font-size: 1.75rem; /* Reduced from 2rem */
-    font-weight: 600;
+    font-size: 2rem;
+    font-weight: 600; /* Slightly bolder for hierarchy */
     letter-spacing: -0.02em;
     display: block;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.5rem;
     color: var(--text-primary);
-    text-transform: uppercase;
-}
-
-.tagline {
-    /* ... (unchanged) ... */
-    margin-bottom: 0; /* Compact */
-    display: none; /* Hide tagline on scroll/compact header if needed, but keeping for now */
-}
-
-/* ... (Site Nav skipped) ... */
-
-/* Mobile Bottom Nav (Glass) */
-.bottom-nav {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    background: rgba(255, 255, 255, 0.9); /* Glass */
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    padding: 0.8rem 0;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    border-top: 1px solid rgba(255,255,255,0.3);
-    z-index: 1000;
-    box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
-}
-
-/* Mobile Drawer (Glass) */
-.mobile-drawer {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 80%;
-    max-width: 300px;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.95); /* High opacity glass */
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    z-index: 2000;
-    transform: translateX(100%);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    padding: 6rem 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    box-shadow: -5px 0 15px rgba(0,0,0,0.05);
-    border-left: 1px solid rgba(255,255,255,0.2);
+    text-transform: uppercase; /* Modern minimalist touch */
 }
 
 .tagline {
