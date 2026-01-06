@@ -1,9 +1,29 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.conf import settings
+from django.http import Http404, HttpResponse
 from .models import Category
 from sermons.models import Sermon, Topic
 from ministry.models import Testimony
 
 from dashboard.models import SiteSettings
+
+def authorize_device(request, token):
+    if token == settings.DEVICE_AUTH_TOKEN:
+        response = redirect('dashboard:login')
+        # Set a long-lived cookie (1 year)
+        max_age = 365 * 24 * 60 * 60
+        response.set_cookie(
+            settings.TRUSTED_COOKIE_NAME,
+            'true',
+            max_age=max_age,
+            httponly=True,
+            secure=False,  # Set to True in production with HTTPS
+            samesite='Lax'
+        )
+        return response
+    else:
+        # Invalid token, return 404 to hide endpoint
+        raise Http404()
 
 def home(request):
     # Use Topics as Categories for the filter tabs

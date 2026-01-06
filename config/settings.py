@@ -58,6 +58,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'core.middleware.DeviceRestrictionMiddleware', # Custom Device Restriction
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -173,3 +174,8 @@ LOGOUT_REDIRECT_URL = 'home'
 
 # Email Backend (Console for Development)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Device Restriction Security
+# GENERATE A NEW TOKEN IN PRODUCTION!
+DEVICE_AUTH_TOKEN = '7x92k3-secure-access-token-change-this-in-prod'
+TRUSTED_COOKIE_NAME = 'ttg_trusted_device'
