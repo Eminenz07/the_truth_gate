@@ -39,7 +39,7 @@ def home(request):
         'categories': categories, 
         'testimonies': testimonies,
         'recent_sermons': recent_sermons,
-        'settings': site_config # Template expects 'settings'
+        'site_config': site_config
     })
 
 def category_detail(request, slug):
