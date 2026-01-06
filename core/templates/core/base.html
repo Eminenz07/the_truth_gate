@@ -282,7 +282,40 @@
       </div>
     </nav>
 
-    <main class="site-main">{% block content %}{% endblock %}</main>
+    <main class="site-main">
+      {% if messages %}
+      <div class="container" style="max-width: 600px; margin-top: 1rem">
+        {% for message in messages %}
+        <div
+          class="glass-card"
+          style="
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+          "
+        >
+          {% if message.tags == 'success' %}
+          <span class="material-icons-round" style="color: #10b981"
+            >check_circle</span
+          >
+          {% elif message.tags == 'error' %}
+          <span class="material-icons-round" style="color: #ef4444">error</span>
+          {% else %}
+          <span class="material-icons-round" style="color: var(--accent)"
+            >info</span
+          >
+          {% endif %}
+          <span style="color: var(--text-primary); font-size: 0.95rem"
+            >{{ message }}</span
+          >
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %} {% block content %}{% endblock %}
+    </main>
 
     <footer
       class="site-footer desktop-only"
