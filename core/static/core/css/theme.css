@@ -76,6 +76,65 @@ body {
     border-radius: 16px;
 }
 
+/* YMR-Style Hero */
+.hero-ymr {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Dropdown Menu */
+.dropdown-wrapper {
+    position: relative;
+}
+
+.dropdown-trigger {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 200px;
+    background: white;
+    padding: 0.5rem 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-lg);
+}
+
+.dropdown-wrapper:hover .dropdown-menu,
+.dropdown-wrapper:focus-within .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 0.75rem 1.5rem;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+}
+
+.dropdown-menu a:hover {
+    background: var(--bg-hover);
+    color: var(--primary);
+}
+
+/* Footer Improvements */
+.site-footer a:hover {
+    color: var(--primary) !important;
+}
+
 /* Animations */
 @keyframes fadeUp {
     from { opacity: 0; transform: translateY(20px); }
@@ -83,7 +142,7 @@ body {
 }
 
 .reveal {
-    animation: fadeUp 0.8s ease-out forwards;
+    opacity: 1; /* Ensure visible without JS for now if scroll reveal isn't blocking */
 }
 
 /* --- Mobile Components --- */

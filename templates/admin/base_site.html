@@ -1,21 +1,32 @@
-{% extends "admin/base.html" %}
-{% load static %}
-
-{% block title %}The Truth Gate Admin{% endblock %}
-
-{% block branding %}
+{% extends "admin/base.html" %} {% load static %} {% block title %}The Truth
+Gate Admin{% endblock %} {% block branding %}
 <div class="site-branding">
-    <h1 id="site-name">
-        <a href="{% url 'admin:index' %}">
-            The Truth Gate
-            <small>Administration</small>
-        </a>
-    </h1>
+  <h1 id="site-name">
+    <a href="{% url 'admin:index' %}">
+      The Truth Gate
+      <small>Administration</small>
+    </a>
+  </h1>
 </div>
-{% endblock %}
-
-{% block extrastyle %}
-<link rel="stylesheet" href="{% static 'admin/css/custom_admin.css' %}">
+{% endblock %} {% block extrastyle %} {{ block.super }}
+<style>
+  :root {
+    --primary: #c5a059; /* Gold */
+    --secondary: #1a252f; /* Dark Navy */
+    --accent: #546e7a;
+  }
+  /* Force Dark Mode for Admin */
+  @media (prefers-color-scheme: light) {
+    body {
+      filter: invert(1) hue-rotate(180deg);
+    }
+    img,
+    video {
+      filter: invert(1) hue-rotate(180deg);
+    }
+  }
+</style>
+<link rel="stylesheet" href="{% static 'admin/css/custom_admin.css' %}" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link

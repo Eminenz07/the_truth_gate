@@ -124,12 +124,48 @@
           style="margin: 0; gap: 2rem !important; align-items: center"
         >
           <li><a href="{% url 'home' %}">Home</a></li>
-          <li><a href="{% url 'sermon_list' %}">Sermons</a></li>
+          <li><a href="#about">About</a></li>
+          <!-- Placeholder for now -->
           <li><a href="{% url 'event_list' %}">Events</a></li>
-          <li><a href="{% url 'give' %}">Give</a></li>
-          <li><a href="{% url 'contact' %}">Contact</a></li>
+          <li><a href="{% url 'contact' %}">Counselling</a></li>
+          <!-- Using Contact for now -->
+
+          <li class="dropdown-wrapper">
+            <a href="#" class="dropdown-trigger"
+              >Resources
+              <i
+                class="fas fa-chevron-down"
+                style="font-size: 0.8rem; margin-left: 4px"
+              ></i
+            ></a>
+            <div class="dropdown-menu glass-card">
+              <a href="#">Watch Live</a>
+              <!-- Needs Live link -->
+              <a href="{% url 'sermon_list' %}">Sermon Library</a>
+              <a href="{% url 'testimony_list' %}">Testimonies</a>
+            </div>
+          </li>
+
+          <li>
+            <a
+              href="{% url 'give' %}"
+              class="btn-primary"
+              style="
+                padding: 0.5rem 1.25rem;
+                font-size: 0.85rem;
+                background: var(--primary-dark);
+                color: white;
+                border: none;
+              "
+            >
+              Give
+            </a>
+          </li>
 
           {% if user.is_authenticated %}
+          <li>
+            <a href="{% url 'dashboard:home' %}" class="btn-text">Dashboard</a>
+          </li>
           <li>
             <form
               action="{% url 'logout' %}"
@@ -140,16 +176,7 @@
               <button
                 type="submit"
                 class="btn-text"
-                style="
-                  background: none;
-                  border: none;
-                  font-weight: 600;
-                  cursor: pointer;
-                  color: var(--text-primary);
-                  font-family: inherit;
-                  font-size: inherit;
-                  padding: 0;
-                "
+                style="color: var(--text-secondary)"
               >
                 Log Out
               </button>
@@ -157,20 +184,7 @@
           </li>
           {% else %}
           <li>
-            <a
-              href="{% url 'login' %}"
-              class="btn-primary"
-              style="padding: 0.5rem 1.25rem; font-size: 0.85rem"
-              >Log In</a
-            >
-          </li>
-          <li>
-            <a
-              href="{% url 'signup' %}"
-              class="btn-primary"
-              style="padding: 0.5rem 1.25rem; font-size: 0.85rem"
-              >Join</a
-            >
+            <a href="{% url 'login' %}" style="font-weight: 600">Log In</a>
           </li>
           {% endif %}
         </ul>
@@ -371,11 +385,244 @@
     </main>
 
     <footer
-      class="site-footer desktop-only"
-      style="border-top: 1px solid var(--border-color)"
+      class="site-footer"
+      style="
+        background: var(--bg-body);
+        color: var(--text-primary);
+        padding: 4rem 1.5rem;
+        border-top: 1px solid var(--border-color);
+      "
     >
-      <div class="container">
-        <p>&copy; {% now "Y" %} The Truth Gate</p>
+      <div
+        class="container"
+        style="
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          gap: 2rem;
+        "
+      >
+        <!-- Brand Column -->
+        <div>
+          <a
+            href="{% url 'home' %}"
+            style="
+              display: flex;
+              align-items: center;
+              gap: 0.75rem;
+              text-decoration: none;
+              margin-bottom: 1rem;
+            "
+          >
+            <img
+              src="{% static 'core/img/logo_branding.png' %}"
+              alt="Logo"
+              style="height: 48px"
+            />
+            <span
+              style="
+                font-family: 'Playfair Display', serif;
+                font-weight: 700;
+                color: var(--text-primary);
+                font-size: 1.2rem;
+              "
+              >The Truth Gate</span
+            >
+          </a>
+          <p
+            style="
+              color: var(--text-secondary);
+              font-size: 0.9rem;
+              line-height: 1.6;
+            "
+          >
+            Raising a Burning Generation. Empowering believers to live
+            passionately for Jesus.
+          </p>
+          <div style="display: flex; gap: 1rem; margin-top: 1rem">
+            <a href="#" style="color: var(--text-secondary)"
+              ><i class="fab fa-facebook"></i
+            ></a>
+            <a href="#" style="color: var(--text-secondary)"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="#" style="color: var(--text-secondary)"
+              ><i class="fab fa-youtube"></i
+            ></a>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div>
+          <h4
+            style="
+              font-family: var(--font-heading);
+              margin-bottom: 1.25rem;
+              color: var(--primary-dark);
+            "
+          >
+            Quick Links
+          </h4>
+          <ul
+            style="
+              list-style: none;
+              padding: 0;
+              display: flex;
+              flex-direction: column;
+              gap: 0.75rem;
+            "
+          >
+            <li>
+              <a
+                href="{% url 'home' %}"
+                style="text-decoration: none; color: var(--text-secondary)"
+                >Homepage</a
+              >
+            </li>
+            <li>
+              <a
+                href="#about"
+                style="text-decoration: none; color: var(--text-secondary)"
+                >About Us</a
+              >
+            </li>
+            <li>
+              <a
+                href="{% url 'event_list' %}"
+                style="text-decoration: none; color: var(--text-secondary)"
+                >Meetings</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                style="text-decoration: none; color: var(--text-secondary)"
+                >Accommodation</a
+              >
+            </li>
+            <!-- Placeholder -->
+          </ul>
+        </div>
+
+        <!-- Community -->
+        <div>
+          <h4
+            style="
+              font-family: var(--font-heading);
+              margin-bottom: 1.25rem;
+              color: var(--primary-dark);
+            "
+          >
+            Community
+          </h4>
+          <ul
+            style="
+              list-style: none;
+              padding: 0;
+              display: flex;
+              flex-direction: column;
+              gap: 0.75rem;
+            "
+          >
+            <li>
+              <a
+                href="{% url 'login' %}"
+                style="text-decoration: none; color: var(--text-secondary)"
+                >Log In</a
+              >
+            </li>
+            <li>
+              <a
+                href="{% url 'signup' %}"
+                style="text-decoration: none; color: var(--text-secondary)"
+                >Register</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                style="text-decoration: none; color: var(--text-secondary)"
+                >Groups</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <!-- Subscribe -->
+        <div>
+          <h4
+            style="
+              font-family: var(--font-heading);
+              margin-bottom: 1.25rem;
+              color: var(--primary-dark);
+            "
+          >
+            Subscribe Our Newsletter
+          </h4>
+          <p
+            style="
+              color: var(--text-secondary);
+              font-size: 0.9rem;
+              margin-bottom: 1rem;
+            "
+          >
+            Get Our Latest Update & News
+          </p>
+          <form
+            onsubmit="event.preventDefault();"
+            style="
+              display: flex;
+              background: white;
+              border-radius: 50px;
+              padding: 0.25rem;
+              border: 1px solid var(--border-color);
+            "
+          >
+            <input
+              type="email"
+              placeholder="Email"
+              style="
+                border: none;
+                padding: 0.75rem 1rem;
+                flex-grow: 1;
+                border-radius: 50px;
+                outline: none;
+                background: transparent;
+              "
+            />
+            <button
+              type="submit"
+              style="
+                background: #10b981;
+                color: white;
+                border: none;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              "
+            >
+              <i class="fas fa-arrow-right"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div
+        class="container"
+        style="
+          text-align: center;
+          margin-top: 3rem;
+          pt: 2rem;
+          border-top: 1px solid var(--border-color);
+          padding-top: 2rem;
+        "
+      >
+        <p style="color: var(--text-secondary); font-size: 0.85rem">
+          &copy; {% now "Y" %} The Truth Gate. All Rights Reserved.
+        </p>
       </div>
     </footer>
 

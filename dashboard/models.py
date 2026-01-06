@@ -1,8 +1,21 @@
 from django.db import models
 
 class SiteSettings(models.Model):
-    # Singleton pattern enforcement
-    live_stream_url = models.URLField(blank=True, help_text="Embed URL for live stream")
+    # Singleton pattern
+    # Hero Section
+    hero_headline = models.CharField(max_length=200, default="Igniting a Burning Generation On Fire For Jesus")
+    hero_subtext = models.TextField(default="We are a global movement raising a passionate generation empowered to influence nations with the fire and truth of Jesus.")
+    
+    # Vision Section
+    vision_title = models.CharField(max_length=100, default="Our Vision")
+    vision_text = models.TextField(default="Raising a Burning Generation. Empowering young believers to live passionately for Jesus.")
+    
+    # Mission Section
+    mission_title = models.CharField(max_length=100, default="Our Mission")
+    mission_text = models.TextField(default="Raising, Building and Equipping People as Kingdom Ambassadors in Every Sphere of Human Influence.")
+    
+    # Live Stream
+    live_stream_url = models.URLField(blank=True, help_text="YouTube or generic stream link")
     is_live_now = models.BooleanField(default=False)
     
     giving_enabled = models.BooleanField(default=True)

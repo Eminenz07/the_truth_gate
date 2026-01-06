@@ -7,9 +7,23 @@ from .models import SiteSettings
 class SiteSettingsForm(forms.ModelForm):
     class Meta:
         model = SiteSettings
-        fields = ['live_stream_url', 'is_live_now', 'giving_enabled', 'flutterwave_public_key']
+        fields = [
+            'hero_headline', 'hero_subtext',
+            'vision_title', 'vision_text',
+            'mission_title', 'mission_text',
+            'live_stream_url', 'is_live_now',
+            'giving_enabled', 'flutterwave_public_key'
+        ]
         widgets = {
-            'live_stream_url': forms.URLInput(attrs={'class': 'form-input'}),
+            'hero_headline': forms.TextInput(attrs={'class': 'form-input'}),
+            'hero_subtext': forms.Textarea(attrs={'class': 'form-input', 'rows': 3}),
+            'vision_title': forms.TextInput(attrs={'class': 'form-input'}),
+            'vision_text': forms.Textarea(attrs={'class': 'form-input', 'rows': 4}),
+            'mission_title': forms.TextInput(attrs={'class': 'form-input'}),
+            'mission_text': forms.Textarea(attrs={'class': 'form-input', 'rows': 4}),
+            'live_stream_url': forms.URLInput(attrs={'class': 'form-input', 'placeholder': 'https://youtube.com/embed/...'}),
+            'is_live_now': forms.CheckboxInput(attrs={'class': 'form-checkbox'}),
+            'giving_enabled': forms.CheckboxInput(attrs={'class': 'form-checkbox'}),
             'flutterwave_public_key': forms.TextInput(attrs={'class': 'form-input'}),
         }
 
