@@ -1,28 +1,28 @@
 :root {
-    /* Palette: Royal, Silver & Gold */
-    --primary: #1E3A8A; /* Royal Blue (Blue 900) */
-    --primary-dark: #172554; /* Deep Navy (Blue 950) */
-    --accent: #B45309; /* Deep Gold/Amber (Amber 700) - Darker for text contrast */
-    --accent-glow: rgba(180, 83, 9, 0.3);
+    /* Palette: Calm & Institutional (Bank/Trust/University) */
+    --primary: #1e293b; /* Slate 800 (Deep, Neutral Navy) */
+    --primary-dark: #0f172a; /* Slate 900 */
+    --accent: #ca8a04; /* Muted Gold (Yellow 700) - Authoritative, not shiny */
+    --accent-glow: rgba(202, 138, 4, 0.15); /* Very subtle glow */
 
-    --bg-body: #F8FAFC; /* Slate 50 (Silver/White) */
-    --bg-card: rgba(255, 255, 255, 0.75); /* White Frosted */
-    --bg-glass: rgba(255, 255, 255, 0.4);
+    --bg-body: #f8fafc; /* Slate 50 (Paper White/Silver) */
+    --bg-card: #ffffff; /* Solid White (Trustworthy) */
+    --bg-glass: rgba(255, 255, 255, 0.85); /* High opacity glass (Privacy) */
 
-    --text-primary: #0F172A; /* Slate 900 (Dark for light bg) */
-    --text-secondary: #475569; /* Slate 600 */
-    --border-color: rgba(0, 0, 0, 0.08); /* Darker border for light mode */
+    --text-primary: #1e293b; /* Slate 800 (High Contrast) */
+    --text-secondary: #64748b; /* Slate 500 (Calm Secondary) */
+    --border-color: #e2e8f0; /* Slate 200 (Structured) */
 
     --font-heading: 'Playfair Display', serif;
     --font-body: 'Inter', sans-serif;
 
-    --shadow-soft: 0 10px 30px -10px rgba(30, 58, 138, 0.15); /* Blue-tinted shadow */
+    --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); /* Minimal Elevation */
     
     /* Spacing */
-    --spacing-unit: 1.5rem;
-    --container-width: 840px;
-    --section-gap: 5rem;
-    --header-height: 70px;
+    --spacing-unit: 2rem; /* More breathing room */
+    --container-width: 900px;
+    --section-gap: 6rem;
+    --header-height: 80px;
 }
 
 * {
@@ -35,13 +35,10 @@ body {
     font-family: var(--font-body);
     color: var(--text-primary);
     background-color: var(--bg-body);
-    background-image: 
-        radial-gradient(circle at 0% 0%, rgba(30, 58, 138, 0.05) 0%, transparent 50%),
-        radial-gradient(circle at 100% 100%, rgba(180, 83, 9, 0.05) 0%, transparent 50%);
-    background-attachment: fixed;
-    line-height: 1.6;
+    /* Removed active gradients for stability */
+    line-height: 1.7; /* Increased for readability */
     overflow-x: hidden;
-    padding-bottom: 80px; /* Space for bottom nav */
+    padding-bottom: 80px; 
 }
 
 /* Glassmorphism Utilities */

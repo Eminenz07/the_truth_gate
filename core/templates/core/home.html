@@ -32,10 +32,10 @@
       height: 600px;
       background: radial-gradient(
         circle,
-        rgba(79, 70, 229, 0.3) 0%,
+        rgba(202, 138, 4, 0.08) 0%,
         transparent 70%
       );
-      filter: blur(60px);
+      filter: blur(80px); /* Softer blur */
       z-index: -1;
     "
   ></div>
@@ -44,7 +44,8 @@
     style="
       font-size: 3.5rem;
       margin-bottom: 1rem;
-      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      color: var(--primary-dark);
+      /* Removed heavy text-shadow for clean look */
     "
   >
     The Truth Gate
@@ -57,6 +58,7 @@
       max-width: 500px;
       margin-left: auto;
       margin-right: auto;
+      line-height: 1.6;
     "
   >
     Discover freedom in truth. Join a community dedicated to spiritual growth
@@ -92,15 +94,28 @@
       justify-content: space-between;
       align-items: center;
       overflow-x: auto;
+      gap: 1.5rem; /* Added gap for better touch targets */
     "
   >
-    <a href="{% url 'home' %}" style="color: var(--accent); font-weight: 700"
+    <a
+      href="{% url 'home' %}"
+      style="
+        color: var(--primary);
+        font-weight: 700;
+        border-bottom: 2px solid var(--accent);
+      "
       >Home</a
     >
-    <a href="{% url 'sermon_list' %}">Sermons</a>
-    <a href="{% url 'event_list' %}">Events</a>
-    <a href="{% url 'give' %}">Give</a>
-    <a href="{% url 'prayer_request' %}">Prayer</a>
+    <a href="{% url 'sermon_list' %}" style="color: var(--text-secondary)"
+      >Sermons</a
+    >
+    <a href="{% url 'event_list' %}" style="color: var(--text-secondary)"
+      >Events</a
+    >
+    <a href="{% url 'give' %}" style="color: var(--text-secondary)">Give</a>
+    <a href="{% url 'prayer_request' %}" style="color: var(--text-secondary)"
+      >Prayer</a
+    >
   </div>
 </section>
 
@@ -118,9 +133,21 @@
   {% for cat in categories %}
   <div
     class="glass-card topic-card-v2"
-    style="padding: 2rem; transition: transform 0.3s"
+    style="
+      padding: 2rem;
+      transition: transform 0.3s;
+      border: 1px solid var(--border-color);
+    "
   >
-    <h3 style="color: var(--primary); margin-bottom: 0.5rem">{{ cat.name }}</h3>
+    <h3
+      style="
+        color: var(--primary);
+        margin-bottom: 0.5rem;
+        font-family: var(--font-heading);
+      "
+    >
+      {{ cat.name }}
+    </h3>
     <p
       style="
         color: var(--text-secondary);
@@ -135,9 +162,10 @@
       style="
         color: var(--accent);
         font-weight: 600;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         text-transform: uppercase;
         letter-spacing: 0.05em;
+        text-decoration: none;
       "
       >Explore &rarr;</a
     >
@@ -148,7 +176,11 @@
 <!-- Testimonies Section -->
 <section class="reveal" style="margin: 3rem 1.5rem 6rem">
   <div style="text-align: center; margin-bottom: 2rem">
-    <h3 style="font-size: 2rem; margin-bottom: 0.5rem">Stories of Grace</h3>
+    <h3
+      style="font-size: 2rem; margin-bottom: 0.5rem; color: var(--primary-dark)"
+    >
+      Stories of Grace
+    </h3>
     <p style="color: var(--text-secondary)">
       See how God is moving in our lives.
     </p>
@@ -163,6 +195,7 @@
       padding: 1rem;
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
+      padding-bottom: 2rem; /* Scrollbar space */
     "
   >
     {% for testimony in testimonies %}
@@ -172,9 +205,11 @@
       style="
         display: block;
         text-decoration: none;
-        min-width: 300px;
-        padding: 2rem;
+        min-width: 320px;
+        padding: 2.5rem;
         scroll-snap-align: center;
+        background: #ffffff;
+        border: 1px solid var(--border-color);
       "
     >
       <p
@@ -183,33 +218,30 @@
           color: var(--text-primary);
           font-style: italic;
           margin-bottom: 1.5rem;
+          line-height: 1.6;
         "
       >
-        "{{ testimony.content|truncatewords:20 }}"
+        "{{ testimony.content|truncatewords:25 }}"
       </p>
       <div style="display: flex; align-items: center; gap: 0.75rem">
         <div
           style="
             width: 40px;
             height: 40px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
+            background: var(--primary-dark);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            color: white;
+            color: #ffffff; /* White text on dark accent */
           "
         >
           {{ testimony.name|slice:":1" }}
         </div>
         <div>
           <strong
-            style="
-              display: block;
-              font-size: 0.9rem;
-              color: var(--text-primary);
-            "
+            style="display: block; font-size: 0.9rem; color: var(--primary)"
             >{{ testimony.name|default:"Anonymous" }}</strong
           >
           <span style="font-size: 0.8rem; color: var(--text-secondary)"
@@ -241,7 +273,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(229, 57, 53, 0.9);
+    background: rgba(220, 38, 38, 0.95); /* Deeper Red */
     backdrop-filter: blur(8px);
     color: white;
     padding: 0.75rem;
@@ -261,7 +293,7 @@
     background: white;
     border-radius: 50%;
     margin-right: 10px;
-    animation: pulse 1.5s infinite;
+    animation: pulse 2s infinite; /* Slower pulse */
   }
 
   @keyframes pulse {
@@ -279,25 +311,9 @@
     }
   }
 
-  .btn-glass {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 0.8rem 2rem;
-    border-radius: 50px;
-    font-weight: 600;
-    transition: all 0.2s;
-    text-decoration: none;
-  }
-
-  .btn-glass:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: white;
-  }
-
   .topic-card-v2:hover {
-    transform: translateY(-5px);
-    background: rgba(255, 255, 255, 0.08); /* Slightly lighter on hover */
+    transform: translateY(-2px); /* Reduced movement */
+    box-shadow: var(--shadow-soft);
   }
 </style>
 {% endblock %}
