@@ -1,0 +1,119 @@
+{% extends 'dashboard/base.html' %} {% block title %}Homepage Content |
+Dashboard{% endblock %} {% block header_title %}Homepage Content{% endblock %}
+{% block content %}
+<div class="card">
+  <div
+    style="
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    "
+  >
+    <div>
+      <h2>Manage Homepage Text</h2>
+      <p style="color: var(--text-light)">
+        Update the Hero, Vision, and Mission sections of the main site.
+      </p>
+    </div>
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+
+    <div style="margin-bottom: 2rem">
+      <h3
+        style="
+          color: var(--primary);
+          margin-bottom: 1rem;
+          border-bottom: 1px solid var(--border-color);
+          padding-bottom: 0.5rem;
+        "
+      >
+        Hero Section
+      </h3>
+
+      <div class="form-group">
+        <label for="{{ form.hero_headline.id_for_label }}">Headline</label>
+        {{ form.hero_headline }} {% if form.hero_headline.errors %}
+        <ul class="error-list">
+          {% for error in form.hero_headline.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+        <span class="help-text">Main catchy text on the homepage banner.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.hero_subtext.id_for_label }}">Subtext</label>
+        {{ form.hero_subtext }}
+        <span class="help-text"
+          >Smaller descriptive text below the headline.</span
+        >
+      </div>
+    </div>
+
+    <div style="margin-bottom: 2rem">
+      <h3
+        style="
+          color: var(--primary);
+          margin-bottom: 1rem;
+          border-bottom: 1px solid var(--border-color);
+          padding-bottom: 0.5rem;
+        "
+      >
+        Vision & Mission
+      </h3>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem">
+        <div>
+          <div class="form-group">
+            <label for="{{ form.vision_title.id_for_label }}"
+              >Vision Title</label
+            >
+            {{ form.vision_title }}
+          </div>
+          <div class="form-group">
+            <label for="{{ form.vision_text.id_for_label }}">Vision Text</label>
+            {{ form.vision_text }}
+          </div>
+        </div>
+
+        <div>
+          <div class="form-group">
+            <label for="{{ form.mission_title.id_for_label }}"
+              >Mission Title</label
+            >
+            {{ form.mission_title }}
+          </div>
+          <div class="form-group">
+            <label for="{{ form.mission_text.id_for_label }}"
+              >Mission Text</label
+            >
+            {{ form.mission_text }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align: right">
+      <button
+        type="submit"
+        class="btn"
+        style="
+          background: var(--primary);
+          color: white;
+          border: none;
+          padding: 0.75rem 2rem;
+          border-radius: 6px;
+          font-weight: 600;
+          cursor: pointer;
+        "
+      >
+        Save Content
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}

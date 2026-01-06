@@ -26,6 +26,7 @@ urlpatterns = [
     
     path('users/', views.user_list, name='user_list'),
     
+    path('content/', views.content_settings_view, name='content_settings'),
     path('settings/', views.settings_view, name='settings'),
     path('giving/', views.giving_history, name='giving_history'),
 ]

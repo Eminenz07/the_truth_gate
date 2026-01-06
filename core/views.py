@@ -33,13 +33,13 @@ def home(request):
     # Fetch recent sermons (V2)
     recent_sermons = Sermon.objects.all().order_by('-date_preached')[:10]
     # Fetch Site Settings for Live Banner
-    settings = SiteSettings.load()
+    site_config = SiteSettings.load()
     
     return render(request, 'core/home.html', {
         'categories': categories, 
         'testimonies': testimonies,
         'recent_sermons': recent_sermons,
-        'settings': settings
+        'settings': site_config # Template expects 'settings'
     })
 
 def category_detail(request, slug):

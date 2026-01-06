@@ -161,6 +161,19 @@ def settings_view(request):
     return render(request, 'dashboard/settings.html', {'form': form})
 
 @staff_member_required
+def content_settings_view(request):
+    settings_obj = SiteSettings.load()
+    from .forms import ContentSettingsForm # Import inside to avoid circular if any
+    if request.method == 'POST':
+        form = ContentSettingsForm(request.POST, instance=settings_obj)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard:content_settings')
+    else:
+        form = ContentSettingsForm(instance=settings_obj)
+    return render(request, 'dashboard/content_settings.html', {'form': form})
+
+@staff_member_required
 def giving_history(request):
     # Placeholder for giving history; expand when Payment Gateway is active
     return render(request, 'dashboard/giving_history.html')
