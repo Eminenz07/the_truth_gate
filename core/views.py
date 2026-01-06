@@ -17,7 +17,7 @@ def authorize_device(request, token):
             'true',
             max_age=max_age,
             httponly=True,
-            secure=False,  # Set to True in production with HTTPS
+            secure=not settings.DEBUG,  # True in production (HTTPS)
             samesite='Lax'
         )
         return response

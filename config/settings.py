@@ -176,6 +176,14 @@ LOGOUT_REDIRECT_URL = 'home'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Device Restriction Security
-# GENERATE A NEW TOKEN IN PRODUCTION!
-DEVICE_AUTH_TOKEN = '7x92k3-secure-access-token-change-this-in-prod'
-TRUSTED_COOKIE_NAME = 'ttg_trusted_device'
+# GENERATE A NEW TOKEN IN PRODUCTION & ADD TO ENV VARS!
+DEVICE_AUTH_TOKEN = os.environ.get('DEVICE_AUTH_TOKEN', '7x92k3-secure-access-token-change-this-in-prod')
+TRUSTED_COOKIE_NAME = os.environ.get('TRUSTED_COOKIE_NAME', 'ttg_trusted_device')
+
+# Production Security
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
