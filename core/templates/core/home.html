@@ -18,7 +18,8 @@
     position: relative;
     padding: 8rem 1.5rem 6rem;
     text-align: center;
-    background: linear-gradient(rgba(10, 25, 47, 0.85), rgba(10, 25, 47, 0.95)), url('{% static 'core/img/hero_bg.jpg' %}'); 
+    background: linear-gradient(rgba(10, 25, 47, 0.85), rgba(10, 25, 47, 0.95)),
+      url('{% static 'core/img/hero_bg.jpg' %}');
     background-size: cover;
     background-position: center;
     color: white;
@@ -29,86 +30,207 @@
     align-items: center;
   "
 >
-    <!-- Fallback if no image -->
-    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: #0a192f;"></div>
+  <!-- Fallback if no image -->
+  <div
+    style="
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: #0a192f;
+    "
+  ></div>
 
-    <span style="color: var(--primary); letter-spacing: 2px; text-transform: uppercase; font-size: 0.9rem; font-weight: 600; margin-bottom: 1rem;">
-        Welcome to The Truth Gate
-    </span>
-    
-    <h1 style="font-family: var(--font-heading); font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.1; margin-bottom: 1.5rem; max-width: 900px;">
-        {{ settings.hero_headline|default:"Igniting a Burning Generation On Fire For Jesus" }}
-    </h1>
-    
-    <p style="font-size: 1.2rem; color: rgba(255,255,255,0.8); max-width: 600px; margin-bottom: 2.5rem; line-height: 1.6;">
-        {{ settings.hero_subtext|default:"We are a global movement raising a passionate generation empowered to influence nations with the fire and truth of Jesus." }}
-    </p>
-    
-    <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
-        <a href="{% url 'sermon_list' %}" class="btn-primary" style="background: white; color: var(--secondary); border: none;">
-            Explore Sermons
-        </a>
-        <a href="{% url 'give' %}" class="btn-primary" style="background: transparent; border: 2px solid var(--primary); color: white;">
-            Partner With Us
-        </a>
-    </div>
+  <span
+    style="
+      color: var(--primary);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    "
+  >
+    Welcome to The Truth Gate
+  </span>
+
+  <h1
+    style="
+      font-family: var(--font-heading);
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      max-width: 900px;
+    "
+  >
+    {{ settings.hero_headline|default:"Igniting a Burning Generation On Fire For
+    Jesus" }}
+  </h1>
+
+  <p
+    style="
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.8);
+      max-width: 600px;
+      margin-bottom: 2.5rem;
+      line-height: 1.6;
+    "
+  >
+    {{ settings.hero_subtext|default:"We are a global movement raising a
+    passionate generation empowered to influence nations with the fire and truth
+    of Jesus." }}
+  </p>
+
+  <div
+    style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center"
+  >
+    <a
+      href="{% url 'sermon_list' %}"
+      class="btn-primary"
+      style="background: white; color: var(--secondary); border: none"
+    >
+      Explore Sermons
+    </a>
+    <a
+      href="{% url 'give' %}"
+      class="btn-primary"
+      style="
+        background: transparent;
+        border: 2px solid var(--primary);
+        color: white;
+      "
+    >
+      Partner With Us
+    </a>
+  </div>
 </section>
 
 <!-- Vision & Mission Section -->
-<section class="reveal" style="padding: 6rem 1.5rem; background: var(--bg-body);">
-    <div class="container" style="max-width: 1100px;">
-        <!-- Vision -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 4rem; margin-bottom: 6rem; align-items: center;">
-            <div>
-                <div style="width: 50px; height: 5px; background: var(--primary); margin-bottom: 1.5rem;"></div>
-                <h2 style="font-family: var(--font-heading); font-size: 2.5rem; color: var(--secondary); margin-bottom: 1.5rem;">
-                    {{ settings.vision_title|default:"Our Vision" }}
-                </h2>
-                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-secondary);">
-                    {{ settings.vision_text|default:"Raising a Burning Generation. Empowering young believers to live passionately for Jesus and impact their world with unshakable kingdom fire." }}
-                </p>
-            </div>
-            <!-- Mission Cards -->
-            <div style="display: grid; gap: 1.5rem;">
-                <div class="glass-card" style="padding: 2rem; border-left: 4px solid var(--primary);">
-                    <h3 style="color: var(--secondary); margin-bottom: 1rem;">{{ settings.mission_title|default:"Our Mission" }}</h3>
-                    <p style="color: var(--text-secondary);">
-                        {{ settings.mission_text|default:"Raising, Building and Equipping People as Kingdom Ambassadors in Every Sphere of Human Influence" }}
-                    </p>
-                </div>
-            </div>
+<section
+  class="reveal"
+  style="padding: 6rem 1.5rem; background: var(--bg-body)"
+>
+  <div class="container" style="max-width: 1100px">
+    <!-- Vision -->
+    <div
+      style="
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 4rem;
+        margin-bottom: 6rem;
+        align-items: center;
+      "
+    >
+      <div>
+        <div
+          style="
+            width: 50px;
+            height: 5px;
+            background: var(--primary);
+            margin-bottom: 1.5rem;
+          "
+        ></div>
+        <h2
+          style="
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+          "
+        >
+          {{ settings.vision_title|default:"Our Vision" }}
+        </h2>
+        <p
+          style="
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+          "
+        >
+          {{ settings.vision_text|default:"Raising a Burning Generation.
+          Empowering young believers to live passionately for Jesus and impact
+          their world with unshakable kingdom fire." }}
+        </p>
+      </div>
+      <!-- Mission Cards -->
+      <div style="display: grid; gap: 1.5rem">
+        <div
+          class="glass-card"
+          style="padding: 2rem; border-left: 4px solid var(--primary)"
+        >
+          <h3 style="color: var(--secondary); margin-bottom: 1rem">
+            {{ settings.mission_title|default:"Our Mission" }}
+          </h3>
+          <p style="color: var(--text-secondary)">
+            {{ settings.mission_text|default:"Raising, Building and Equipping
+            People as Kingdom Ambassadors in Every Sphere of Human Influence" }}
+          </p>
         </div>
+      </div>
     </div>
+  </div>
 </section>
 
 <!-- Partner/Give Section -->
-<section class="reveal" style="padding: 6rem 1.5rem; background: var(--secondary); color: white; text-align: center;">
-    <div class="container" style="max-width: 800px;">
-        <h2 style="font-family: var(--font-heading); font-size: 2.5rem; margin-bottom: 1.5rem; color: white;">
-            Partner With The Vision
-        </h2>
-        <p style="font-size: 1.1rem; color: rgba(255,255,255,0.8); margin-bottom: 3rem;">
-            Your giving fuels the mandate to raise a burning generation. Join us in advancing the Kingdom.
-        </p>
-        <a href="{% url 'give' %}" class="btn-primary" style="background: var(--primary); color: white; border: none; padding: 1rem 3rem; font-size: 1.1rem;">
-            Give Now
-        </a>
-    </div>
+<section
+  class="reveal"
+  style="
+    padding: 6rem 1.5rem;
+    background: var(--secondary);
+    color: white;
+    text-align: center;
+  "
+>
+  <div class="container" style="max-width: 800px">
+    <h2
+      style="
+        font-family: var(--font-heading);
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+        color: white;
+      "
+    >
+      Partner With The Vision
+    </h2>
+    <p
+      style="
+        font-size: 1.1rem;
+        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: 3rem;
+      "
+    >
+      Your giving fuels the mandate to raise a burning generation. Join us in
+      advancing the Kingdom.
+    </p>
+    <a
+      href="{% url 'give' %}"
+      class="btn-primary"
+      style="
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 1rem 3rem;
+        font-size: 1.1rem;
+      "
+    >
+      Give Now
+    </a>
+  </div>
 </section>
 
 <!-- Testimonies Section (Kept for Social Proof) -->
-<section class="reveal" style="padding: 6rem 1.5rem;">
-  <div style="text-align: center; margin-bottom: 3rem;">
-    <h3 style="font-size: 2rem; margin-bottom: 0.5rem; color: var(--secondary);">Stories of Grace</h3>
-    <p style="color: var(--text-secondary);">See how God is moving in our lives.</p>
+<section class="reveal" style="padding: 6rem 1.5rem">
+  <div style="text-align: center; margin-bottom: 3rem">
+    <h3 style="font-size: 2rem; margin-bottom: 0.5rem; color: var(--secondary)">
+      Stories of Grace
+    </h3>
+    <p style="color: var(--text-secondary)">
+      See how God is moving in our lives.
+    </p>
   </div>
-    <!-- ... existing testimony loop ... -->
-   {% if testimonies %}
-   <!-- ... existing content ... -->
-   {% else %}
-   <!-- ... existing content ... -->
-   {% endif %}
-</section>
+  {% if testimonies %}
   <div
     style="
       display: flex;
