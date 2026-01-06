@@ -225,10 +225,19 @@ body {
 }
 
 /* Header - Desktop */
+/* Header - Desktop Prominent */
 .site-header {
-    padding: 3rem 0;
-    text-align: center;
-    background-color: var(--bg-color);
+    padding: 1rem 0;
+    text-align: left;
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
 }
 
 .logo {
