@@ -24,6 +24,8 @@ urlpatterns = [
     path('testimony/<int:pk>/approve/', views.approve_testimony, name='approve_testimony'),
     path('testimony/<int:pk>/delete/', views.delete_testimony, name='delete_testimony'),
     
+    path('users/', views.user_list, name='user_list'),
+    
     path('settings/', views.settings_view, name='settings'),
     path('giving/', views.giving_history, name='giving_history'),
 ]

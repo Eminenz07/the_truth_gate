@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 
 from sermons.models import Sermon
@@ -163,3 +164,10 @@ def settings_view(request):
 def giving_history(request):
     # Placeholder for giving history; expand when Payment Gateway is active
     return render(request, 'dashboard/giving_history.html')
+
+# --- User Management ---
+
+@staff_member_required
+def user_list(request):
+    users = User.objects.all().order_by('-date_joined')
+    return render(request, 'dashboard/user_list.html', {'users': users})

@@ -228,6 +228,9 @@
             <a href="{% url 'dashboard:testimony_list' %}" class="nav-item {% if 'testimony' in request.resolver_match.url_name %}active{% endif %}">
                 <i class="fas fa-hands-praying"></i> Testimonies
             </a>
+            <a href="{% url 'dashboard:user_list' %}" class="nav-item {% if 'user' in request.resolver_match.url_name %}active{% endif %}">
+                <i class="fas fa-users"></i> Users
+            </a>
 
             <!-- Section: Configuration -->
             <div style="margin: 1.5rem 0 0.5rem 0; padding-top: 1rem; border-top: 1px solid var(--border-color); padding-left: 1rem; text-transform: uppercase; font-size: 0.75rem; color: var(--text-light); font-weight: 600;">Configuration</div>
