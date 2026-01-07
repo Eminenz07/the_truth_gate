@@ -1036,3 +1036,109 @@ label {
         padding: 1.5rem;
     }
 }
+
+/* --- Homepage V2 Polish --- */
+
+.hero-home {
+    position: relative;
+    padding: calc(6rem + 80px) 1.5rem 6rem; /* Top padding compensates for transparent navbar */
+    margin-top: -80px; /* Pull behind navbar */
+    text-align: center;
+    min-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    
+    /* Dynamic Background */
+    background: linear-gradient(
+        135deg,
+        rgba(15, 23, 42, 0.95) 0%,   /* Darker Slate 900 */
+        rgba(30, 41, 59, 0.9) 100%   /* Slate 800 */
+    ),
+    url('../img/logo_branding.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.hero-subtitle {
+    color: var(--accent); /* Gold for visibility against dark bg */
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 1.5rem;
+    display: block;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.hero-title {
+    font-family: var(--font-heading);
+    font-size: clamp(3rem, 6vw, 5rem); /* Larger, more impactful */
+    line-height: 1.1;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    max-width: 1000px;
+    color: #ffffff !important; /* Force white override */
+    text-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+.hero-text {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 700px;
+    margin-bottom: 3rem;
+    line-height: 1.8;
+    font-weight: 300;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* White Outline Button for Dark Backgrounds */
+.btn-outline-white {
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    color: #ffffff;
+    padding: 0.8rem 2.5rem;
+    border-radius: 50px; /* Pill shape */
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.btn-outline-white:hover {
+    background: #ffffff;
+    color: var(--primary);
+    border-color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Primary Button Tweak for Hero */
+.hero-btn-primary {
+    background: #ffffff;
+    color: var(--primary);
+    border: 2px solid #ffffff;
+    padding: 0.8rem 2.5rem;
+    border-radius: 50px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.hero-btn-primary:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(202, 138, 4, 0.3);
+}
+
