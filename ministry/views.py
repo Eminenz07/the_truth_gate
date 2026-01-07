@@ -6,6 +6,10 @@ def testimony_detail(request, pk):
     testimony = get_object_or_404(Testimony, pk=pk, is_approved=True)
     return render(request, 'ministry/testimony_detail.html', {'testimony': testimony})
 
+def testimony_list(request):
+    testimonies = Testimony.objects.filter(is_approved=True).order_by('-created_at')
+    return render(request, 'ministry/testimony_list.html', {'testimonies': testimonies})
+
 def submit_testimony(request):
     if request.method == 'POST':
         name = request.POST.get('name', '')

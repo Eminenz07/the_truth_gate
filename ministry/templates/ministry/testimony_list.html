@@ -1,0 +1,95 @@
+{% extends 'core/base.html' %} 
+
+{% block title %}Testimonies - The Truth Gate{% endblock %}
+
+{% block content %}
+<section class="reveal" style="padding: 6rem 1.5rem; background: var(--bg-body)">
+  <div class="container" style="max-width: 1000px">
+    <div style="text-align: center; margin-bottom: 4rem">
+      <h1
+        style="
+          font-family: var(--font-heading);
+          font-size: 2.5rem;
+          color: var(--secondary);
+          margin-bottom: 1rem;
+        "
+      >
+        Stories of Grace
+      </h1>
+      <p style="font-size: 1.1rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto">
+        Read how God is moving in the lives of His people. We overcome by the blood of the Lamb and the word of our testimony.
+      </p>
+      <div style="margin-top: 2rem">
+        <a href="{% url 'submit_testimony' %}" class="btn-primary">Share Your Story</a>
+      </div>
+    </div>
+
+    {% if testimonies %}
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
+      {% for testimony in testimonies %}
+      <a
+        href="{% url 'testimony_detail' testimony.pk %}"
+        class="glass-card"
+        style="
+          display: block;
+          text-decoration: none;
+          padding: 2rem;
+          border: 1px solid var(--border-color);
+          transition: transform 0.2s, box-shadow 0.2s;
+        "
+        onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-md)'"
+        onmouseout="this.style.transform='none'; this.style.boxShadow='none'"
+      >
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem">
+          <div
+            style="
+              width: 48px;
+              height: 48px;
+              background: var(--primary-dark);
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-weight: 700;
+              color: white;
+              font-size: 1.1rem;
+            "
+          >
+            {{ testimony.name|slice:":1"|default:"A" }}
+          </div>
+          <div>
+            <strong style="display: block; color: var(--primary); font-size: 1rem">
+              {{ testimony.name|default:"Anonymous" }}
+            </strong>
+             {% if testimony.location %}
+            <span style="font-size: 0.85rem; color: var(--text-secondary)">
+              {{ testimony.location }}
+            </span>
+             {% endif %}
+          </div>
+        </div>
+        
+        <p
+          style="
+            color: var(--text-primary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+          "
+        >
+          "{{ testimony.content|truncatewords:40 }}"
+        </p>
+        
+        <span style="color: var(--primary); font-size: 0.9rem; font-weight: 500">Read Full Story &rarr;</span>
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div style="text-align: center; padding: 4rem; background: white; border-radius: 8px; border: 1px dashed var(--border-color);">
+        <p style="color: var(--text-secondary); margin-bottom: 1rem;">No testimonies found yet.</p>
+        <a href="{% url 'submit_testimony' %}" style="color: var(--primary); font-weight: 600;">Be the first to share one!</a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
