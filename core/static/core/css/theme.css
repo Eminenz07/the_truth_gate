@@ -1142,3 +1142,14 @@ label {
     box-shadow: 0 4px 12px rgba(202, 138, 4, 0.3);
 }
 
+
+/* Navbar Brand Text Polish */
+.brand-text {
+    color: var(--text-primary);
+    transition: color 0.3s ease;
+}
+
+.homepage .brand-text {
+    color: #ffffff !important;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}

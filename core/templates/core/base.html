@@ -105,10 +105,10 @@
               style="height: 64px; width: auto"
             />
             <span
+              class="brand-text"
               style="
                 font-family: 'Playfair Display', serif;
                 font-weight: 700;
-                color: var(--text-primary);
                 font-size: 1.5rem;
               "
               >The Truth Gate</span
@@ -124,7 +124,7 @@
           style="margin: 0; gap: 2rem !important; align-items: center"
         >
           <li><a href="{% url 'home' %}">Home</a></li>
-          <li><a href="#about">About</a></li>
+          <li><a href="{% url 'give' %}">Donate</a></li>
           <!-- Placeholder for now -->
           <li><a href="{% url 'event_list' %}">Events</a></li>
           <li><a href="{% url 'contact' %}">Counselling</a></li>
@@ -144,22 +144,6 @@
               <a href="{% url 'sermon_list' %}">Sermon Library</a>
               <a href="{% url 'testimony_list' %}">Testimonies</a>
             </div>
-          </li>
-
-          <li>
-            <a
-              href="{% url 'give' %}"
-              class="btn-primary"
-              style="
-                padding: 0.5rem 1.25rem;
-                font-size: 0.85rem;
-                background: var(--primary-dark);
-                color: white;
-                border: none;
-              "
-            >
-              Give
-            </a>
           </li>
 
           {% if user.is_authenticated %}
