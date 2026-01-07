@@ -1,5 +1,7 @@
-{% extends 'core/base.html' %} {% load static %} {% block body_class
-%}homepage{% endblock %} {% block content %}
+{% extends 'core/base.html' %}
+{% load static %}
+{% block body_class %}homepage{% endblock %}
+{% block content %}
 <!-- Live Stream Banner -->
 {% if site_config.is_live_now %}
 <a
@@ -69,8 +71,7 @@
       max-width: 900px;
     "
   >
-    {{ site_config.hero_headline|default:"Igniting a Burning Generation On Fire
-    For Jesus" }}
+    {{ site_config.hero_headline|default:"Igniting a Burning Generation On Fire For Jesus" }}
   </h1>
 
   <p
@@ -82,9 +83,7 @@
       line-height: 1.6;
     "
   >
-    {{ site_config.hero_subtext|default:"We are a global movement raising a
-    passionate generation empowered to influence nations with the fire and truth
-    of Jesus." }}
+    {{ site_config.hero_subtext|default:"We are a global movement raising a passionate generation empowered to influence nations with the fire and truth of Jesus." }}
   </p>
 
   <div
@@ -153,9 +152,7 @@
             color: var(--text-secondary);
           "
         >
-          {{ site_config.vision_text|default:"Raising a Burning Generation.
-          Empowering young believers to live passionately for Jesus and impact
-          their world with unshakable kingdom fire." }}
+          {{ site_config.vision_text|default:"Raising a Burning Generation. Empowering young believers to live passionately for Jesus and impact their world with unshakable kingdom fire." }}
         </p>
       </div>
       <!-- Mission Cards -->
@@ -168,8 +165,7 @@
             {{ site_config.mission_title|default:"Our Mission" }}
           </h3>
           <p style="color: var(--text-secondary)">
-            {{ site_config.mission_text|default:"Raising, Building and Equipping
-            People as Kingdom Ambassadors in Every Sphere of Human Influence" }}
+            {{ site_config.mission_text|default:"Raising, Building and Equipping People as Kingdom Ambassadors in Every Sphere of Human Influence" }}
           </p>
         </div>
       </div>
