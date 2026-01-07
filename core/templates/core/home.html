@@ -1,4 +1,6 @@
-{% extends 'core/base.html' %} {% load static %} {% block content %}
+{% extends 'core/base.html' %} {% load static %} 
+{% block body_class %}homepage{% endblock %}
+{% block content %}
 <!-- Live Stream Banner -->
 {% if site_config.is_live_now %}
 <a
@@ -12,26 +14,29 @@
 {% endif %}
 
 <!-- Hero Section (YMR Style) -->
-<section
-  class="hero-ymr reveal"
-  style="
-    position: relative;
-    padding: 8rem 1.5rem 6rem;
-    text-align: center;
-    background: linear-gradient(
-      rgba(10, 25, 47, 0.9),
-      rgba(10, 25, 47, 0.95)
-    ); /* Image removed until provided */
-    background-size: cover;
-    background-position: center;
-    color: white;
-    min-height: 80vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  "
->
+  <section
+    class="hero-ymr reveal"
+    style="
+      position: relative;
+      padding: 8rem 1.5rem 6rem;
+      text-align: center;
+      background: linear-gradient(
+        rgba(10, 25, 47, 0.85),
+        rgba(10, 25, 47, 0.9)
+      ), url('{% static 'core/img/logo_branding.png' %}');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: white;
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-top: -80px; /* Pull up to sit behind navbar */
+      padding-top: calc(8rem + 80px); /* Compensate for negative margin */
+    "
+  >
   <!-- Fallback if no image -->
   <div
     style="

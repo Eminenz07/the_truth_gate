@@ -313,6 +313,36 @@ body {
     transition: all 0.3s ease;
 }
 
+/* Homepage Seamless Header */
+.homepage .site-header {
+    background-color: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-bottom: none;
+    box-shadow: none;
+    position: absolute; /* Ensures it sits on top of hero without displacing it */
+    width: 100%;
+}
+
+.homepage .site-header .logo,
+.homepage .site-header .tagline,
+.homepage .site-header .site-nav a,
+.homepage .site-header .icon-btn,
+.homepage .site-header .dropdown-trigger,
+.homepage .site-header .dropdown-trigger i {
+    color: white !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.homepage .site-header .site-nav a:hover,
+.homepage .site-header .site-nav a.active {
+    color: var(--accent) !important;
+}
+
+.homepage .site-header .site-nav a::after {
+    background-color: var(--accent);
+}
+
 /* Base Glass Class for Mobile */
 .mobile-glass {
     background: rgba(255, 255, 255, 0.85) !important;
