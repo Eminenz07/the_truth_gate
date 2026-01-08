@@ -1,46 +1,43 @@
 :root {
-    /* Override Django Defaults to force our Light Theme structure */
-    --primary: #546e7a;
-    --secondary: #666666;
-    --accent: #546e7a;
-    --primary-fg: #ffffff;
-    --body-fg: #2d2d2d;
-    --body-bg: #faf9f6;
-    --body-quiet-color: #666666;
-    --header-color: #2d2d2d;
-    --header-bg: #ffffff;
-    --link-fg: #546e7a;
-    --link-hover-color: #455a64;
-    --link-selected-fg: #546e7a;
+    /* The Truth Gate Admin Theme (Dark) */
+    --primary: #c5a059; /* Gold */
+    --secondary: #546e7a; /* Muted Blue/Grey */
+    --accent: #c5a059; /* Gold for accents */
+    
+    --primary-fg: #1a252f; /* Navy Text on Gold */
+    --body-fg: #e0e0e0; /* Light Grey Text */
+    --body-bg: #1a252f; /* Dark Navy Background */
+    --body-quiet-color: #90a4ae;
+    
+    --header-color: #ffffff;
+    --header-bg: #10151a; /* Darker Navy for Header */
+    
+    --link-fg: #81d4fa; /* Bright Blue for links */
+    --link-hover-color: #4fc3f7;
+    --link-selected-fg: #ffffff;
     
     /* Modules */
-    --module-bg: #ffffff;
-    --darkened-bg: #f8f9fa; /* For table headers/rows */
+    --module-bg: #263238; /* Dark Grey/Blue for cards */
+    --darkened-bg: #37474f; /* Slightly lighter for rows/headers */
     
     /* Borders */
-    --border-color: #eaeaea;
-    --hairline-color: #eaeaea; 
+    --border-color: #455a64;
+    --hairline-color: #37474f; 
 }
 
-/* Force Light Mode behavior regardless of OS preference */
-@media (prefers-color-scheme: dark) {
+/* Light Mode Override (if needed) */
+@media (prefers-color-scheme: light) {
     :root {
-        --primary: #546e7a;
-        --secondary: #666666;
-        --accent: #546e7a;
-        --primary-fg: #ffffff;
-        --body-fg: #2d2d2d;
         --body-bg: #faf9f6;
-        --body-quiet-color: #666666;
-        --header-color: #2d2d2d;
-        --header-bg: #ffffff;
-        --link-fg: #546e7a;
-        --link-hover-color: #455a64;
-        --link-selected-fg: #546e7a;
+        --body-fg: #2d2d2d;
         --module-bg: #ffffff;
         --darkened-bg: #f8f9fa;
         --border-color: #eaeaea;
-        --hairline-color: #eaeaea;
+        --header-bg: #ffffff;
+        --header-color: #2d2d2d;
+        --link-fg: #546e7a;
+        /* Add other light overrides if strictly necessary, 
+           but defaulting to Dark is safer based on user request. */
     }
 }
 
@@ -216,8 +213,8 @@ input[type=text], input[type=password], input[type=email], input[type=url], inpu
     padding: 0.5rem;
     font-family: var(--font-body);
     font-size: 0.95rem;
-    color: #333333 !important; /* Force visible text color */
-    background-color: #ffffff !important; /* Force white background */
+    color: var(--body-fg) !important;
+    background-color: var(--darkened-bg) !important;
 }
 
 input:focus, textarea:focus, select:focus {

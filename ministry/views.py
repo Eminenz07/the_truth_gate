@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from .models import PrayerRequest, ContactSubmission, Testimony
 
 def testimony_detail(request, pk):
@@ -10,6 +11,7 @@ def testimony_list(request):
     testimonies = Testimony.objects.filter(is_approved=True).order_by('-created_at')
     return render(request, 'ministry/testimony_list.html', {'testimonies': testimonies})
 
+@login_required
 def submit_testimony(request):
     if request.method == 'POST':
         name = request.POST.get('name', '')
@@ -24,7 +26,7 @@ def submit_testimony(request):
                 is_approved=False # Default
             )
             messages.success(request, "Your testimony has been submitted for review. Thank you for sharing!")
-            return redirect('home') # Or wherever
+            return redirect('testimony_list') # Redirect to list instead of home
         else:
              messages.error(request, "Please share your story.")
              

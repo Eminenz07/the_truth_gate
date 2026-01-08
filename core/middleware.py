@@ -7,6 +7,10 @@ class DeviceRestrictionMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
+        # Allow access if DEBUG is True (Local Development)
+        if settings.DEBUG:
+            return self.get_response(request)
+
         # Protected paths
         protected_paths = ['/admin/', '/dashboard/']
         

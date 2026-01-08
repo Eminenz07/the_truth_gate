@@ -15,16 +15,6 @@ Gate Admin{% endblock %} {% block branding %}
     --secondary: #1a252f; /* Dark Navy */
     --accent: #546e7a;
   }
-  /* Force Dark Mode for Admin */
-  @media (prefers-color-scheme: light) {
-    body {
-      filter: invert(1) hue-rotate(180deg);
-    }
-    img,
-    video {
-      filter: invert(1) hue-rotate(180deg);
-    }
-  }
 </style>
 <link rel="stylesheet" href="{% static 'admin/css/custom_admin.css' %}" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />

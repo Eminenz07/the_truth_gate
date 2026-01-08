@@ -15,7 +15,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link
@@ -124,11 +124,23 @@
           style="margin: 0; gap: 2rem !important; align-items: center"
         >
           <li><a href="{% url 'home' %}">Home</a></li>
-          <li><a href="{% url 'give' %}">Donate</a></li>
+          <li class="dropdown-wrapper">
+            <a href="#" class="dropdown-trigger">
+              Counseling
+              <i
+                class="fas fa-chevron-down"
+                style="font-size: 0.8rem; margin-left: 4px"
+              ></i>
+            </a>
+            <div class="dropdown-menu glass-card">
+              <a href="{% url 'contact' %}">Counsel</a>
+              <a href="{% url 'prayer_request' %}">Prayer Requests</a>
+              <a href="{% url 'contact' %}">Contact</a>
+            </div>
+          </li>
           <!-- Placeholder for now -->
           <li><a href="{% url 'event_list' %}">Events</a></li>
-          <li><a href="{% url 'contact' %}">Counselling</a></li>
-          <!-- Using Contact for now -->
+          <li><a href="{% url 'give' %}">Donate</a></li>
 
           <li class="dropdown-wrapper">
             <a href="#" class="dropdown-trigger"
@@ -146,32 +158,6 @@
             </div>
           </li>
 
-          {% if user.is_authenticated %}
-          <li>
-            <a href="{% url 'dashboard:home' %}" class="btn-text">Dashboard</a>
-          </li>
-          <li>
-            <form
-              action="{% url 'logout' %}"
-              method="post"
-              style="display: inline"
-            >
-              {% csrf_token %}
-              <button
-                type="submit"
-                class="btn-text"
-                style="color: var(--text-secondary)"
-              >
-                Log Out
-              </button>
-            </form>
-          </li>
-          {% else %}
-          <li>
-            <a href="{% url 'login' %}" style="font-weight: 600">Log In</a>
-          </li>
-          {% endif %}
-        </ul>
       </div>
     </header>
 
@@ -298,70 +284,40 @@
             padding-top: 1rem;
           "
         >
-          {% if user.is_authenticated %}
-          <!-- Dashboard link removed -->
-          <a
-            href="{% url 'logout' %}"
-            style="
-              display: block;
-              text-align: center;
-              margin-top: 1rem;
-              color: var(--text-secondary);
-              font-size: 0.9rem;
-            "
-            >Log Out</a
-          >
-          {% else %}
-          <a
-            href="{% url 'signup' %}"
-            class="btn-primary"
-            style="display: block; text-align: center"
-            >Join Community</a
-          >
-          <a
-            href="{% url 'login' %}"
-            style="
-              display: block;
-              text-align: center;
-              margin-top: 1rem;
-              color: var(--text-secondary);
-            "
-            >Log In</a
-          >
-          {% endif %}
-        </div>
+
       </div>
     </nav>
 
     <main class="site-main">
       {% if messages %}
-      <div class="container" style="max-width: 600px; margin-top: 1rem">
+      <div class="container" style="max-width: 800px; margin: 2rem auto 1rem;">
         {% for message in messages %}
         <div
-          class="glass-card"
+          class="flash-message"
           style="
-            padding: 1rem;
+            background: var(--bg-card); /* Solid background */
+            color: var(--text-primary);
+            padding: 1rem 1.5rem;
             margin-bottom: 1rem;
-            border-left: 4px solid var(--accent);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid {% if message.tags == 'success' %}#10b981{% elif message.tags == 'error' %}#ef4444{% else %}var(--accent){% endif %};
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 1rem;
+            opacity: 1; /* Ensure visibility */
+            position: relative;
+            z-index: 50; /* Ensure on top */
           "
         >
           {% if message.tags == 'success' %}
-          <span class="material-icons-round" style="color: #10b981"
-            >check_circle</span
-          >
+          <span class="material-icons-round" style="color: #10b981">check_circle</span>
           {% elif message.tags == 'error' %}
           <span class="material-icons-round" style="color: #ef4444">error</span>
           {% else %}
-          <span class="material-icons-round" style="color: var(--accent)"
-            >info</span
-          >
+          <span class="material-icons-round" style="color: var(--accent)">info</span>
           {% endif %}
-          <span style="color: var(--text-primary); font-size: 0.95rem"
-            >{{ message }}</span
-          >
+          <span style="font-size: 1rem; font-weight: 500;">{{ message }}</span>
         </div>
         {% endfor %}
       </div>
@@ -644,12 +600,36 @@
         document.querySelector(".mobile-drawer").classList.toggle("active");
       }
 
-      // Auto-dismiss Flash Messages
+      // Scroll Reveal Observer
       document.addEventListener("DOMContentLoaded", function () {
+        // Fallback: If observer not supported, leave elements visible
+        if (!('IntersectionObserver' in window)) return;
+
+        const observerOptions = {
+          root: null,
+          rootMargin: "0px",
+          threshold: 0.1,
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.remove("pending");
+              entry.target.classList.add("active");
+              observer.unobserve(entry.target);
+            }
+          });
+        }, observerOptions);
+
+        const revealElements = document.querySelectorAll(".reveal");
+        revealElements.forEach((el) => {
+           el.classList.add("pending"); // Hide only if JS runs
+           observer.observe(el);
+        });
+
+        // Auto-dismiss Flash Messages
         setTimeout(function () {
-          var messages = document.querySelectorAll(
-            '.glass-card[style*="border-left: 4px solid"]'
-          );
+          var messages = document.querySelectorAll('.flash-message');
           messages.forEach(function (msg) {
             msg.style.transition = "opacity 0.5s ease";
             msg.style.opacity = "0";
@@ -657,7 +637,7 @@
               msg.remove();
             }, 500);
           });
-        }, 4000); // 4 seconds
+        }, 4000);
       });
     </script>
   </body>
