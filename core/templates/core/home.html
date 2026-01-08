@@ -1,4 +1,4 @@
-{% extends 'core/base.html' %} {% load static %} {% block body_class%}homepage{% endblock %} {% block content %}
+{% extends 'core/base.html' %} {% load static %} {% block body_class%}homepage{%endblock %} {% block content %}
 <!-- Live Stream Banner -->
 {% if site_config.is_live_now %}
 <a
@@ -12,7 +12,27 @@
 {% endif %}
 
 <!-- Hero Section (YMR Style) -->
-<section class="hero-home reveal">
+<section class="hero-home reveal" style="position: relative; overflow: hidden">
+  <!-- Video Background -->
+  <video
+    autoplay
+    loop
+    muted
+    playsinline
+    style="
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+      filter: brightness(0.6); /* Darken for text readability */
+    "
+  >
+    <source src="{% static 'core/img/branding.mp4' %}" type="video/mp4" />
+  </video>
+
   <span class="hero-subtitle"> Welcome to The Truth Gate </span>
 
   <h1 class="hero-title">
@@ -198,94 +218,190 @@
 </section>
 
 <!-- Testimonies Section (Kept for Social Proof) -->
-<section class="reveal" style="padding: 6rem 1.5rem">
-  <div style="text-align: center; margin-bottom: 3rem">
-    <h3 style="font-size: 2rem; margin-bottom: 0.5rem; color: var(--secondary)">
-      Stories of Grace
-    </h3>
-    <p style="color: var(--text-secondary)">
-      See how God is moving in our lives.
-    </p>
-  </div>
-  {% if testimonies %}
-  <div
-    style="
-      display: flex;
-      overflow-x: auto;
-      gap: 1.5rem;
-      padding: 1rem;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      padding-bottom: 2rem; /* Scrollbar space */
-    "
-  >
-    {% for testimony in testimonies %}
-    <a
-      href="{% url 'testimony_detail' testimony.pk %}"
-      class="glass-card"
+<section class="reveal" style="padding: 6rem 1.5rem; background: #ffffff">
+  <div class="container" style="max-width: 1200px">
+    <!-- Section Card -->
+    <div
       style="
-        display: block;
-        text-decoration: none;
-        min-width: 320px;
-        padding: 2.5rem;
-        scroll-snap-align: center;
-        background: #ffffff;
+        background: var(--bg-body);
+        border-radius: 24px;
+        padding: 4rem 2rem;
+        box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.05);
         border: 1px solid var(--border-color);
       "
     >
-      <p
+      <!-- Header -->
+      <div
         style="
-          font-size: 1.1rem;
-          color: var(--text-primary);
-          font-style: italic;
-          margin-bottom: 1.5rem;
-          line-height: 1.6;
+          text-align: center;
+          margin-bottom: 3rem;
+          max-width: 600px;
+          margin-left: auto;
+          margin-right: auto;
         "
       >
-        "{{ testimony.content|truncatewords:25 }}"
-      </p>
-      <div style="display: flex; align-items: center; gap: 0.75rem">
-        <div
+        <h3
           style="
-            width: 40px;
-            height: 40px;
-            background: var(--primary-dark);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            color: #ffffff; /* White text on dark accent */
+            font-size: 2.25rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+            font-family: var(--font-heading);
           "
         >
-          {{ testimony.name|slice:":1" }}
-        </div>
-        <div>
-          <strong
-            style="display: block; font-size: 0.9rem; color: var(--primary)"
-            >{{ testimony.name|default:"Anonymous" }}</strong
-          >
-          <span style="font-size: 0.8rem; color: var(--text-secondary)"
-            >{{ testimony.location|default:"Member" }}</span
-          >
-        </div>
+          Stories of Grace
+        </h3>
+        <p
+          style="
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.6;
+          "
+        >
+          See how God is moving in our lives. These testimonies are a testament to His faithfulness.
+        </p>
       </div>
-    </a>
-    {% endfor %}
+
+      <!-- Testimonies List -->
+      {% if testimonies %}
+      <div
+        style="
+          display: flex;
+          overflow-x: auto;
+          gap: 1.5rem;
+          padding: 1rem 0.5rem;
+          scroll-snap-type: x mandatory;
+          -webkit-overflow-scrolling: touch;
+          padding-bottom: 2rem;
+          margin-bottom: 2rem;
+        "
+      >
+        {% for testimony in testimonies %}
+        <a
+          href="{% url 'testimony_detail' testimony.pk %}"
+          class="glass-card topic-card-v2"
+          style="
+            display: block;
+            text-decoration: none;
+            min-width: 340px;
+            padding: 2.5rem;
+            scroll-snap-align: center;
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 16px;
+            transition: transform 0.2s, box-shadow 0.2s;
+          "
+        >
+          <div style="margin-bottom: 1.5rem">
+            <span
+              style="
+                font-size: 3rem;
+                line-height: 1;
+                color: var(--accent);
+                opacity: 0.3;
+                font-family: serif;
+              "
+              >&ldquo;</span
+            >
+          </div>
+          <p
+            style="
+              font-size: 1.1rem;
+              color: var(--text-primary);
+              font-style: italic;
+              margin-bottom: 1.5rem;
+              line-height: 1.6;
+              min-height: 80px;
+            "
+          >
+            {{ testimony.content|truncatewords:25 }}
+          </p>
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              gap: 0.75rem;
+              border-top: 1px solid var(--border-color);
+              padding-top: 1rem;
+            "
+          >
+            <div
+              style="
+                width: 45px;
+                height: 45px;
+                background: var(--primary);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 700;
+                color: #ffffff;
+                font-size: 1.1rem;
+              "
+            >
+              {{ testimony.name|slice:":1" }}
+            </div>
+            <div>
+              <strong
+                style="display: block; font-size: 1rem; color: var(--secondary)"
+                >{{ testimony.name|default:"Anonymous" }}</strong
+              >
+              <span style="font-size: 0.85rem; color: var(--text-secondary)">{{ testimony.location|default:"Member" }}</span
+              >
+            </div>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+
+      <!-- Action Buttons -->
+      <div
+        style="
+          text-align: center;
+          display: flex;
+          gap: 1rem;
+          justify-content: center;
+          flex-wrap: wrap;
+        "
+      >
+        <a
+          href="{% url 'testimony_list' %}"
+          class="btn-primary"
+          style="padding: 0.75rem 2rem"
+        >
+          Read More Stories
+        </a>
+        <a
+          href="{% url 'submit_testimony' %}"
+          class="btn-outline"
+          style="padding: 0.75rem 2rem; background: white"
+        >
+          Share Your Story
+        </a>
+      </div>
+
+      {% else %}
+      <div
+        style="
+          padding: 4rem;
+          text-align: center;
+          max-width: 600px;
+          margin: 0 auto;
+        "
+      >
+        <p
+          style="
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+          "
+        >
+          God is moving in our midst. We are waiting to hear your story.
+        </p>
+        <a href="{% url 'submit_testimony' %}" class="btn-primary">Share Your Testimony</a>
+      </div>
+      {% endif %}
+    </div>
   </div>
-  {% else %}
-  <div
-    class="glass-card"
-    style="padding: 3rem; text-align: center; max-width: 600px; margin: 0 auto"
-  >
-    <p style="margin-bottom: 1.5rem; color: var(--text-secondary)">
-      God is moving in our midst. Use your story to encourage others.
-    </p>
-    <a href="{% url 'submit_testimony' %}" class="btn-primary"
-      >Share Your Testimony</a
-    >
-  </div>
-  {% endif %}
 </section>
 
 <style>
