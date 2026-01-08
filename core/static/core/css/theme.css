@@ -124,6 +124,7 @@ body {
     transform: translateX(-50%) translateY(0);
 }
 
+.homepage .site-header .dropdown-menu a,
 .dropdown-menu a {
     display: block;
     padding: 0.85rem 1.5rem;
