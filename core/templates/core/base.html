@@ -161,130 +161,50 @@
       </div>
     </header>
 
+        <!-- Mobile Floating Toggle -->
+    <button class="floating-menu-btn" onclick="toggleMobileMenu()" aria-label="Menu">
+      <i class="fas fa-bars"></i>
+    </button>
+
     <!-- Mobile Drawer -->
     <div class="mobile-overlay" onclick="toggleMobileMenu()"></div>
-    <nav
-      class="mobile-drawer"
-      style="
-        padding: 2rem 1.5rem;
-        background: var(--bg-body);
-        border-right: 1px solid var(--border-color);
-      "
-    >
-      <div
-        style="
-          margin-bottom: 2rem;
-          padding-bottom: 1rem;
-          border-bottom: 1px solid var(--border-color);
-        "
-      >
-        <span
-          style="
-            font-family: var(--font-heading);
-            font-size: 1.5rem;
-            color: var(--text-primary);
-          "
-          >The Truth Gate</span
-        >
+    <nav class="mobile-drawer">
+      <div class="drawer-header">
+        <span class="brand-text">The Truth Gate</span>
+        <button class="close-btn" onclick="toggleMobileMenu()">
+          <i class="fas fa-times"></i>
+        </button>
       </div>
 
-      <div style="display: flex; flex-direction: column; gap: 0.5rem">
-        <a
-          href="{% url 'home' %}"
-          style="
-            padding: 0.75rem 0;
-            font-size: 1.1rem;
-            font-weight: 500;
-            color: var(--text-primary);
-            text-decoration: none;
-          "
-          >Home</a
-        >
-
-        <div
-          style="
-            margin-top: 1rem;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            color: var(--text-secondary);
-            letter-spacing: 0.05em;
-            font-weight: 600;
-          "
-        >
-          Content
+      <div class="drawer-links">
+        <a href="{% url 'home' %}" class="drawer-link">Home</a>
+        
+        <!-- Counseling Dropdown -->
+        <div class="drawer-accordion">
+          <button class="accordion-trigger" onclick="toggleDrawerAccordion(this)">
+            Counseling <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="accordion-content">
+            <a href="{% url 'contact' %}">Counsel</a>
+            <a href="{% url 'prayer_request' %}">Prayer Requests</a>
+            <a href="{% url 'contact' %}">Contact</a>
+          </div>
         </div>
-        <a
-          href="{% url 'sermon_list' %}"
-          style="
-            padding: 0.5rem 0;
-            font-size: 1rem;
-            color: var(--text-primary);
-            text-decoration: none;
-          "
-          >Sermons</a
-        >
-        <a
-          href="{% url 'event_list' %}"
-          style="
-            padding: 0.5rem 0;
-            font-size: 1rem;
-            color: var(--text-primary);
-            text-decoration: none;
-          "
-          >Events</a
-        >
 
-        <div
-          style="
-            margin-top: 1rem;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            color: var(--text-secondary);
-            letter-spacing: 0.05em;
-            font-weight: 600;
-          "
-        >
-          Connect
+        <a href="{% url 'event_list' %}" class="drawer-link">Events</a>
+        <a href="{% url 'give' %}" class="drawer-link">Donate</a>
+
+        <!-- Resources Dropdown -->
+        <div class="drawer-accordion">
+          <button class="accordion-trigger" onclick="toggleDrawerAccordion(this)">
+            Resources <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="accordion-content">
+            <a href="#">Watch Live</a>
+            <a href="{% url 'sermon_list' %}">Sermon Library</a>
+            <a href="{% url 'testimony_list' %}">Testimonies</a>
+          </div>
         </div>
-        <a
-          href="{% url 'give' %}"
-          style="
-            padding: 0.5rem 0;
-            font-size: 1rem;
-            color: var(--text-primary);
-            text-decoration: none;
-          "
-          >Give</a
-        >
-        <a
-          href="{% url 'prayer_request' %}"
-          style="
-            padding: 0.5rem 0;
-            font-size: 1rem;
-            color: var(--text-primary);
-            text-decoration: none;
-          "
-          >Prayer</a
-        >
-        <a
-          href="{% url 'contact' %}"
-          style="
-            padding: 0.5rem 0;
-            font-size: 1rem;
-            color: var(--text-primary);
-            text-decoration: none;
-          "
-          >Contact</a
-        >
-
-        <div
-          style="
-            margin-top: 1rem;
-            border-top: 1px solid var(--border-color);
-            padding-top: 1rem;
-          "
-        >
-
       </div>
     </nav>
 
@@ -598,6 +518,11 @@
       function toggleMobileMenu() {
         document.querySelector(".mobile-overlay").classList.toggle("active");
         document.querySelector(".mobile-drawer").classList.toggle("active");
+      }
+
+      function toggleDrawerAccordion(trigger) {
+          const parent = trigger.parentElement;
+          parent.classList.toggle('active');
       }
 
       // Scroll Reveal Observer
