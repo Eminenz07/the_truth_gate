@@ -1077,17 +1077,8 @@ label {
     align-items: center;
     color: #ffffff;
     
-    /* Dynamic Background */
-    background: linear-gradient(
-        135deg,
-        rgba(15, 23, 42, 0.95) 0%,   /* Darker Slate 900 */
-        rgba(30, 41, 59, 0.9) 100%   /* Slate 800 */
-    ),
-    url('../img/logo_branding.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+    /* Dynamic Background removed - using video overlay */
+    background: #0f172a; /* Solid fallback color */
 }
 
 .hero-subtitle {
@@ -1503,4 +1494,24 @@ label {
 .bottom-nav,
 .mobile-header {
   display: none !important;
+}
+
+/* FORCE DROPDOWN TEXT COLOR */
+.homepage .site-header .dropdown-menu a,
+html body .dropdown-menu a {
+    color: #0f172a !important; /* Always dark text */
+    font-size: 0.95rem; /* Ensure readable size */
+}
+
+.dropdown-menu a:hover {
+    color: var(--accent) !important;
+}
+
+/* EQUALIZE MOBILE DRAWER FONTS */
+.mobile-drawer .drawer-links .drawer-link,
+.mobile-drawer .drawer-links .accordion-trigger,
+.mobile-drawer .drawer-links .accordion-content a {
+    font-size: 1.25rem !important;
+    font-family: var(--font-heading) !important;
+    color: var(--text-primary);
 }
