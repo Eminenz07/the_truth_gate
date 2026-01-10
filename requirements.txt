@@ -3,6 +3,6 @@ gunicorn
 whitenoise[brotli]
 dj-database-url
 psycopg2-binary
-django-ckeditor
+django_ckeditor_5
 Pillow
-dotenv
+python-dotenv
