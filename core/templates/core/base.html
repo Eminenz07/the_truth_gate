@@ -149,7 +149,7 @@
               ></i
             ></a>
             <div class="dropdown-menu glass-card">
-              <a href="#">Watch Live</a>
+              <a href="{% url 'watch_live' %}">Watch Live</a>
               <!-- Needs Live link -->
               <a href="{% url 'sermon_list' %}">Sermon Library</a>
               <a href="{% url 'testimony_list' %}">Testimonies</a>
@@ -198,7 +198,7 @@
             Resources <i class="fas fa-chevron-down"></i>
           </button>
           <div class="accordion-content">
-            <a href="#">Watch Live</a>
+            <a href="{% url 'watch_live' %}">Watch Live</a>
             <a href="{% url 'sermon_list' %}">Sermon Library</a>
             <a href="{% url 'testimony_list' %}">Testimonies</a>
           </div>

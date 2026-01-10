@@ -1,0 +1,141 @@
+{% extends 'core/base.html' %} {% load static %} {% block header_title %}Watch
+Live | The Truth Gate{% endblock %} {% block content %}
+<style>
+  .live-wrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    height: 0;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    background: #000;
+  }
+  .live-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  .placeholder-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+    color: white;
+    text-align: center;
+    padding: 2rem;
+  }
+</style>
+
+<section
+  style="
+    background: var(--primary-dark);
+    padding: 8rem 1.5rem 6rem;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+  "
+>
+  <div class="container" style="max-width: 1000px; width: 100%">
+    <div style="text-align: center; margin-bottom: 3rem" class="reveal">
+      <h1
+        style="
+          color: white;
+          font-family: var(--font-heading);
+          font-size: 2.5rem;
+          margin-bottom: 1rem;
+        "
+      >
+        Live Service
+      </h1>
+      <p
+        style="
+          color: rgba(255, 255, 255, 0.8);
+          font-size: 1.1rem;
+          max-width: 600px;
+          margin: 0 auto;
+        "
+      >
+        Join us as we worship and encounter the presence of God.
+      </p>
+    </div>
+
+    <div class="live-wrapper reveal" style="transition-delay: 0.2s">
+      {% if site_config.live_stream_url %}
+      <iframe
+        src="{{ site_config.live_stream_url }}"
+        title="Live Stream"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      >
+      </iframe>
+      {% else %}
+      <div class="placeholder-screen">
+        <i
+          class="material-icons-round"
+          style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.5"
+          >cloud_off</i
+        >
+        <h3 style="margin-bottom: 0.5rem">Stream Offline</h3>
+        <p style="opacity: 0.7">
+          There is no active live stream at the moment.<br />Please check back
+          during our scheduled service times.
+        </p>
+      </div>
+      {% endif %}
+    </div>
+
+    {% if site_config.is_live_now %}
+    <div style="text-align: center; margin-top: 2rem" class="reveal">
+      <span
+        style="
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          background: #ef4444;
+          color: white;
+          padding: 0.5rem 1rem;
+          border-radius: 50px;
+          font-weight: 600;
+          font-size: 0.9rem;
+        "
+      >
+        <span
+          class="pulse-icon"
+          style="
+            height: 8px;
+            width: 8px;
+            background: white;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+          "
+        ></span>
+        LIVE NOW
+      </span>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  @keyframes pulse {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+</style>
+{% endblock %}

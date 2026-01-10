@@ -59,3 +59,6 @@ def contact(request):
 
 def give(request):
     return render(request, 'core/give.html')
+
+def watch_live(request):
+    return render(request, 'core/watch_live.html')
