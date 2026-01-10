@@ -8,7 +8,7 @@ def signup(request):
         form = SignUpForm(request.POST)  # Use SignUpForm
         if form.is_valid():
             user = form.save()
-            login(request, user)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             # User requested no welcome toast, homepage is enough
             
             # Newsletter Subscription Logic
