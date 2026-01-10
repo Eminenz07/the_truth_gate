@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
 from django_ckeditor_5.fields import CKEditor5Field
+from core.validators import validate_image_size
 
 class Event(models.Model):
     title = models.CharField(max_length=200)
@@ -9,7 +10,7 @@ class Event(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     location = models.CharField(max_length=200, default="Main Sanctuary")
-    image = models.ImageField(upload_to='events/', blank=True, null=True)
+    image = models.ImageField(upload_to='events/', blank=True, null=True, validators=[validate_image_size])
     
     is_recurring = models.BooleanField(default=False)
     recurrence_rule = models.CharField(max_length=100, blank=True, help_text="e.g. 'Weekly on Sundays'")

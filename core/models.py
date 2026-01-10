@@ -58,3 +58,16 @@ class Sermon(models.Model):
 
     def __str__(self):
         return self.title
+
+class NewsletterSubscriber(models.Model):
+    email = models.EmailField(unique=True)
+    is_subscribed = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.email
+
+from auditlog.registry import auditlog
+auditlog.register(Category)
+auditlog.register(Sermon)
+auditlog.register(NewsletterSubscriber)

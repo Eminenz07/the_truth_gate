@@ -12,7 +12,7 @@ class DeviceRestrictionMiddleware:
             return self.get_response(request)
 
         # Protected paths
-        protected_paths = ['/admin/', '/dashboard/']
+        protected_paths = ['/gatekeeper/', '/dashboard/']
         
         # Check if current path matches any protected path
         is_protected = any(request.path.startswith(path) for path in protected_paths)

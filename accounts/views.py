@@ -11,6 +11,11 @@ def signup(request):
             login(request, user)
             # User requested no welcome toast, homepage is enough
             
+            # Newsletter Subscription Logic
+            if form.cleaned_data.get('subscribe_newsletter'):
+                from core.models import NewsletterSubscriber
+                NewsletterSubscriber.objects.get_or_create(email=user.email)
+            
             # Smart Redirect (Handle 'next' parameter)
             next_url = request.GET.get('next')
             if next_url:

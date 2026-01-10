@@ -1,12 +1,13 @@
 from django.db import models
 from django.utils.text import slugify
 from django_ckeditor_5.fields import CKEditor5Field
+from core.validators import validate_file_size, validate_image_size, validate_audio_extension
 
 class Speaker(models.Model):
     name = models.CharField(max_length=100)
     title = models.CharField(max_length=100, blank=True)
     bio = models.TextField(blank=True)
-    photo = models.ImageField(upload_to='speakers/', blank=True, null=True)
+    photo = models.ImageField(upload_to='speakers/', blank=True, null=True, validators=[validate_image_size])
 
     def __str__(self):
         return self.name
@@ -27,7 +28,7 @@ class Series(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True, blank=True)
     description = models.TextField(blank=True)
-    image = models.ImageField(upload_to='series/', blank=True, null=True)
+    image = models.ImageField(upload_to='series/', blank=True, null=True, validators=[validate_image_size])
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
 
@@ -68,7 +69,7 @@ class Sermon(models.Model):
     # Types & Media
     sermon_type = models.CharField(max_length=10, choices=TYPE_CHOICES, default='video')
     video_url = models.URLField(blank=True, help_text="YouTube or Vimeo link")
-    audio_file = models.FileField(upload_to='sermons/audio/', blank=True, null=True, help_text="Upload MP3")
+    audio_file = models.FileField(upload_to='sermons/audio/', blank=True, null=True, help_text="Upload MP3", validators=[validate_file_size, validate_audio_extension])
     
     # Content (Rich Text)
     description = models.TextField(help_text="Short summary for cards")

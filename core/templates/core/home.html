@@ -1,15 +1,5 @@
 {% extends 'core/base.html' %} {% load static %} {% block body_class%}homepage{%endblock %} {% block content %}
-<!-- Live Stream Banner -->
-{% if site_config.is_live_now %}
-<a
-  href="{{ site_config.live_stream_url }}"
-  target="_blank"
-  class="live-banner reveal"
->
-  <span class="pulse-icon"></span>
-  LIVE NOW: Join the Service &rarr;
-</a>
-{% endif %}
+
 
 <!-- Hero Section (YMR Style) -->
 <section class="hero-home reveal" style="position: relative; overflow: hidden">
@@ -35,6 +25,26 @@
 
   <span class="hero-subtitle"> Welcome to The Truth Gate </span>
 
+  <!-- Live Stream Banner -->
+  {% if site_config.is_live_now %}
+  <a
+    href="{{ site_config.live_stream_url }}"
+    target="_blank"
+    class="live-banner reveal"
+    style="margin-bottom: 2rem; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; background: #e63946; color: white; padding: 0.5rem 1.5rem; border-radius: 50px; text-decoration: none; font-weight: 600;"
+  >
+    <span class="pulse-icon" style="height: 10px; width: 10px; background: white; border-radius: 50%; display: inline-block; animation: pulse 1.5s infinite;"></span>
+    LIVE NOW: Join the Service &rarr;
+  </a>
+  <style>
+      @keyframes pulse {
+          0% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.5; transform: scale(1.2); }
+          100% { opacity: 1; transform: scale(1); }
+      }
+  </style>
+  {% endif %}
+
   <h1 class="hero-title">
     {{ site_config.hero_headline|default:"Igniting a Burning Generation On Fire For Jesus" }}
   </h1>
@@ -47,9 +57,12 @@
     <a href="{% url 'sermon_list' %}" class="hero-btn-primary">
       Explore Sermons
     </a>
+    {% if not user.is_authenticated %}
     <a href="{% url 'signup' %}" class="btn-outline-white">
       Join the Community
     </a>
+    {% endif %}
+  </div>
   </div>
 </section>
 

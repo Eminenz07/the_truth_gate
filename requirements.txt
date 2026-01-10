@@ -7,3 +7,9 @@ django_ckeditor_5
 Pillow
 python-dotenv
 requests
+argon2-cffi==25.1.0
+argon2-cffi-bindings==25.1.0
+bleach==6.3.0
+django-csp==4.0
+django-axes==8.1.0
+django-auditlog==3.4.1

@@ -51,3 +51,9 @@ class Donation(models.Model):
 
     def __str__(self):
         return f"{self.reference} - {self.email} - {self.amount}"
+
+from auditlog.registry import auditlog
+auditlog.register(PrayerRequest)
+auditlog.register(ContactSubmission)
+auditlog.register(Testimony)
+auditlog.register(Donation)

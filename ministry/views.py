@@ -13,6 +13,8 @@ import logging
 import hmac
 import hashlib
 
+import bleach
+
 logger = logging.getLogger(__name__)
 
 # --- Existing Views ---
@@ -24,7 +26,10 @@ def submit_testimony(request):
         location = request.POST.get('location')
         content = request.POST.get('content')
         
-        Testimony.objects.create(name=name, location=location, content=content)
+        # Sanitize HTML
+        clean_content = bleach.clean(content, tags=['b', 'i', 'p', 'br', 'strong', 'em'], strip=True)
+        
+        Testimony.objects.create(name=name, location=location, content=clean_content)
         messages.success(request, "Your testimony has been submitted for review. Thank you for sharing!")
         # Redirect to the testimony submission page to show the success message in context
         return redirect('testimony_list') 
@@ -171,6 +176,11 @@ def paystack_webhook(request):
                 logger.error(f"Webhook received for unknown reference: {reference}")
                 return HttpResponse(status=200) # Ack to stop retries even if not found
 
+            # 1. Idempotency Check (Prevent duplicate processing)
+            if donation.status == 'SUCCESS':
+                logger.info(f"Duplicate webhook received for already successful donation: {reference}")
+                return HttpResponse(status=200)
+
             # Double Verify via API (Defense in Depth)
             headers = {"Authorization": f"Bearer {settings.PAYSTACK_SECRET_KEY}"}
             verify_url = f"https://api.paystack.co/transaction/verify/{reference}"
@@ -178,6 +188,26 @@ def paystack_webhook(request):
             v_data = v_response.json()
 
             if v_data['status'] and v_data['data']['status'] == 'success':
+                 # 2. Strict Amount & Currency Verification
+                 paid_amount_kobo = v_data['data']['amount'] # Paystack returns Kobo (Integer)
+                 paid_currency = v_data['data']['currency']
+                 
+                 # Convert our stored Decimal Naira to Kobo Integer for comparison
+                 expected_amount_kobo = int(donation.amount * 100)
+
+                 if paid_currency != 'NGN':
+                     logger.error(f"Invalid Currency for {reference}: Expected NGN, Got {paid_currency}")
+                     donation.status = 'FAILED'
+                     donation.save()
+                     return HttpResponse(status=200)
+
+                 if paid_amount_kobo != expected_amount_kobo:
+                     logger.critical(f"FRAUD ATTEMPT: Amount Mismatch for {reference}. Expected {expected_amount_kobo}, Paid {paid_amount_kobo}")
+                     donation.status = 'FAILED' # Or 'FRAUD_SUSPECTED'
+                     donation.save()
+                     return HttpResponse(status=200) # Ack Paystack to stop retrying, but don't give value.
+
+                 # All Checks Passed
                  donation.status = 'SUCCESS'
                  donation.verified = True
                  donation.paystack_ref = str(data.get('id')) # Store Paystack ID
