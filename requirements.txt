@@ -6,3 +6,4 @@ psycopg2-binary
 django_ckeditor_5
 Pillow
 python-dotenv
+requests
