@@ -37,7 +37,9 @@ Live | The Truth Gate{% endblock %} {% block content %}
 
 <section
   style="
-    background: var(--primary-dark);
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), {% if site_config.live_page_background %}url('{{ site_config.live_page_background.url }}'){% else %}var(--primary-dark){% endif %};
+    background-size: cover;
+    background-position: center;
     padding: 8rem 1.5rem 6rem;
     min-height: 80vh;
     display: flex;
@@ -71,7 +73,7 @@ Live | The Truth Gate{% endblock %} {% block content %}
     <div class="live-wrapper reveal" style="transition-delay: 0.2s">
       {% if site_config.live_stream_url %}
       <iframe
-        src="{{ site_config.live_stream_url }}"
+        src="{{ site_config.embed_url }}"
         title="Live Stream"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen
@@ -84,7 +86,7 @@ Live | The Truth Gate{% endblock %} {% block content %}
           style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.5"
           >cloud_off</i
         >
-        <h3 style="margin-bottom: 0.5rem">Stream Offline</h3>
+        <h3 style="margin-bottom: 0.5rem; color: #f59e0b">Stream Offline</h3>
         <p style="opacity: 0.7">
           There is no active live stream at the moment.<br />Please check back
           during our scheduled service times.

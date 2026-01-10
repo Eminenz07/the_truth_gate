@@ -7,9 +7,10 @@ from .models import SiteSettings
 class SiteSettingsForm(forms.ModelForm):
     class Meta:
         model = SiteSettings
-        fields = ['live_stream_url', 'is_live_now', 'giving_enabled', 'flutterwave_public_key', 'facebook_url', 'instagram_url', 'youtube_url', 'x_url']
+        fields = ['live_stream_url', 'live_page_background', 'is_live_now', 'giving_enabled', 'flutterwave_public_key', 'facebook_url', 'instagram_url', 'youtube_url', 'x_url']
         widgets = {
             'live_stream_url': forms.URLInput(attrs={'class': 'form-input', 'placeholder': 'https://youtube.com/embed/...'}),
+            'live_page_background': forms.FileInput(attrs={'class': 'form-input'}),
             'is_live_now': forms.CheckboxInput(attrs={'class': 'form-checkbox'}),
             'giving_enabled': forms.CheckboxInput(attrs={'class': 'form-checkbox'}),
             'flutterwave_public_key': forms.TextInput(attrs={'class': 'form-input'}),

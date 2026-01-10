@@ -1,5 +1,6 @@
-{% extends 'dashboard/base.html' %} {% block header_title %}Settings{% endblock%} {% block content %}
-<form method="post" style="max-width: 600px">
+{% extends 'dashboard/base.html' %} {% block header_title %}Settings{%
+endblock%} {% block content %}
+<form method="post" enctype="multipart/form-data" style="max-width: 600px">
   {% csrf_token %}
   <div class="card">
     {% if form.errors %}
@@ -40,7 +41,15 @@
       <div
         style="font-size: 0.8rem; color: var(--text-light); margin-top: 0.25rem"
       >
-        YouTube or Facebook embed link
+        YouTube Link (e.g. youtube.com/watch?v=...)
+      </div>
+    </div>
+    <div class="form-group">
+      {{ form.live_page_background.label_tag }} {{ form.live_page_background }}
+      <div
+        style="font-size: 0.8rem; color: var(--text-light); margin-top: 0.25rem"
+      >
+        Upload a background image for the live page.
       </div>
     </div>
   </div>
@@ -70,7 +79,8 @@
       </label>
     </div>
     <div class="form-group">
-      {{ form.flutterwave_public_key.label_tag }} {{ form.flutterwave_public_key }}
+      {{ form.flutterwave_public_key.label_tag }} {{ form.flutterwave_public_key
+      }}
     </div>
   </div>
 

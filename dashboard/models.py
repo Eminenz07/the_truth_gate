@@ -16,7 +16,7 @@ class SiteSettings(models.Model):
     
     # Live Stream
     live_stream_url = models.URLField(blank=True, help_text="YouTube or generic stream link")
-    live_stream_url = models.URLField(blank=True, help_text="YouTube or generic stream link")
+    live_page_background = models.ImageField(upload_to="core/backgrounds/", blank=True, null=True, help_text="Background image for the Watch Live page")
     is_live_now = models.BooleanField(default=False)
 
     # Social Media
@@ -36,6 +36,36 @@ class SiteSettings(models.Model):
             # If you try to save a new instance, replace the old one
             return 
         return super(SiteSettings, self).save(*args, **kwargs)
+
+    @property
+    def embed_url(self):
+        """
+        Smartly converts standard YouTube URLs to Embed URLs.
+        e.g. youtube.com/watch?v=XYZ -> youtube.com/embed/XYZ
+        e.g. youtu.be/XYZ -> youtube.com/embed/XYZ
+        """
+        if not self.live_stream_url:
+            return ""
+        
+        url = self.live_stream_url
+        
+        # Handle YouTube Watch URL
+        if "youtube.com/watch" in url:
+            import urllib.parse
+            parsed = urllib.parse.urlparse(url)
+            params = urllib.parse.parse_qs(parsed.query)
+            if 'v' in params:
+                video_id = params['v'][0]
+                return f"https://www.youtube.com/embed/{video_id}"
+        
+        # Handle YouTube Short Link
+        if "youtu.be/" in url:
+            video_id = url.split("youtu.be/")[-1].split("?")[0]
+            return f"https://www.youtube.com/embed/{video_id}"
+            
+        # Handle YouTube Live/Embed already
+        # Return as is if it looks like an embed or other provider
+        return url
 
     @classmethod
     def load(cls):
