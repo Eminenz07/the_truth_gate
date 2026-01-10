@@ -1,14 +1,16 @@
 {% extends 'core/base.html' %} {% load static %} {% block body_class%}homepage{%endblock %} {% block content %}
 
 
+
+
 <!-- Hero Section (YMR Style) -->
 <section class="hero-home reveal" style="position: relative; overflow: hidden">
   <!-- Video Background -->
   <video
     autoplay
-    loop
     muted
     playsinline
+    id="hero-video"
     style="
       position: absolute;
       top: 0;
@@ -22,6 +24,32 @@
   >
     <source src="{% static 'core/img/branding.mp4' %}" type="video/mp4" />
   </video>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const video = document.getElementById("hero-video");
+      let playCount = 1; // Starts with autoplay
+      const maxPlays = 3;
+
+      if(video) {
+        // Defensive: Force loop off
+        video.loop = false;
+        video.removeAttribute('loop');
+        
+        console.log("Video initialized. Play count: " + playCount);
+
+        video.addEventListener('ended', function() {
+          if (playCount < maxPlays) {
+            playCount++;
+            console.log("Replaying video. Play count: " + playCount);
+            video.play();
+          } else {
+            console.log("Max plays reached. Stopping video.");
+            video.pause(); // Just to be sure
+          }
+        });
+      }
+    });
+  </script>
 
   <span class="hero-subtitle"> Welcome to The Truth Gate </span>
 
@@ -44,6 +72,8 @@
       }
   </style>
   {% endif %}
+
+
 
   <h1 class="hero-title">
     {{ site_config.hero_headline|default:"Igniting a Burning Generation On Fire For Jesus" }}

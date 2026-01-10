@@ -16,7 +16,14 @@ class SiteSettings(models.Model):
     
     # Live Stream
     live_stream_url = models.URLField(blank=True, help_text="YouTube or generic stream link")
+    live_stream_url = models.URLField(blank=True, help_text="YouTube or generic stream link")
     is_live_now = models.BooleanField(default=False)
+
+    # Social Media
+    facebook_url = models.URLField(blank=True, default="https://facebook.com")
+    instagram_url = models.URLField(blank=True, default="https://instagram.com")
+    youtube_url = models.URLField(blank=True, default="https://youtube.com")
+    x_url = models.URLField(blank=True, default="https://x.com", help_text="X (formerly Twitter) URL")
     
     giving_enabled = models.BooleanField(default=True)
     flutterwave_public_key = models.CharField(max_length=100, blank=True)

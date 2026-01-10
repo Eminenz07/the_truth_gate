@@ -46,7 +46,29 @@
       >
         {% for error in form.non_field_errors %} {{ error }} {% endfor %}
       </div>
-      {% endif %} {% for field in form %}
+      {% endif %} {% for field in form %} {% if field.name == 'subscribe_newsletter' %}
+      <div
+        class="form-group"
+        style="
+          margin-bottom: 1.5rem;
+          display: flex;
+          align-items: center;
+          gap: 0.8rem;
+        "
+      >
+        {{ field }}
+        <label
+          for="{{ field.id_for_label }}"
+          style="
+            margin-bottom: 0;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+          "
+          >{{ field.label }}</label
+        >
+      </div>
+      {% else %}
       <div class="form-group" style="margin-bottom: 1.5rem">
         <label
           for="{{ field.id_for_label }}"
@@ -86,7 +108,7 @@
         </ul>
         {% endif %}
       </div>
-      {% endfor %}
+      {% endif %} {% endfor %}
 
       <button
         type="submit"

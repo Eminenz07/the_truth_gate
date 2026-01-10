@@ -7,12 +7,16 @@ from .models import SiteSettings
 class SiteSettingsForm(forms.ModelForm):
     class Meta:
         model = SiteSettings
-        fields = ['live_stream_url', 'is_live_now', 'giving_enabled', 'flutterwave_public_key']
+        fields = ['live_stream_url', 'is_live_now', 'giving_enabled', 'flutterwave_public_key', 'facebook_url', 'instagram_url', 'youtube_url', 'x_url']
         widgets = {
             'live_stream_url': forms.URLInput(attrs={'class': 'form-input', 'placeholder': 'https://youtube.com/embed/...'}),
             'is_live_now': forms.CheckboxInput(attrs={'class': 'form-checkbox'}),
             'giving_enabled': forms.CheckboxInput(attrs={'class': 'form-checkbox'}),
             'flutterwave_public_key': forms.TextInput(attrs={'class': 'form-input'}),
+            'facebook_url': forms.URLInput(attrs={'class': 'form-input', 'placeholder': 'https://facebook.com/...'}),
+            'instagram_url': forms.URLInput(attrs={'class': 'form-input', 'placeholder': 'https://instagram.com/...'}),
+            'youtube_url': forms.URLInput(attrs={'class': 'form-input', 'placeholder': 'https://youtube.com/...'}),
+            'x_url': forms.URLInput(attrs={'class': 'form-input', 'placeholder': 'https://x.com/...'}),
         }
 
 class ContentSettingsForm(forms.ModelForm):
