@@ -1,5 +1,5 @@
 from django import forms
-from ckeditor.widgets import CKEditorWidget
+from django_ckeditor_5.widgets import CKEditor5Widget
 from sermons.models import Sermon
 from events.models import Event
 from .models import SiteSettings
@@ -33,7 +33,7 @@ class ContentSettingsForm(forms.ModelForm):
         }
 
 class SermonForm(forms.ModelForm):
-    notes = forms.CharField(widget=CKEditorWidget())
+    notes = forms.CharField(widget=CKEditor5Widget(config_name='default'))
     date_preached = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
 
     class Meta:
@@ -93,7 +93,7 @@ class SermonForm(forms.ModelForm):
         return cleaned_data
 
 class EventForm(forms.ModelForm):
-    description = forms.CharField(widget=CKEditorWidget())
+    description = forms.CharField(widget=CKEditor5Widget(config_name='default'))
     start_time = forms.DateTimeField(
         widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}),
         input_formats=['%Y-%m-%dT%H:%M']

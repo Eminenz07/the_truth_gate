@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 class PrayerRequest(models.Model):
     name = models.CharField(max_length=100, help_text="Leave blank for anonymous requests", blank=True)
@@ -31,3 +32,22 @@ class Testimony(models.Model):
 
     def __str__(self):
         return f"Testimony by {self.name or 'Anonymous'} ({'Approved' if self.is_approved else 'Pending'})"
+
+class Donation(models.Model):
+    STATUS_CHOICES = (
+        ('PENDING', 'Pending'),
+        ('SUCCESS', 'Success'),
+        ('FAILED', 'Failed'),
+    )
+
+    amount = models.DecimalField(max_digits=12, decimal_places=2)
+    email = models.EmailField()
+    reference = models.CharField(max_length=50, unique=True, help_text="Internal transaction reference")
+    paystack_ref = models.CharField(max_length=100, blank=True, null=True, help_text="Reference from Paystack")
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='PENDING')
+    verified = models.BooleanField(default=False, help_text="True if confirmed via Paystack API/Webhook")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.reference} - {self.email} - {self.amount}"

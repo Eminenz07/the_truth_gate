@@ -1,0 +1,63 @@
+{% extends 'core/base.html' %} {% block title %}Thank You - The Truth Gate{%endblock %} {% block content %}
+<section
+  class="reveal"
+  style="
+    padding: 8rem 1.5rem;
+    min-height: 80vh;
+    background: #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  "
+>
+  <div class="container" style="max-width: 500px; text-align: center">
+    <div
+      class="glass-card"
+      style="
+        background: #ffffff;
+        padding: 3rem 2rem;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(22, 163, 74, 0.1); /* Green tint shadow */
+        border: 1px solid #dcfce7;
+      "
+    >
+      <div style="margin-bottom: 1.5rem">
+        <span
+          class="material-icons-round"
+          style="font-size: 4rem; color: #16a34a"
+          >check_circle</span
+        >
+      </div>
+
+      <h2
+        style="
+          font-family: var(--font-heading);
+          color: var(--secondary);
+          margin-bottom: 1rem;
+        "
+      >
+        Thank You for Giving!
+      </h2>
+
+      <p
+        style="
+          color: var(--text-secondary);
+          margin-bottom: 2rem;
+          line-height: 1.6;
+        "
+      >
+        Your generosity is helping us raise a burning generation. We pray that
+        God blesses you abundantly.
+      </p>
+
+      <a
+        href="{% url 'home' %}"
+        class="btn-primary"
+        style="justify-content: center"
+      >
+        Return Home
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}

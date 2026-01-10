@@ -1,11 +1,11 @@
 from django.db import models
 from django.utils.text import slugify
-from ckeditor.fields import RichTextField
+from django_ckeditor_5.fields import CKEditor5Field
 
 class Event(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True, blank=True)
-    description = RichTextField(blank=True)
+    description = CKEditor5Field(blank=True, config_name='default')
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     location = models.CharField(max_length=200, default="Main Sanctuary")

@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
-from ckeditor.fields import RichTextField
+from django_ckeditor_5.fields import CKEditor5Field
 
 class Speaker(models.Model):
     name = models.CharField(max_length=100)
@@ -72,7 +72,7 @@ class Sermon(models.Model):
     
     # Content (Rich Text)
     description = models.TextField(help_text="Short summary for cards")
-    notes = RichTextField(blank=True, help_text="Full sermon notes / transcript")
+    notes = CKEditor5Field(blank=True, help_text="Full sermon notes / transcript", config_name='default')
     
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
     
