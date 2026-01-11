@@ -1,6 +1,4 @@
-{% extends 'core/base.html' %} {% load static %} {% load youtube_filters %} {%
-block header_title %}Watch Live | The Truth Gate{% endblock %} {% block content
-%}
+{% extends 'core/base.html' %} {% load static %} {% block header_title %}Watch Live | The Truth Gate{% endblock %} {% block content %}
 <style>
   .live-wrapper {
     position: relative;
@@ -70,9 +68,9 @@ block header_title %}Watch Live | The Truth Gate{% endblock %} {% block content
     </div>
 
     <div class="live-wrapper reveal" style="transition-delay: 0.2s">
-      {% if site_config.live_stream_url %}
+      {% if embed_url %}
       <iframe
-        src="{{ site_config.live_stream_url|youtube_embed }}"
+        src="{{ embed_url }}"
         title="Live Stream"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen

@@ -61,4 +61,30 @@ def give(request):
     return render(request, 'core/give.html')
 
 def watch_live(request):
-    return render(request, 'core/watch_live.html')
+    from dashboard.models import SiteSettings
+    from urllib.parse import urlparse, parse_qs
+    
+    site_config = SiteSettings.load()
+    live_url = site_config.live_stream_url
+    
+    # Convert YouTube watch/live URLs to embed format
+    if live_url and 'youtube.com' in live_url or 'youtu.be' in live_url:
+        video_id = None
+        
+        # Pattern 1: youtube.com/watch?v=VIDEO_ID
+        if 'youtube.com/watch' in live_url:
+            parsed = urlparse(live_url)
+            video_id = parse_qs(parsed.query).get('v', [None])[0]
+        # Pattern 2: youtu.be/VIDEO_ID
+        elif 'youtu.be/' in live_url:
+            video_id = live_url.split('youtu.be/')[-1].split('?')[0]
+        # Pattern 3: youtube.com/live/VIDEO_ID
+        elif 'youtube.com/live/' in live_url:
+            video_id = live_url.split('/live/')[-1].split('?')[0]
+        
+        if video_id and '/embed/' not in live_url:
+            live_url = f'https://www.youtube.com/embed/{video_id}'
+    
+    return render(request, 'core/watch_live.html', {
+        'embed_url': live_url
+    })
