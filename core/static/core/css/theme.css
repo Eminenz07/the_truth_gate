@@ -41,24 +41,6 @@ body {
     line-height: 1.7;
     overflow-x: hidden;
     padding-bottom: 80px;
-    position: relative;
-    isolation: isolate; /* Create stacking context so ::before sits between bg and content */
-}
-
-body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1; /* Behind content, on top of body background (due to isolation) */
-    background-image: url('../img/doodle_bg.jpg');
-    background-repeat: repeat;
-    background-size: 500px;
-    opacity: 0.4; /* Increased visibility */
-    mix-blend-mode: multiply;
-    pointer-events: none;
 }
 
 /* ... (Glassmorphism Utilities skipped) ... */
