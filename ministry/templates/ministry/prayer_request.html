@@ -35,9 +35,8 @@ Gate{% endblock %} {% block content %}
       <label
         for="name"
         style="display: block; margin-bottom: 0.5rem; font-weight: 500"
+        >Name (Optional)</label
       >
-        Name (Optional)
-      </label>
       <input
         type="text"
         id="name"
@@ -55,9 +54,8 @@ Gate{% endblock %} {% block content %}
       <label
         for="request_text"
         style="display: block; margin-bottom: 0.5rem; font-weight: 500"
+        >How can we pray?</label
       >
-        How can we pray?
-      </label>
       <textarea
         id="request_text"
         name="request_text"
@@ -82,24 +80,50 @@ Gate{% endblock %} {% block content %}
           border: 1px solid var(--border-color);
         "
       >
+        {% if user.is_authenticated %}
         <label
-          style="display: flex; align-items: center; gap: 0.75rem; {% if not user.is_authenticated %}opacity: 0.6;{% endif %} margin-bottom: 0;"
+          style="
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0;
+          "
         >
           <input
             type="checkbox"
             name="request_followup"
             style="width: 1.2rem; height: 1.2rem"
-            {%
-            if
-            not
-            user.is_authenticated
-            %}disabled{%
-            endif
-            %}
           />
           <span style="font-weight: 500">Would you like a follow up?</span>
         </label>
-        {% if not user.is_authenticated %}
+        <small
+          style="
+            display: block;
+            margin-top: 0.25rem;
+            color: var(--text-secondary);
+            margin-left: 2rem;
+          "
+        >
+          We will contact you via your registered email: {{ user.email }}
+        </small>
+        {% else %}
+        <label
+          style="
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            opacity: 0.6;
+            margin-bottom: 0;
+            cursor: not-allowed;
+          "
+        >
+          <input
+            type="checkbox"
+            disabled
+            style="width: 1.2rem; height: 1.2rem"
+          />
+          <span style="font-weight: 500">Would you like a follow up?</span>
+        </label>
         <small
           style="
             display: block;
@@ -115,17 +139,6 @@ Gate{% endblock %} {% block content %}
             >log in</a
           >
           to request a follow-up.
-        </small>
-        {% else %}
-        <small
-          style="
-            display: block;
-            margin-top: 0.25rem;
-            color: var(--text-secondary);
-            margin-left: 2rem;
-          "
-        >
-          We will contact you via your registered email: {{ user.email }}
         </small>
         {% endif %}
       </div>
