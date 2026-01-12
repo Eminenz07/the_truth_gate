@@ -35,8 +35,22 @@ body {
     font-family: var(--font-body);
     color: var(--text-primary);
     background-color: var(--bg-body);
-    /* Silver Gradient Base */
-    background-image: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    /* Modern Ambient Mesh Gradient + Dot Pattern */
+    background-image: 
+        /* Dot Pattern (Subtle) */
+        radial-gradient(rgba(100, 116, 139, 0.12) 1.5px, transparent 1.5px),
+        /* Ambient Glows */
+        radial-gradient(at 0% 0%, hsla(253,16%,7%,0) 0, hsla(253,16%,7%,0) 50%), 
+        radial-gradient(at 50% 0%, hsla(225,39%,30%,0.15) 0, hsla(225,39%,30%,0) 50%), 
+        radial-gradient(at 100% 0%, hsla(339,49%,30%,0) 0, hsla(339,49%,30%,0) 50%),
+        /* Soft Accent Glow (Top Right) */
+        radial-gradient(at 90% 10%, rgba(202, 138, 4, 0.1) 0px, transparent 50%),
+        /* Deep Primary Depth (Bottom Left) */
+        radial-gradient(at 10% 90%, rgba(30, 41, 59, 0.08) 0px, transparent 50%),
+        /* Base Gradient */
+        linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        
+    background-size: 24px 24px, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
     background-attachment: fixed;
     line-height: 1.7;
     overflow-x: hidden;
@@ -350,6 +364,8 @@ body {
     border-bottom: none;
     box-shadow: none;
     position: absolute; /* Ensures it sits on top of hero without displacing it */
+    top: 0;
+    left: 0;
     width: 100%;
 }
 
