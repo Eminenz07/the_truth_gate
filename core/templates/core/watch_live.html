@@ -1,14 +1,62 @@
-{% extends 'core/base.html' %} {% load static %} {% block header_title %}Watch Live | The Truth Gate{% endblock %} {% block content %}
+{% extends 'core/base.html' %} {% load static %} {% block header_title %}Watch
+Live | The Truth Gate{% endblock %} {% block content %}
 <style>
+  .live-section {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .live-section-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+
+  .live-section-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .live-section-bg::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .live-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    color: white;
+    padding: 2rem;
+    max-width: 800px;
+  }
+
   .live-wrapper {
     position: relative;
     padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
     height: 0;
     overflow: hidden;
     border-radius: 12px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
     background: #000;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
   }
+
   .live-wrapper iframe {
     position: absolute;
     top: 0;
@@ -17,31 +65,48 @@
     height: 100%;
     border: 0;
   }
-  .placeholder-screen {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+
+  .play-btn {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
-    color: white;
-    text-align: center;
-    padding: 2rem;
+    margin: 0 auto 1.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s;
+  }
+
+  .play-btn:hover {
+    transform: scale(1.1);
+  }
+
+  .play-btn i {
+    font-size: 3rem;
+    color: var(--primary);
+    margin-left: 4px;
+  }
+
+  @keyframes pulse {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 </style>
 
+{% if embed_url %}
+<!-- LIVE MODE: Show Video Player -->
 <section
-  style="
-    background: var(--primary-dark);
-    padding: 8rem 1.5rem 6rem;
-    min-height: 80vh;
-    display: flex;
-    align-items: center;
-  "
+  class="live-section"
+  style="background: var(--primary-dark); padding: 8rem 1.5rem 6rem"
 >
   <div class="container" style="max-width: 1000px; width: 100%">
     <div style="text-align: center; margin-bottom: 3rem" class="reveal">
@@ -68,52 +133,12 @@
     </div>
 
     <div class="live-wrapper reveal" style="transition-delay: 0.2s">
-      {% if embed_url %}
       <iframe
         src="{{ embed_url }}"
         title="Live Stream"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen
-      >
-      </iframe>
-      {% else %}
-      <div
-        class="offline-thumbnail"
-        style="width: 100%; height: 100%; position: absolute; top: 0; left: 0"
-      >
-        <img
-          src="{% static 'core/img/live_thumbnail.png' %}"
-          alt="Live Stream Offline"
-          style="width: 100%; height: 100%; object-fit: cover"
-        />
-        <div
-          style="
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-align: center;
-          "
-        >
-          <i
-            class="material-icons-round"
-            style="font-size: 4rem; opacity: 0.8; margin-bottom: 0.5rem"
-            >play_circle_outline</i
-          >
-          <h3 style="margin: 0; font-size: 1.5rem">Stream Offline</h3>
-          <p style="opacity: 0.9; margin-top: 0.5rem">
-            Check back during scheduled service times
-          </p>
-        </div>
-      </div>
-      {% endif %}
+      ></iframe>
     </div>
 
     {% if site_config.is_live_now %}
@@ -148,17 +173,48 @@
   </div>
 </section>
 
-<style>
-  @keyframes pulse {
-    0% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.5;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-</style>
-{% endblock %}
+{% else %}
+<!-- OFFLINE MODE: Full-Bleed Thumbnail -->
+<section class="live-section">
+  <div class="live-section-bg">
+    <img
+      src="{% static 'core/img/live_thumbnail.png' %}"
+      alt="The Truth Gate Live"
+    />
+  </div>
+
+  <div class="live-content reveal">
+    <div class="play-btn">
+      <i class="material-icons-round">play_arrow</i>
+    </div>
+    <h1
+      style="
+        font-family: var(--font-heading);
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+      "
+    >
+      Watch Live
+    </h1>
+    <p
+      style="
+        font-size: 1.2rem;
+        opacity: 0.9;
+        margin-bottom: 2rem;
+        text-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+      "
+    >
+      No live stream is currently active.<br />
+      Check back during our scheduled service times.
+    </p>
+    <a
+      href="{% url 'event_list' %}"
+      class="btn-primary"
+      style="padding: 1rem 2.5rem; font-size: 1rem"
+    >
+      View Upcoming Events
+    </a>
+  </div>
+</section>
+{% endif %} {% endblock %}
