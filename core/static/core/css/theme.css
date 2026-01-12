@@ -6,7 +6,7 @@
     --accent-glow: rgba(202, 138, 4, 0.15); /* Very subtle glow */
 
     --bg-body: #F1F5F9; /* Slate 100 (Light Silver Base) */
-    --bg-card: #ffffff;
+    --bg-card: rgba(255, 255, 255, 0.85); /* Global Glass Background */
     --bg-glass: rgba(255, 255, 255, 0.85);
 
     --text-primary: #1e293b;
@@ -81,8 +81,9 @@ body {
 }
 
 /* Glassmorphism Utilities */
+/* Glassmorphism Utilities */
 .glass-card {
-    background: var(--bg-card);
+    background: rgba(255, 255, 255, 0.85); /* Transparent/Glass */
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--border-color);
@@ -523,7 +524,9 @@ p {
 }
 
 .category-card {
-    background: var(--card-bg);
+    background: rgba(255, 255, 255, 0.85); /* Glass */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--border-color); /* Subtle border */
     padding: 2.5rem;
     border-radius: 4px; /* Soft, not rounded */
@@ -563,7 +566,9 @@ p {
 }
 
 .sermon-card {
-    background: var(--card-bg);
+    background: rgba(255, 255, 255, 0.85); /* Glass */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border: 1px solid transparent;
     border-bottom: 1px solid var(--border-color); /* Only bottom border for list feel */
     padding: 2rem 1rem;
@@ -594,8 +599,9 @@ p {
 
 /* Topic Cards (Mobile/List Style) */
 .topic-card {
-    background: var(--bg-card);
-    backdrop-filter: blur(5px);
+    background: var(--bg-card); /* Now transparent */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--border-color);
     border-radius: 4px;
     padding: 1.5rem;
@@ -639,7 +645,16 @@ p {
 
 /* Sermon Detail - Deep Reading Layout */
 .sermon-container {
-    max-width: 720px; /* Slightly wider than lists */
+    max-width: 800px; /* Slightly wider than lists */
+    background: rgba(255, 255, 255, 0.95); /* Higher opacity for reading */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 3rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-lg);
+    margin-top: 2rem;
+    margin-bottom: 4rem;
 }
 
 .sermon-header {
@@ -728,10 +743,13 @@ p {
 }
 
 .application-card {
-    background: #f4f6f7; /* Very subtle slate tint */
+    background: rgba(255, 255, 255, 0.85); /* Glass */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     padding: 3rem;
     border-radius: 4px;
     margin-top: 2rem;
+    border: 1px solid var(--border-color);
 }
 
 .application-card h3 {
@@ -775,7 +793,7 @@ textarea,
 select {
     width: 100%;
     padding: 0.8rem 1rem;
-    background: #ffffff; /* White background for inputs */
+    background: rgba(255, 255, 255, 0.9); /* Slightly transparent white for inputs */
     border: 1px solid #cbd5e1; /* Slate 300 */
     border-radius: 8px;
     color: var(--text-primary);
