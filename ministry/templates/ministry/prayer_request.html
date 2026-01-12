@@ -1,48 +1,162 @@
-{% extends 'core/base.html' %}
+{% extends 'core/base.html' %} {% block title %}Prayer Request | The Truth
+Gate{% endblock %} {% block content %}
+<div class="container site-main" style="max-width: 600px">
+  <header class="text-center mb-4">
+    <h1 class="page-title">Prayer Request</h1>
+    <p class="text-secondary">
+      How can we pray for you? "Cast all your anxiety on Him because He cares
+      for you."
+    </p>
+  </header>
 
-{% block title %}Prayer Request | The Truth Gate{% endblock %}
-
-{% block content %}
-<div class="container site-main" style="max-width: 600px;">
-    <header class="text-center mb-4">
-        <h1 class="page-title">Prayer Request</h1>
-        <p class="text-secondary">How can we pray for you? "Cast all your anxiety on Him because He cares for you."</p>
-    </header>
-
-    {% if messages %}
-    <div class="messages mb-4 text-center">
-        {% for message in messages %}
-        <div class="alert" style="color: var(--accent); font-weight: 500;">{{ message }}</div>
-        {% endfor %}
+  {% if messages %}
+  <div class="messages mb-4 text-center">
+    {% for message in messages %}
+    <div class="alert" style="color: var(--accent); font-weight: 500">
+      {{ message }}
     </div>
-    {% endif %}
+    {% endfor %}
+  </div>
+  {% endif %}
 
-    <form method="post" class="ministry-form" style="background: #fff; padding: 2.5rem; border: 1px solid var(--border-color); border-radius: 4px;">
-        {% csrf_token %}
-        
-        <div class="form-group mb-1">
-            <label for="name" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Name (Optional)</label>
-            <input type="text" id="name" name="name" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 4px;">
-        </div>
+  <form
+    method="post"
+    class="ministry-form"
+    style="
+      background: #fff;
+      padding: 2.5rem;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+    "
+  >
+    {% csrf_token %}
 
-        <div class="form-group mb-1">
-            <label for="email" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Email (Optional)</label>
-            <input type="email" id="email" name="email" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 4px;">
-        </div>
+    <div class="form-group mb-1">
+      <label
+        for="name"
+        style="display: block; margin-bottom: 0.5rem; font-weight: 500"
+        >Name (Optional)</label
+      >
+      <input
+        type="text"
+        id="name"
+        name="name"
+        style="
+          width: 100%;
+          padding: 0.75rem;
+          border: 1px solid var(--border-color);
+          border-radius: 4px;
+        "
+      />
+    </div>
 
-        <div class="form-group mb-1">
-            <label for="request_text" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">How can we pray?</label>
-            <textarea id="request_text" name="request_text" rows="5" required style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 4px; font-family: inherit;"></textarea>
-        </div>
+    <div class="form-group mb-1">
+      <label
+        for="email"
+        style="display: block; margin-bottom: 0.5rem; font-weight: 500"
+        >Email (Optional)</label
+      >
+      <input
+        type="email"
+        id="email"
+        name="email"
+        style="
+          width: 100%;
+          padding: 0.75rem;
+          border: 1px solid var(--border-color);
+          border-radius: 4px;
+        "
+      />
+    </div>
 
-        <div class="form-group mb-2">
-            <label style="display: flex; align-items: center; gap: 0.5rem;">
-                <input type="checkbox" name="is_private" checked>
-                <span>Keep this request private (Pastors Only)</span>
-            </label>
-        </div>
+    <div class="form-group mb-1">
+      <label
+        for="request_text"
+        style="display: block; margin-bottom: 0.5rem; font-weight: 500"
+        >How can we pray?</label
+      >
+      <textarea
+        id="request_text"
+        name="request_text"
+        rows="5"
+        required
+        style="
+          width: 100%;
+          padding: 0.75rem;
+          border: 1px solid var(--border-color);
+          border-radius: 4px;
+          font-family: inherit;
+        "
+      ></textarea>
+    </div>
 
-        <button type="submit" class="btn" style="width: 100%; background: var(--text-primary); color: #fff;">Send Prayer Request</button>
-    </form>
+    <div class="form-group mb-2">
+      <div
+        style="
+          background: rgba(0, 0, 0, 0.03);
+          padding: 1rem;
+          border-radius: 8px;
+          border: 1px solid var(--border-color);
+        "
+      >
+        <label
+          style="display: flex; align-items: center; gap: 0.75rem; {% if not user.is_authenticated %}opacity: 0.6;{% endif %} margin-bottom: 0;"
+        >
+          <input
+            type="checkbox"
+            name="request_followup"
+            style="width: 1.2rem; height: 1.2rem"
+            {%
+            if
+            not
+            user.is_authenticated
+            %}disabled{%
+            endif
+            %}
+          />
+          <span style="font-weight: 500"
+            >Would you like a pastor to contact you?</span
+          >
+        </label>
+        {% if not user.is_authenticated %}
+        <small
+          style="
+            display: block;
+            margin-top: 0.5rem;
+            color: var(--text-secondary);
+            margin-left: 2rem;
+          "
+        >
+          Please
+          <a
+            href="{% url 'login' %}?next={{ request.path }}"
+            style="color: var(--accent); font-weight: 600"
+            >log in</a
+          >
+          to request a follow-up.
+        </small>
+        {% else %}
+        <small
+          style="
+            display: block;
+            margin-top: 0.25rem;
+            color: var(--text-secondary);
+            margin-left: 2rem;
+          "
+        >
+          We will contact you via your registered email: {{ user.email }}
+        </small>
+        {% endif %}
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      class="btn"
+      style="width: 100%; background: var(--text-primary); color: #fff"
+    >
+      Send Prayer Request
+    </button>
+  </form>
 </div>
 {% endblock %}

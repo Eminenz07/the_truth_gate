@@ -3,8 +3,8 @@ from .models import PrayerRequest, ContactSubmission
 
 @admin.register(PrayerRequest)
 class PrayerRequestAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'is_private', 'is_prayed_for', 'created_at')
-    list_filter = ('is_private', 'is_prayed_for')
+    list_display = ('__str__', 'request_followup', 'is_prayed_for', 'created_at')
+    list_filter = ('request_followup', 'is_prayed_for')
     search_fields = ('request_text', 'name')
     readonly_fields = ('created_at',)
 

@@ -37,8 +37,8 @@ body {
     background-color: var(--bg-body);
     /* Modern Ambient Mesh Gradient + Dot Pattern */
     background-image: 
-        /* Dot Pattern (Subtle) */
-        radial-gradient(rgba(100, 116, 139, 0.12) 1.5px, transparent 1.5px),
+        /* Dot Pattern (Golden) */
+        radial-gradient(rgba(202, 138, 4, 0.25) 1.5px, transparent 1.5px),
         /* Ambient Glows */
         radial-gradient(at 0% 0%, hsla(253,16%,7%,0) 0, hsla(253,16%,7%,0) 50%), 
         radial-gradient(at 50% 0%, hsla(225,39%,30%,0.15) 0, hsla(225,39%,30%,0) 50%), 

@@ -49,10 +49,15 @@ def prayer_request(request):
         name = request.POST.get('name')
         email = request.POST.get('email')
         request_text = request.POST.get('request_text')
-        is_private = request.POST.get('is_private') == 'on'
+        request_followup = request.POST.get('request_followup') == 'on'
+        
+        # Enforce Authentication for Follow-Up
+        if request_followup and not request.user.is_authenticated:
+             # Silently ignore or force false if not logged in
+             request_followup = False
         
         PrayerRequest.objects.create(
-            name=name, email=email, request_text=request_text, is_private=is_private
+            name=name, email=email, request_text=request_text, request_followup=request_followup
         )
         messages.success(request, "Your prayer request has been received. We are standing with you in prayer.")
         return redirect('home')

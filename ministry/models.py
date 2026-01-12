@@ -5,7 +5,7 @@ class PrayerRequest(models.Model):
     name = models.CharField(max_length=100, help_text="Leave blank for anonymous requests", blank=True)
     email = models.EmailField(blank=True)
     request_text = models.TextField()
-    is_private = models.BooleanField(default=True, help_text="Keep this request private (Staff only)")
+    request_followup = models.BooleanField(default=False, help_text="Request a pastor to follow up (Login required)")
     is_prayed_for = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
