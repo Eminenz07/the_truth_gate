@@ -203,3 +203,116 @@ def giving_history(request):
 def user_list(request):
     users = User.objects.all().order_by('-date_joined')
     return render(request, 'dashboard/user_list.html', {'users': users})
+
+# --- Communications: Follow-ups ---
+
+@staff_required
+def followup_list(request):
+    """List all prayer requests that have requested follow-up."""
+    requests = PrayerRequest.objects.filter(request_followup=True).order_by('-created_at')
+    pending_count = requests.filter(is_followed_up=False).count()
+    return render(request, 'dashboard/followup_list.html', {
+        'requests': requests,
+        'pending_count': pending_count
+    })
+
+@staff_required
+def followup_compose(request, pk):
+    """Compose and send a follow-up email."""
+    from django.contrib import messages
+    from .email_service import get_default_followup_template, send_followup_email
+    from django.utils import timezone
+    
+    prayer_request = get_object_or_404(PrayerRequest, pk=pk)
+    
+    # Get default template
+    name = prayer_request.name or "Friend"
+    default_template = get_default_followup_template(name)
+    
+    if request.method == 'POST':
+        subject = request.POST.get('subject', default_template['subject'])
+        message = request.POST.get('message', '')
+        
+        if not prayer_request.email:
+            messages.error(request, "This request has no email address to send to.")
+            return redirect('dashboard:followup_list')
+        
+        # Send the email
+        result = send_followup_email(
+            to_email=prayer_request.email,
+            to_name=name,
+            subject=subject,
+            html_content=message
+        )
+        
+        if result['success']:
+            # Mark as followed up
+            prayer_request.is_followed_up = True
+            prayer_request.followed_up_at = timezone.now()
+            prayer_request.save()
+            messages.success(request, f"Email sent successfully to {prayer_request.email}")
+        else:
+            messages.error(request, result.get('error', 'Failed to send email'))
+        
+        return redirect('dashboard:followup_list')
+    
+    return render(request, 'dashboard/followup_compose.html', {
+        'prayer_request': prayer_request,
+        'default_subject': default_template['subject'],
+        'default_message': default_template['message']
+    })
+
+# --- Communications: Newsletters ---
+
+@staff_required
+def newsletter_list(request):
+    """Newsletter dashboard showing subscriber count."""
+    from core.models import NewsletterSubscriber
+    
+    subscribers = NewsletterSubscriber.objects.all().order_by('-subscribed_at')
+    return render(request, 'dashboard/newsletter_list.html', {
+        'subscribers': subscribers,
+        'subscriber_count': subscribers.count()
+    })
+
+@staff_required
+def newsletter_compose(request):
+    """Compose and send newsletter to all subscribers."""
+    from django.contrib import messages
+    from core.models import NewsletterSubscriber
+    from .email_service import send_newsletter
+    
+    subscribers = NewsletterSubscriber.objects.all()
+    
+    if request.method == 'POST':
+        subject = request.POST.get('subject', '')
+        content = request.POST.get('content', '')
+        
+        if not subject or not content:
+            messages.error(request, "Please provide both subject and content.")
+            return render(request, 'dashboard/newsletter_compose.html', {
+                'subscriber_count': subscribers.count(),
+                'subject': subject,
+                'content': content
+            })
+        
+        # Build subscriber list
+        subscriber_list = [{'email': s.email, 'name': ''} for s in subscribers]
+        
+        # Send newsletter
+        result = send_newsletter(
+            subject=subject,
+            html_content=content,
+            subscribers=subscriber_list
+        )
+        
+        if result['success']:
+            messages.success(request, f"Newsletter sent to {result['sent_count']} subscribers!")
+        else:
+            messages.error(request, result.get('error', 'Failed to send newsletter'))
+        
+        return redirect('dashboard:newsletter_list')
+    
+    return render(request, 'dashboard/newsletter_compose.html', {
+        'subscriber_count': subscribers.count()
+    })

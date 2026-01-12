@@ -30,4 +30,10 @@ urlpatterns = [
     path('content/', views.content_settings_view, name='content_settings'),
     path('settings/', views.settings_view, name='settings'),
     path('giving/', views.giving_history, name='giving_history'),
+    
+    # Communications
+    path('followups/', views.followup_list, name='followup_list'),
+    path('followups/<int:pk>/compose/', views.followup_compose, name='followup_compose'),
+    path('newsletters/', views.newsletter_list, name='newsletter_list'),
+    path('newsletters/compose/', views.newsletter_compose, name='newsletter_compose'),
 ]

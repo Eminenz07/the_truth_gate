@@ -232,6 +232,12 @@ if PAYSTACK_SECRET_KEY == 'sk_test_replace_me':
 else:
     print(f"SUCCESS: Loaded Paystack Key starting with {PAYSTACK_SECRET_KEY[:8]}...")
 
+# Brevo (Sendinblue) Email Configuration
+BREVO_API_KEY = os.environ.get('BREVO_API_KEY', '')
+if not BREVO_API_KEY:
+    print("INFO: BREVO_API_KEY not set. Email sending disabled.")
+
+
 # Axes Configuration
 AXES_FAILURE_LIMIT = 5
 AXES_COOLOFF_TIME = 1 # Hours

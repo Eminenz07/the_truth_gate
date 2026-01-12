@@ -1,0 +1,158 @@
+{% extends 'dashboard/base.html' %} {% block header_title %}Compose Follow-up{%
+endblock %} {% block extra_css %}
+<style>
+  .compose-card {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 700px;
+  }
+
+  .recipient-info {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid #3b82f6;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-main);
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.2s;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+
+  textarea.form-control {
+    min-height: 250px;
+    resize: vertical;
+    line-height: 1.6;
+  }
+
+  .btn-send {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: #10b981;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .btn-send:hover {
+    background: #059669;
+  }
+
+  .btn-cancel {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: white;
+    color: var(--text-light);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .btn-cancel:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+
+  .prayer-preview {
+    background: #fffbeb;
+    border: 1px solid #fcd34d;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+</style>
+{% endblock %} {% block content %}
+<div class="compose-card">
+  <h2 style="margin-bottom: 1.5rem; font-family: 'Lora', serif">
+    <i class="fas fa-envelope" style="color: #3b82f6"></i> Compose Follow-up
+    Email
+  </h2>
+
+  <!-- Recipient Info -->
+  <div class="recipient-info">
+    <strong>To:</strong> {{ prayer_request.name|default:"Anonymous" }} {% if
+    prayer_request.email %}
+    <span style="color: #3b82f6">&lt;{{ prayer_request.email }}&gt;</span>
+    {% else %}
+    <span style="color: #ef4444">(No email address)</span>
+    {% endif %}
+  </div>
+
+  <!-- Original Prayer Request -->
+  <div class="prayer-preview">
+    <strong style="font-size: 0.85rem; color: #92400e"
+      >Original Prayer Request:</strong
+    >
+    <p style="margin-top: 0.5rem; color: #78350f; font-size: 0.95rem">
+      {{ prayer_request.request_text|truncatewords:75 }}
+    </p>
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label for="subject">Subject</label>
+      <input
+        type="text"
+        name="subject"
+        id="subject"
+        class="form-control"
+        value="{{ default_subject }}"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="message">Message</label>
+      <textarea name="message" id="message" class="form-control" required>
+{{ default_message }}</textarea
+      >
+    </div>
+
+    <div style="display: flex; gap: 1rem; justify-content: flex-end">
+      <a href="{% url 'dashboard:followup_list' %}" class="btn-cancel">
+        <i class="fas fa-times"></i> Cancel
+      </a>
+      <button type="submit" class="btn-send">
+        <i class="fas fa-paper-plane"></i> Send Email
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}

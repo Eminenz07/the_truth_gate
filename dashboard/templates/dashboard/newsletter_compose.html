@@ -1,0 +1,160 @@
+{% extends 'dashboard/base.html' %}
+
+{% block header_title %}Compose Newsletter{% endblock %}
+
+{% block extra_css %}
+<style>
+    .compose-card {
+        background: white;
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 2rem;
+        max-width: 800px;
+    }
+    
+    .recipient-info {
+        background: #f5f3ff;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        border-left: 4px solid #8b5cf6;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--text-main);
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        font-size: 1rem;
+        font-family: inherit;
+        transition: border-color 0.2s;
+    }
+    
+    .form-control:focus {
+        outline: none;
+        border-color: #8b5cf6;
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+    }
+    
+    textarea.form-control {
+        min-height: 350px;
+        resize: vertical;
+        line-height: 1.6;
+    }
+    
+    .btn-send {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        background: #8b5cf6;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    
+    .btn-send:hover {
+        background: #7c3aed;
+    }
+    
+    .btn-cancel {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        background: white;
+        color: var(--text-light);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        font-size: 1rem;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+    
+    .btn-cancel:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+    }
+    
+    .warning-box {
+        background: #fef3c7;
+        border: 1px solid #fcd34d;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        color: #92400e;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="compose-card">
+    <h2 style="margin-bottom: 1.5rem; font-family: 'Lora', serif;">
+        <i class="fas fa-envelope-open-text" style="color: #8b5cf6;"></i> Compose Newsletter
+    </h2>
+    
+    <!-- Recipient Info -->
+    <div class="recipient-info">
+        <i class="fas fa-users" style="font-size: 1.25rem; color: #8b5cf6;"></i>
+        <span><strong>{{ subscriber_count }}</strong> subscribers will receive this newsletter</span>
+    </div>
+    
+    {% if subscriber_count == 0 %}
+    <div class="warning-box">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span>No subscribers yet. Newsletter will not be sent.</span>
+    </div>
+    {% endif %}
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="subject">Subject Line</label>
+            <input type="text" name="subject" id="subject" class="form-control" 
+                   placeholder="e.g., Weekly Update from The Truth Gate"
+                   value="{{ subject|default:'' }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="content">Newsletter Content</label>
+            <textarea name="content" id="content" class="form-control" 
+                      placeholder="Write your newsletter message here..."
+                      required>{{ content|default:'' }}</textarea>
+            <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-light);">
+                <i class="fas fa-info-circle"></i> Line breaks will be converted to paragraphs automatically.
+            </p>
+        </div>
+        
+        <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+            <a href="{% url 'dashboard:newsletter_list' %}" class="btn-cancel">
+                <i class="fas fa-times"></i> Cancel
+            </a>
+            <button type="submit" class="btn-send" {% if subscriber_count == 0 %}disabled{% endif %}>
+                <i class="fas fa-paper-plane"></i> Send to {{ subscriber_count }} Subscribers
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

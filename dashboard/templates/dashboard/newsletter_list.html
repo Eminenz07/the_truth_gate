@@ -1,0 +1,124 @@
+{% extends 'dashboard/base.html' %} {% block header_title %}Newsletters{%
+endblock %} {% block extra_css %}
+<style>
+  .stats-card {
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+    color: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .btn-compose-newsletter {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: white;
+    color: #7c3aed;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+
+  .btn-compose-newsletter:hover {
+    background: #f5f3ff;
+    color: #6d28d9;
+  }
+
+  .subscriber-table {
+    width: 100%;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+  }
+
+  .subscriber-table th {
+    background: #f8fafc;
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    color: var(--text-light);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .subscriber-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .subscriber-table tr:last-child td {
+    border-bottom: none;
+  }
+</style>
+{% endblock %} {% block content %}
+<div style="max-width: 900px">
+  <!-- Stats Card -->
+  <div class="stats-card">
+    <div
+      style="display: flex; justify-content: space-between; align-items: center"
+    >
+      <div>
+        <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 0.25rem">
+          {{ subscriber_count }}
+        </h2>
+        <p style="opacity: 0.9; font-size: 0.95rem">Total Subscribers</p>
+      </div>
+      <a
+        href="{% url 'dashboard:newsletter_compose' %}"
+        class="btn-compose-newsletter"
+      >
+        <i class="fas fa-pen"></i> Compose Newsletter
+      </a>
+    </div>
+  </div>
+
+  <!-- Subscribers List -->
+  <h3
+    style="
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--text-main);
+    "
+  >
+    <i class="fas fa-users"></i> Subscriber List
+  </h3>
+
+  {% if subscribers %}
+  <table class="subscriber-table">
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>Subscribed On</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for sub in subscribers %}
+      <tr>
+        <td>{{ sub.email }}</td>
+        <td style="color: var(--text-light)">
+          {{ sub.subscribed_at|date:"M d, Y" }}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div
+    class="card"
+    style="text-align: center; padding: 3rem; color: var(--text-light)"
+  >
+    <i
+      class="fas fa-envelope-open"
+      style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.5"
+    ></i>
+    <p>No subscribers yet.</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
