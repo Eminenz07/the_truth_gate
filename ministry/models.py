@@ -7,6 +7,8 @@ class PrayerRequest(models.Model):
     request_text = models.TextField()
     request_followup = models.BooleanField(default=False, help_text="Request a pastor to follow up (Login required)")
     is_prayed_for = models.BooleanField(default=False)
+    is_followed_up = models.BooleanField(default=False, help_text="Has staff followed up with this request?")
+    followed_up_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

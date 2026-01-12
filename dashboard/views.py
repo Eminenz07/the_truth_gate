@@ -124,6 +124,15 @@ def mark_prayed(request, pk):
     return redirect('dashboard:prayer_list')
 
 @staff_required
+def mark_followed_up(request, pk):
+    from django.utils import timezone
+    req = get_object_or_404(PrayerRequest, pk=pk)
+    req.is_followed_up = not req.is_followed_up
+    req.followed_up_at = timezone.now() if req.is_followed_up else None
+    req.save()
+    return redirect('dashboard:prayer_list')
+
+@staff_required
 @staff_required
 def contact_list(request):
     submissions = ContactSubmission.objects.all().order_by('-created_at')

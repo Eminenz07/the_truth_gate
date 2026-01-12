@@ -17,6 +17,7 @@ urlpatterns = [
     
     path('prayer/', views.prayer_list, name='prayer_list'),
     path('prayer/<int:pk>/mark/', views.mark_prayed, name='mark_prayed'),
+    path('prayer/<int:pk>/followup/', views.mark_followed_up, name='mark_followed_up'),
     path('inbox/', views.contact_list, name='contact_list'),
     
     path('testimony/', views.testimony_list, name='testimony_list'),

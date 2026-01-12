@@ -1,96 +1,202 @@
-{% extends 'dashboard/base.html' %}
-
-{% block header_title %}Prayer Wall{% endblock %}
-
-{% block extra_css %}
+{% extends 'dashboard/base.html' %} {% block header_title %}Prayer Wall{%
+endblock %} {% block extra_css %}
 <style>
-    .prayer-card {
-        background: white;
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        padding: 1.5rem;
-        margin-bottom: 1rem;
-        transition: border-color 0.2s;
-    }
-    
-    .prayer-card.is-prayed {
-        background: #f8fafc;
-        border-color: #e2e8f0;
-        opacity: 0.8;
-    }
+  .prayer-card {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: border-color 0.2s;
+  }
 
-    .prayer-header {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 1rem;
-        font-size: 0.9rem;
-        color: var(--text-light);
-    }
+  .prayer-card.is-prayed {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+    opacity: 0.8;
+  }
 
-    .prayer-body {
-        font-size: 1.05rem;
-        line-height: 1.6;
-        margin-bottom: 1.5rem;
-    }
+  .prayer-card.needs-followup {
+    border-left: 4px solid #f59e0b;
+  }
 
-    .btn-pray {
-        background: white;
-        border: 1px solid var(--border-color);
-        padding: 0.5rem 1rem;
-        border-radius: 6px;
-        color: var(--text-light);
-        cursor: pointer;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 0.9rem;
-        font-weight: 500;
-        transition: all 0.2s;
-    }
+  .prayer-card.is-followed-up {
+    border-left: 4px solid #10b981;
+  }
 
-    .btn-pray:hover {
-        border-color: var(--primary);
-        color: var(--primary);
-    }
+  .prayer-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: var(--text-light);
+  }
 
-    .btn-pray.active {
-        background: #def7ec;
-        border-color: #def7ec;
-        color: #03543f;
-    }
+  .prayer-body {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .btn-pray,
+  .btn-followup {
+    background: white;
+    border: 1px solid var(--border-color);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    color: var(--text-light);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+
+  .btn-pray:hover,
+  .btn-followup:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+
+  .btn-pray.active {
+    background: #def7ec;
+    border-color: #def7ec;
+    color: #03543f;
+  }
+
+  .btn-followup.active {
+    background: #fef3c7;
+    border-color: #fef3c7;
+    color: #92400e;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .badge-warning {
+    background: #fef3c7;
+    color: #92400e;
+  }
+  .badge-success {
+    background: #def7ec;
+    color: #03543f;
+  }
+
+  .section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 2rem 0 1rem;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
 </style>
-{% endblock %}
-
-{% block content %}
-<div style="max-width: 800px;">
-    {% for req in requests %}
-    <div class="prayer-card {% if req.is_prayed_for %}is-prayed{% endif %}">
-        <div class="prayer-header">
-            <div>
-                <strong>{% if req.name %}{{ req.name }}{% else %}Anonymous{% endif %}</strong>
-                &bull; {{ req.created_at|date:"M d, Y" }}
-            </div>
-            <div>
-                {% if req.is_private %}<i class="fas fa-lock" title="Private"></i> Private Request{% endif %}
-            </div>
-        </div>
-        
-        <div class="prayer-body">
-            {{ req.request_text|linebreaks }}
-        </div>
-
-        <div style="display: flex; justify-content: flex-end;">
-            <a href="{% url 'dashboard:mark_prayed' req.pk %}" class="btn-pray {% if req.is_prayed_for %}active{% endif %}">
-                <i class="fas fa-praying-hands"></i> 
-                {% if req.is_prayed_for %}Prayed for{% else %}Mark as Prayed{% endif %}
-            </a>
-        </div>
+{% endblock %} {% block content %}
+<div style="max-width: 800px">
+  <!-- Follow-Up Requests Section -->
+  {% with
+  followup_requests=requests|dictsort:"created_at"|dictsortreversed:"request_followup"
+  %} {% for req in requests %} {% if req.request_followup and not
+  req.is_followed_up %} {% if forloop.first %}
+  <h3 class="section-title">
+    <i class="fas fa-bell" style="color: #f59e0b"></i> Needs Follow-Up
+  </h3>
+  {% endif %}
+  <div class="prayer-card needs-followup">
+    <div class="prayer-header">
+      <div>
+        <strong
+          >{% if req.name %}{{ req.name }}{% else %}Anonymous{% endif %}</strong
+        >
+        {% if req.email %}&bull; {{ req.email }}{% endif %} &bull; {{
+        req.created_at|date:"M d, Y" }}
+      </div>
+      <div>
+        <span class="badge badge-warning">Wants Follow-Up</span>
+      </div>
     </div>
-    {% empty %}
-    <div class="card" style="text-align: center; color: var(--text-light); padding: 3rem;">
-        No prayer requests yet.
+
+    <div class="prayer-body">{{ req.request_text|linebreaks }}</div>
+
+    <div style="display: flex; justify-content: flex-end; gap: 0.75rem">
+      <a
+        href="{% url 'dashboard:mark_followed_up' req.pk %}"
+        class="btn-followup"
+      >
+        <i class="fas fa-phone-alt"></i> Mark Followed Up
+      </a>
+      <a
+        href="{% url 'dashboard:mark_prayed' req.pk %}"
+        class="btn-pray {% if req.is_prayed_for %}active{% endif %}"
+      >
+        <i class="fas fa-praying-hands"></i>
+        {% if req.is_prayed_for %}Prayed{% else %}Mark Prayed{% endif %}
+      </a>
     </div>
-    {% endfor %}
+  </div>
+  {% endif %} {% endfor %} {% endwith %}
+
+  <!-- All Prayer Requests -->
+  <h3 class="section-title"><i class="fas fa-list"></i> All Prayer Requests</h3>
+  {% for req in requests %}
+  <div
+    class="prayer-card {% if req.is_prayed_for %}is-prayed{% endif %} {% if req.is_followed_up %}is-followed-up{% endif %}"
+  >
+    <div class="prayer-header">
+      <div>
+        <strong
+          >{% if req.name %}{{ req.name }}{% else %}Anonymous{% endif %}</strong
+        >
+        &bull; {{ req.created_at|date:"M d, Y" }}
+      </div>
+      <div>
+        {% if req.request_followup %} {% if req.is_followed_up %}
+        <span class="badge badge-success">Followed Up</span>
+        {% else %}
+        <span class="badge badge-warning">Needs Follow-Up</span>
+        {% endif %} {% endif %}
+      </div>
+    </div>
+
+    <div class="prayer-body">{{ req.request_text|linebreaks }}</div>
+
+    <div style="display: flex; justify-content: flex-end; gap: 0.75rem">
+      {% if req.request_followup %}
+      <a
+        href="{% url 'dashboard:mark_followed_up' req.pk %}"
+        class="btn-followup {% if req.is_followed_up %}active{% endif %}"
+      >
+        <i class="fas fa-phone-alt"></i>
+        {% if req.is_followed_up %}Followed Up{% else %}Mark Followed Up{% endif
+        %}
+      </a>
+      {% endif %}
+      <a
+        href="{% url 'dashboard:mark_prayed' req.pk %}"
+        class="btn-pray {% if req.is_prayed_for %}active{% endif %}"
+      >
+        <i class="fas fa-praying-hands"></i>
+        {% if req.is_prayed_for %}Prayed{% else %}Mark Prayed{% endif %}
+      </a>
+    </div>
+  </div>
+  {% empty %}
+  <div
+    class="card"
+    style="text-align: center; color: var(--text-light); padding: 3rem"
+  >
+    No prayer requests yet.
+  </div>
+  {% endfor %}
 </div>
 {% endblock %}
