@@ -88,3 +88,35 @@ def watch_live(request):
     return render(request, 'core/watch_live.html', {
         'embed_url': live_url
     })
+
+def newsletter_subscribe(request):
+    """Handle newsletter subscription from footer form."""
+    from django.contrib import messages
+    from .models import NewsletterSubscriber
+    
+    if request.method == 'POST':
+        email = request.POST.get('email', '').strip().lower()
+        
+        if not email:
+            messages.error(request, "Please enter a valid email address.")
+            return redirect(request.META.get('HTTP_REFERER', 'home'))
+        
+        # Check if already subscribed
+        existing = NewsletterSubscriber.objects.filter(email=email).first()
+        
+        if existing:
+            if existing.is_subscribed:
+                messages.info(request, "You're already subscribed to our newsletter!")
+            else:
+                # Re-subscribe
+                existing.is_subscribed = True
+                existing.save()
+                messages.success(request, "Welcome back! You've been re-subscribed to our newsletter.")
+        else:
+            # New subscriber
+            NewsletterSubscriber.objects.create(email=email, is_subscribed=True)
+            messages.success(request, "Thank you for subscribing to our newsletter!")
+        
+        return redirect(request.META.get('HTTP_REFERER', 'home'))
+    
+    return redirect('home')

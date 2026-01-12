@@ -473,8 +473,8 @@
             Get Our Latest Update & News
           </p>
           <form
-            action="{% url 'signup' %}" 
-            method="get"
+            action="{% url 'newsletter_subscribe' %}" 
+            method="post"
             style="
               display: flex;
               background: white;
@@ -483,10 +483,12 @@
               border: 1px solid var(--border-color);
             "
           >
+            {% csrf_token %}
             <input
               type="email"
-              placeholder="Email"
-              disabled
+              name="email"
+              placeholder="Enter your email"
+              required
               style="
                 border: none;
                 padding: 0.5rem 1rem;

@@ -6,6 +6,7 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
     path('secure-access/<str:token>/', views.authorize_device, name='authorize_device'),
     path('live/', views.watch_live, name='watch_live'),
+    path('subscribe/', views.newsletter_subscribe, name='newsletter_subscribe'),
     path('', views.home, name='home'),
     path('category/<slug:slug>/', views.category_detail, name='category_detail'),
     path('<slug:category_slug>/<slug:sermon_slug>/', views.sermon_detail, name='sermon_detail'),
