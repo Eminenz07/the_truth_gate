@@ -1,31 +1,340 @@
-{% extends 'core/base.html' %}
-
-{% block content %}
-<div class="container" style="max-width: 600px; padding: 4rem 1.5rem;">
-    <h1 class="text-center" style="margin-bottom: 2rem;">Share Your Testimony</h1>
-    <p class="text-center text-secondary mb-4">"They triumphed over him by the blood of the Lamb and by the word of their testimony." - Rev 12:11</p>
-
-    <form method="post" class="card" style="background: #fff; padding: 2rem; border-radius: 8px; border: 1px solid var(--border-color);">
+{% extends 'core/base.html' %} {% block content %}
+<div
+  class="container site-main"
+  style="max-width: 1200px; padding: 4rem 1.5rem"
+>
+  <div
+    class="testimony-grid"
+    style="
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    "
+  >
+    <!-- Left: Form Section -->
+    <div
+      class="glass-card"
+      style="
+        padding: 3rem;
+        background: rgba(30, 41, 59, 0.7);
+        backdrop-filter: blur(16px);
+        color: white;
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      "
+    >
+      <form method="post">
         {% csrf_token %}
-        
-        <div class="form-group mb-1" style="margin-bottom: 1.5rem;">
-            <label for="name" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Name (Optional)</label>
-            <input type="text" id="name" name="name" class="form-control" placeholder="John Doe" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 4px;">
+
+        <h2
+          style="
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: white;
+          "
+        >
+          Share Your Story
+        </h2>
+
+        <div class="form-group mb-4">
+          <label
+            for="name"
+            style="
+              display: block;
+              margin-bottom: 0.75rem;
+              font-weight: 500;
+              font-size: 0.95rem;
+              opacity: 0.9;
+            "
+            >Full Name</label
+          >
+          <input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="John Doe"
+            style="
+              width: 100%;
+              padding: 1rem;
+              background: rgba(255, 255, 255, 0.1);
+              border: 1px solid rgba(255, 255, 255, 0.2);
+              border-radius: 8px;
+              color: white;
+              font-size: 1rem;
+            "
+            onfocus="this.style.background='rgba(255,255,255,0.15)'; this.style.borderColor='var(--accent)'"
+            onblur="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='rgba(255, 255, 255, 0.2)'"
+          />
         </div>
 
-        <div class="form-group mb-1" style="margin-bottom: 1.5rem;">
-            <label for="location" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Location (Optional)</label>
-            <input type="text" id="location" name="location" class="form-control" placeholder="City, Country" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 4px;">
+        <div class="form-group mb-4">
+          <label
+            for="location"
+            style="
+              display: block;
+              margin-bottom: 0.75rem;
+              font-weight: 500;
+              font-size: 0.95rem;
+              opacity: 0.9;
+            "
+            >Location</label
+          >
+          <input
+            type="text"
+            id="location"
+            name="location"
+            placeholder="City, Country"
+            style="
+              width: 100%;
+              padding: 1rem;
+              background: rgba(255, 255, 255, 0.1);
+              border: 1px solid rgba(255, 255, 255, 0.2);
+              border-radius: 8px;
+              color: white;
+              font-size: 1rem;
+            "
+            onfocus="this.style.background='rgba(255,255,255,0.15)'; this.style.borderColor='var(--accent)'"
+            onblur="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='rgba(255, 255, 255, 0.2)'"
+          />
         </div>
 
-        <div class="form-group mb-1" style="margin-bottom: 1.5rem;">
-            <label for="content" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Your Story *</label>
-            <textarea id="content" name="content" rows="6" required class="form-control" placeholder="Share what God has done..." style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 4px; font-family: inherit;"></textarea>
+        <div class="form-group mb-5">
+          <label
+            for="content"
+            style="
+              display: block;
+              margin-bottom: 0.75rem;
+              font-weight: 500;
+              font-size: 0.95rem;
+              opacity: 0.9;
+            "
+            >Your Testimony</label
+          >
+          <textarea
+            id="content"
+            name="content"
+            rows="6"
+            required
+            placeholder="Share what God has done..."
+            style="
+              width: 100%;
+              padding: 1rem;
+              background: rgba(255, 255, 255, 0.1);
+              border: 1px solid rgba(255, 255, 255, 0.2);
+              border-radius: 8px;
+              color: white;
+              font-size: 1rem;
+              font-family: inherit;
+              line-height: 1.6;
+            "
+            onfocus="this.style.background='rgba(255,255,255,0.15)'; this.style.borderColor='var(--accent)'"
+            onblur="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='rgba(255, 255, 255, 0.2)'"
+          ></textarea>
         </div>
 
-        <div class="text-center">
-            <button type="submit" class="btn-primary" style="padding: 1rem 2rem; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem;">Submit Testimony</button>
+        <button
+          type="submit"
+          class="btn-primary"
+          style="
+            width: 100%;
+            padding: 1.25rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+          "
+        >
+          Submit Your Testimony &rarr;
+        </button>
+      </form>
+    </div>
+
+    <!-- Right: Info Section -->
+    <div class="info-complete" style="padding-top: 2rem">
+      <h1
+        style="
+          font-family: var(--font-heading);
+          font-size: 3.5rem;
+          margin-bottom: 1.5rem;
+          line-height: 1.1;
+        "
+      >
+        Share Your <span style="color: var(--accent)">Testimony</span>
+      </h1>
+      <p
+        style="
+          font-size: 1.2rem;
+          color: var(--text-secondary);
+          line-height: 1.7;
+          margin-bottom: 3rem;
+          max-width: 500px;
+        "
+      >
+        Your story has power. Whether it's a breakthrough, healing, provision,
+        or a moment of divine direction, your testimony can inspire faith and
+        ignite hope in others.
+      </p>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem">
+        <!-- Card 1 -->
+        <div
+          class="glass-card"
+          style="
+            padding: 2rem;
+            background: rgba(30, 41, 59, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            color: white;
+          "
+        >
+          <i
+            class="material-icons-round"
+            style="font-size: 2rem; color: var(--accent); margin-bottom: 1rem"
+            >lightbulb</i
+          >
+          <h3
+            style="font-size: 1.25rem; margin-bottom: 0.75rem; font-weight: 600"
+          >
+            Inspire Others
+          </h3>
+          <p style="font-size: 0.95rem; opacity: 0.8; line-height: 1.6">
+            Your story can encourage someone going through a similar journey.
+          </p>
         </div>
-    </form>
+
+        <!-- Card 2 -->
+        <div
+          class="glass-card"
+          style="
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 16px;
+          "
+        >
+          <i
+            class="material-icons-round"
+            style="
+              font-size: 2rem;
+              color: var(--secondary);
+              margin-bottom: 1rem;
+            "
+            >rocket_launch</i
+          >
+          <h3
+            style="
+              font-size: 1.25rem;
+              margin-bottom: 0.75rem;
+              color: var(--secondary);
+              font-weight: 600;
+            "
+          >
+            Glorify God
+          </h3>
+          <p
+            style="
+              font-size: 0.95rem;
+              color: var(--text-secondary);
+              line-height: 1.6;
+            "
+          >
+            Testimonies are powerful ways to honour what God has done.
+          </p>
+        </div>
+
+        <!-- Card 3 -->
+        <div
+          class="glass-card"
+          style="
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 16px;
+          "
+        >
+          <i
+            class="material-icons-round"
+            style="
+              font-size: 2rem;
+              color: var(--secondary);
+              margin-bottom: 1rem;
+            "
+            >public</i
+          >
+          <h3
+            style="
+              font-size: 1.25rem;
+              margin-bottom: 0.75rem;
+              color: var(--secondary);
+              font-weight: 600;
+            "
+          >
+            Build Community
+          </h3>
+          <p
+            style="
+              font-size: 0.95rem;
+              color: var(--text-secondary);
+              line-height: 1.6;
+            "
+          >
+            It connects us and reminds us of His global moves.
+          </p>
+        </div>
+
+        <!-- Card 4 -->
+        <div
+          class="glass-card"
+          style="
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 16px;
+          "
+        >
+          <i
+            class="material-icons-round"
+            style="
+              font-size: 2rem;
+              color: var(--secondary);
+              margin-bottom: 1rem;
+            "
+            >trending_up</i
+          >
+          <h3
+            style="
+              font-size: 1.25rem;
+              margin-bottom: 0.75rem;
+              color: var(--secondary);
+              font-weight: 600;
+            "
+          >
+            Strengthen Faith
+          </h3>
+          <p
+            style="
+              font-size: 0.95rem;
+              color: var(--text-secondary);
+              line-height: 1.6;
+            "
+          >
+            Hearing God's deeds builds our own expectation.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+<style>
+  @media (max-width: 992px) {
+    .testimony-grid {
+      grid-template-columns: 1fr !important;
+      gap: 3rem !important;
+    }
+    .info-complete {
+      order: -1; /* Show title first on mobile */
+      padding-top: 0 !important;
+    }
+  }
+</style>
 {% endblock %}
