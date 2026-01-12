@@ -1,5 +1,8 @@
-{% extends 'dashboard/base.html' %} {% block header_title %}Prayer Wall{%
-endblock %} {% block extra_css %}
+{% extends 'dashboard/base.html' %}
+
+{% block header_title %}Prayer Wall{% endblock %}
+
+{% block extra_css %}
 <style>
   .prayer-card {
     background: white;
@@ -144,7 +147,9 @@ endblock %} {% block extra_css %}
       </a>
     </div>
   </div>
-  {% endif %} {% endfor %} {% endwith %}
+  {% endif %}
+  {% endfor %}
+  {% endwith %}
 
   <!-- All Prayer Requests -->
   <h3 class="section-title"><i class="fas fa-list"></i> All Prayer Requests</h3>

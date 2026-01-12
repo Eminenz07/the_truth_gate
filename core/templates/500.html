@@ -1,0 +1,127 @@
+{% extends 'core/base.html' %} {% load static %} {% block title %}Server Error |
+The Truth Gate{% endblock %} {% block content %}
+<div
+  class="container site-main"
+  style="
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4rem 1.5rem;
+  "
+>
+  <div
+    class="glass-card"
+    style="
+      max-width: 600px;
+      padding: 4rem 3rem;
+      border-radius: 24px;
+      background: rgba(30, 41, 59, 0.85);
+      backdrop-filter: blur(16px);
+      color: white;
+    "
+  >
+    <!-- Error Icon -->
+    <div style="margin-bottom: 2rem">
+      <i
+        class="material-icons-round"
+        style="font-size: 6rem; color: #ef4444; opacity: 0.8"
+        >error_outline</i
+      >
+    </div>
+
+    <!-- Error Code -->
+    <h1
+      style="
+        font-family: var(--font-heading);
+        font-size: 5rem;
+        font-weight: 800;
+        color: #ef4444;
+        margin-bottom: 0.5rem;
+        line-height: 1;
+      "
+    >
+      500
+    </h1>
+
+    <!-- Message -->
+    <h2
+      style="
+        font-family: var(--font-heading);
+        font-size: 1.75rem;
+        margin-bottom: 1.5rem;
+        color: white;
+      "
+    >
+      Something Went Wrong
+    </h2>
+
+    <p
+      style="
+        font-size: 1.1rem;
+        color: rgba(255, 255, 255, 0.8);
+        line-height: 1.7;
+        margin-bottom: 2.5rem;
+      "
+    >
+      We're experiencing some technical difficulties. Our team has been
+      notified. Please try again in a few moments.
+    </p>
+
+    <!-- Scripture Quote -->
+    <blockquote
+      style="
+        font-style: italic;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 1rem;
+        margin-bottom: 2.5rem;
+        padding: 1rem;
+        border-left: 3px solid var(--accent);
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 0 8px 8px 0;
+      "
+    >
+      "Be still, and know that I am God." — Psalm 46:10
+    </blockquote>
+
+    <!-- Actions -->
+    <div
+      style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap"
+    >
+      <a
+        href="{% url 'home' %}"
+        class="btn-primary"
+        style="padding: 1rem 2rem; font-size: 1rem; text-decoration: none"
+      >
+        <i
+          class="material-icons-round"
+          style="vertical-align: middle; margin-right: 0.5rem"
+          >home</i
+        >
+        Go Home
+      </a>
+      <a
+        href="javascript:location.reload()"
+        style="
+          padding: 1rem 2rem;
+          font-size: 1rem;
+          text-decoration: none;
+          color: white;
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          border-radius: 8px;
+          transition: all 0.2s;
+          cursor: pointer;
+        "
+      >
+        <i
+          class="material-icons-round"
+          style="vertical-align: middle; margin-right: 0.5rem"
+          >refresh</i
+        >
+        Try Again
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}
