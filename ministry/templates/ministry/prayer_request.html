@@ -31,22 +31,24 @@ Gate{% endblock %} {% block content %}
   >
     {% csrf_token %}
 
-    <!-- Show logged-in user info -->
-    <div
-      class="form-group mb-2"
-      style="
-        background: rgba(0, 0, 0, 0.03);
-        padding: 1rem;
-        border-radius: 8px;
-        border: 1px solid var(--border-color);
-      "
-    >
-      <p style="margin: 0; font-size: 0.95rem">
-        <i class="fas fa-user" style="color: var(--accent)"></i>
-        Submitting as:
-        <strong>{{ user.get_full_name|default:user.username }}</strong> ({{
-        user.email }})
-      </p>
+    <div class="form-group mb-1">
+      <label
+        for="name"
+        style="display: block; margin-bottom: 0.5rem; font-weight: 500"
+      >
+        Name (Optional)
+      </label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        style="
+          width: 100%;
+          padding: 0.75rem;
+          border: 1px solid var(--border-color);
+          border-radius: 4px;
+        "
+      />
     </div>
 
     <div class="form-group mb-1">
@@ -81,20 +83,40 @@ Gate{% endblock %} {% block content %}
         "
       >
         <label
-          style="
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 0;
-          "
+          style="display: flex; align-items: center; gap: 0.75rem; {% if not user.is_authenticated %}opacity: 0.6;{% endif %} margin-bottom: 0;"
         >
           <input
             type="checkbox"
             name="request_followup"
             style="width: 1.2rem; height: 1.2rem"
+            {%
+            if
+            not
+            user.is_authenticated
+            %}disabled{%
+            endif
+            %}
           />
           <span style="font-weight: 500">Would you like a follow up?</span>
         </label>
+        {% if not user.is_authenticated %}
+        <small
+          style="
+            display: block;
+            margin-top: 0.5rem;
+            color: var(--text-secondary);
+            margin-left: 2rem;
+          "
+        >
+          Please
+          <a
+            href="{% url 'login' %}?next={{ request.path }}"
+            style="color: var(--accent); font-weight: 600"
+            >log in</a
+          >
+          to request a follow-up.
+        </small>
+        {% else %}
         <small
           style="
             display: block;
@@ -105,6 +127,7 @@ Gate{% endblock %} {% block content %}
         >
           We will contact you via your registered email: {{ user.email }}
         </small>
+        {% endif %}
       </div>
     </div>
 

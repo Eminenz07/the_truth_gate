@@ -44,16 +44,18 @@ def testimony_detail(request, pk):
     testimony = get_object_or_404(Testimony, pk=pk, is_approved=True)
     return render(request, 'ministry/testimony_detail.html', {'testimony': testimony})
 
-@login_required
 def prayer_request(request):
     if request.method == 'POST':
+        name = request.POST.get('name', '')
         request_text = request.POST.get('request_text')
         request_followup = request.POST.get('request_followup') == 'on'
         
-        # Use logged-in user's info
-        user = request.user
-        name = user.get_full_name() or user.username
-        email = user.email
+        # If they want follow-up but aren't logged in, ignore follow-up request
+        if request_followup and not request.user.is_authenticated:
+            request_followup = False
+        
+        # Use logged-in user's email if authenticated, otherwise empty
+        email = request.user.email if request.user.is_authenticated else ''
         
         PrayerRequest.objects.create(
             name=name, email=email, request_text=request_text, request_followup=request_followup
