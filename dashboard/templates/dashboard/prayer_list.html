@@ -1,5 +1,8 @@
-{% extends 'dashboard/base.html' %} {% block header_title %}Prayer Wall{%
-endblock %} {% block extra_css %}
+{% extends 'dashboard/base.html' %} 
+
+{% block header_title %}Prayer Wall{% endblock %} 
+
+{% block extra_css %}
 <style>
   .prayer-card {
     background: white;
@@ -102,61 +105,54 @@ endblock %} {% block extra_css %}
     gap: 0.5rem;
   }
 </style>
-{% endblock %} {% block content %}
+{% endblock %} 
+
+{% block content %}
 <div style="max-width: 800px">
   <h3 class="section-title">
     <i class="fas fa-praying-hands"></i> All Prayer Requests
   </h3>
 
   {% for req in requests %}
-  <div
-    class="prayer-card {% if req.is_prayed_for %}is-prayed{% endif %} {% if req.is_followed_up %}is-followed-up{% endif %}"
-  >
-    <div class="prayer-header">
-      <div>
-        <strong
-          >{% if req.name %}{{ req.name }}{% else %}Anonymous{% endif %}</strong
-        >
-        &bull; {{ req.created_at|date:"M d, Y" }}
+    <div class="prayer-card {% if req.is_prayed_for %}is-prayed{% endif %} {% if req.is_followed_up %}is-followed-up{% endif %}">
+      <div class="prayer-header">
+        <div>
+          <strong>{% if req.name %}{{ req.name }}{% else %}Anonymous{% endif %}</strong>
+          &bull; {{ req.created_at|date:"M d, Y" }}
+        </div>
+        <div>
+          {% if req.request_followup %} 
+            {% if req.is_followed_up %}
+              <span class="badge badge-success">Followed Up</span>
+            {% else %}
+              <span class="badge badge-warning">Needs Follow-Up</span>
+            {% endif %} 
+          {% endif %}
+        </div>
       </div>
-      <div>
-        {% if req.request_followup %} {% if req.is_followed_up %}
-        <span class="badge badge-success">Followed Up</span>
-        {% else %}
-        <span class="badge badge-warning">Needs Follow-Up</span>
-        {% endif %} {% endif %}
+
+      <div class="prayer-body">
+        {{ req.request_text|linebreaks }}
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 0.75rem">
+        {% if req.request_followup %}
+          <a href="{% url 'dashboard:mark_followed_up' req.pk %}" class="btn-followup {% if req.is_followed_up %}active{% endif %}">
+            <i class="fas fa-phone-alt"></i>
+            {% if req.is_followed_up %}Followed Up{% else %}Mark Followed Up{% endif %}
+          </a>
+        {% endif %}
+
+        <a href="{% url 'dashboard:mark_prayed' req.pk %}" class="btn-pray {% if req.is_prayed_for %}active{% endif %}">
+          <i class="fas fa-praying-hands"></i>
+          {% if req.is_prayed_for %}Prayed{% else %}Mark Prayed{% endif %}
+        </a>
       </div>
     </div>
-
-    <div class="prayer-body">{{ req.request_text|linebreaks }}</div>
-
-    <div style="display: flex; justify-content: flex-end; gap: 0.75rem">
-      {% if req.request_followup %}
-      <a
-        href="{% url 'dashboard:mark_followed_up' req.pk %}"
-        class="btn-followup {% if req.is_followed_up %}active{% endif %}"
-      >
-        <i class="fas fa-phone-alt"></i>
-        {% if req.is_followed_up %}Followed Up{% else %}Mark Followed Up{% endif
-        %}
-      </a>
-      {% endif %}
-      <a
-        href="{% url 'dashboard:mark_prayed' req.pk %}"
-        class="btn-pray {% if req.is_prayed_for %}active{% endif %}"
-      >
-        <i class="fas fa-praying-hands"></i>
-        {% if req.is_prayed_for %}Prayed{% else %}Mark Prayed{% endif %}
-      </a>
-    </div>
-  </div>
   {% empty %}
-  <div
-    class="card"
-    style="text-align: center; color: var(--text-light); padding: 3rem"
-  >
-    No prayer requests yet.
-  </div>
+    <div class="card" style="text-align: center; color: var(--text-light); padding: 3rem">
+      No prayer requests yet.
+    </div>
   {% endfor %}
 </div>
 {% endblock %}

@@ -1,5 +1,8 @@
-{% extends 'dashboard/base.html' %} {% block header_title %}Follow-ups{%
-endblock %} {% block extra_css %}
+{% extends 'dashboard/base.html' %} 
+
+{% block header_title %}Follow-ups{% endblock %} 
+
+{% block extra_css %}
 <style>
   .stats-card {
     background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
@@ -38,6 +41,7 @@ endblock %} {% block extra_css %}
     background: #fef3c7;
     color: #92400e;
   }
+
   .badge-done {
     background: #d1fae5;
     color: #065f46;
@@ -74,13 +78,12 @@ endblock %} {% block extra_css %}
     background: white;
   }
 </style>
-{% endblock %} {% block content %}
+{% endblock %} 
+
+{% block content %}
 <div style="max-width: 900px">
-  <!-- Stats Card -->
   <div class="stats-card">
-    <div
-      style="display: flex; justify-content: space-between; align-items: center"
-    >
+    <div style="display: flex; justify-content: space-between; align-items: center">
       <div>
         <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 0.25rem">
           {{ pending_count }}
@@ -91,100 +94,62 @@ endblock %} {% block extra_css %}
     </div>
   </div>
 
-  <!-- Follow-up Requests -->
-  <h3
-    style="
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
-      color: var(--text-main);
-    "
-  >
+  <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-main);">
     <i class="fas fa-list"></i> All Follow-up Requests
   </h3>
 
   {% for req in requests %}
-  <div
-    class="followup-card {% if req.is_followed_up %}completed{% else %}pending{% endif %}"
-  >
-    <div
-      style="
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 1rem;
-      "
-    >
-      <div>
-        <strong style="font-size: 1.05rem"
-          >{% if req.name %}{{ req.name }}{% else %}Anonymous{% endif %}</strong
-        >
-        {% if req.email %}
-        <span style="color: var(--text-light); font-size: 0.9rem"
-          >&bull; {{ req.email }}</span
-        >
-        {% else %}
-        <span style="color: #ef4444; font-size: 0.9rem"
-          >&bull; No email provided</span
-        >
-        {% endif %}
+    <div class="followup-card {% if req.is_followed_up %}completed{% else %}pending{% endif %}">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+        <div>
+          <strong style="font-size: 1.05rem">
+            {% if req.name %}{{ req.name }}{% else %}Anonymous{% endif %}
+          </strong>
+          {% if req.email %}
+            <span style="color: var(--text-light); font-size: 0.9rem">&bull; {{ req.email }}</span>
+          {% else %}
+            <span style="color: #ef4444; font-size: 0.9rem">&bull; No email provided</span>
+          {% endif %}
+        </div>
+        <div>
+          {% if req.is_followed_up %}
+            <span class="badge badge-done"><i class="fas fa-check"></i> Followed Up</span>
+          {% else %}
+            <span class="badge badge-pending"><i class="fas fa-clock"></i> Pending</span>
+          {% endif %}
+        </div>
       </div>
-      <div>
-        {% if req.is_followed_up %}
-        <span class="badge badge-done"
-          ><i class="fas fa-check"></i> Followed Up</span
-        >
-        {% else %}
-        <span class="badge badge-pending"
-          ><i class="fas fa-clock"></i> Pending</span
-        >
-        {% endif %}
-      </div>
-    </div>
 
-    <p style="color: var(--text-main); line-height: 1.6; margin-bottom: 1rem">
-      {{ req.request_text|truncatewords:50 }}
-    </p>
+      <p style="color: var(--text-main); line-height: 1.6; margin-bottom: 1rem">
+        {{ req.request_text|truncatewords:50 }}
+      </p>
 
-    <div
-      style="display: flex; justify-content: space-between; align-items: center"
-    >
-      <span style="color: var(--text-light); font-size: 0.85rem">
-        <i class="fas fa-calendar"></i> {{ req.created_at|date:"M d, Y" }} {% if
-        req.followed_up_at %}&bull; Followed up: {{ req.followed_up_at|date:"M
-        d, Y" }}{% endif %}
-      </span>
+      <div style="display: flex; justify-content: space-between; align-items: center">
+        <span style="color: var(--text-light); font-size: 0.85rem">
+          <i class="fas fa-calendar"></i> {{ req.created_at|date:"M d, Y" }} 
+          {% if req.followed_up_at %}
+            &bull; Followed up: {{ req.followed_up_at|date:"M d, Y" }}
+          {% endif %}
+        </span>
 
-      <div style="display: flex; gap: 0.5rem">
-        {% if req.email and not req.is_followed_up %}
-        <a
-          href="{% url 'dashboard:followup_compose' req.pk %}"
-          class="btn-compose"
-        >
-          <i class="fas fa-envelope"></i> Send Email
-        </a>
-        {% elif req.email and req.is_followed_up %}
-        <a
-          href="{% url 'dashboard:followup_compose' req.pk %}"
-          class="btn-compose btn-outline"
-        >
-          <i class="fas fa-redo"></i> Send Again
-        </a>
-        {% endif %}
+        <div style="display: flex; gap: 0.5rem">
+          {% if req.email and not req.is_followed_up %}
+            <a href="{% url 'dashboard:followup_compose' req.pk %}" class="btn-compose">
+              <i class="fas fa-envelope"></i> Send Email
+            </a>
+          {% elif req.email and req.is_followed_up %}
+            <a href="{% url 'dashboard:followup_compose' req.pk %}" class="btn-compose btn-outline">
+              <i class="fas fa-redo"></i> Send Again
+            </a>
+          {% endif %}
+        </div>
       </div>
     </div>
-  </div>
   {% empty %}
-  <div
-    class="card"
-    style="text-align: center; padding: 3rem; color: var(--text-light)"
-  >
-    <i
-      class="fas fa-inbox"
-      style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.5"
-    ></i>
-    <p>No follow-up requests yet.</p>
-  </div>
+    <div class="card" style="text-align: center; padding: 3rem; color: var(--text-light)">
+      <i class="fas fa-inbox" style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.5"></i>
+      <p>No follow-up requests yet.</p>
+    </div>
   {% endfor %}
 </div>
 {% endblock %}
