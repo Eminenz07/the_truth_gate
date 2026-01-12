@@ -1,0 +1,192 @@
+{% extends 'dashboard/base.html' %} {% block header_title %}Counsel Sessions{%
+endblock %} {% block extra_css %}
+<style>
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .stat-card {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.25rem;
+    text-align: center;
+  }
+
+  .stat-card.waiting {
+    border-left: 4px solid #f59e0b;
+  }
+
+  .stat-card.active {
+    border-left: 4px solid #10b981;
+  }
+
+  .stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+    color: var(--text-light);
+  }
+
+  .session-card {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s;
+  }
+
+  .session-card:hover {
+    border-color: var(--primary);
+  }
+
+  .session-card.waiting {
+    border-left: 4px solid #f59e0b;
+  }
+
+  .session-card.active {
+    border-left: 4px solid #10b981;
+  }
+
+  .btn-chat {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--primary);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+
+  .btn-chat:hover {
+    background: var(--primary-dark);
+    color: white;
+  }
+
+  .section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 1.5rem 0 1rem;
+    color: var(--text-main);
+  }
+</style>
+{% endblock %} {% block content %}
+<div style="max-width: 900px">
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card waiting">
+      <div class="stat-number">{{ waiting_count }}</div>
+      <div class="stat-label">Waiting</div>
+    </div>
+    <div class="stat-card active">
+      <div class="stat-number">{{ active_count }}</div>
+      <div class="stat-label">Active</div>
+    </div>
+  </div>
+
+  <!-- Waiting Conversations -->
+  {% if waiting %}
+  <h3 class="section-title">
+    <i class="fas fa-hourglass-half" style="color: #f59e0b"></i> Waiting for
+    Response
+  </h3>
+  {% for convo in waiting %}
+  <div class="session-card waiting">
+    <div>
+      <strong
+        >{{ convo.user.get_full_name|default:convo.user.username }}</strong
+      >
+      <span style="color: var(--text-light); font-size: 0.85rem"
+        >• {{ convo.created_at|timesince }} ago</span
+      >
+      {% if convo.retention_mode == '24h' %}
+      <span
+        style="
+          background: #fee2e2;
+          color: #b91c1c;
+          padding: 0.15rem 0.5rem;
+          border-radius: 4px;
+          font-size: 0.7rem;
+          margin-left: 0.5rem;
+        "
+        >24h Delete</span
+      >
+      {% endif %}
+    </div>
+    <a href="{% url 'dashboard:counsel_chat' convo.id %}" class="btn-chat">
+      <i class="fas fa-reply"></i> Respond
+    </a>
+  </div>
+  {% endfor %} {% endif %}
+
+  <!-- Active Conversations -->
+  {% if active %}
+  <h3 class="section-title">
+    <i class="fas fa-comments" style="color: #10b981"></i> Active Sessions
+  </h3>
+  {% for convo in active %}
+  <div class="session-card active">
+    <div>
+      <strong
+        >{{ convo.user.get_full_name|default:convo.user.username }}</strong
+      >
+      <span style="color: var(--text-light); font-size: 0.85rem"
+        >• Updated {{ convo.updated_at|timesince }} ago</span
+      >
+    </div>
+    <a href="{% url 'dashboard:counsel_chat' convo.id %}" class="btn-chat">
+      <i class="fas fa-comment"></i> Continue
+    </a>
+  </div>
+  {% endfor %} {% endif %}
+
+  <!-- Empty State -->
+  {% if not waiting and not active %}
+  <div style="text-align: center; padding: 3rem; color: var(--text-light)">
+    <i
+      class="fas fa-inbox"
+      style="font-size: 2.5rem; opacity: 0.5; margin-bottom: 1rem"
+    ></i>
+    <p>No counsel sessions at the moment.</p>
+  </div>
+  {% endif %}
+
+  <!-- Closed Sessions -->
+  {% if closed %}
+  <h3 class="section-title" style="margin-top: 2rem">
+    <i class="fas fa-check-circle" style="color: var(--text-light)"></i>
+    Recently Closed
+  </h3>
+  {% for convo in closed %}
+  <div class="session-card" style="opacity: 0.7">
+    <div>
+      <strong
+        >{{ convo.user.get_full_name|default:convo.user.username }}</strong
+      >
+      <span style="color: var(--text-light); font-size: 0.85rem"
+        >• Closed {{ convo.updated_at|timesince }} ago</span
+      >
+    </div>
+    <a
+      href="{% url 'dashboard:counsel_chat' convo.id %}"
+      style="color: var(--text-light); font-size: 0.9rem"
+    >
+      <i class="fas fa-eye"></i> View
+    </a>
+  </div>
+  {% endfor %} {% endif %}
+</div>
+{% endblock %}

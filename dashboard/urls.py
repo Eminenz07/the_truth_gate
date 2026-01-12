@@ -36,4 +36,9 @@ urlpatterns = [
     path('followups/<int:pk>/compose/', views.followup_compose, name='followup_compose'),
     path('newsletters/', views.newsletter_list, name='newsletter_list'),
     path('newsletters/compose/', views.newsletter_compose, name='newsletter_compose'),
+    
+    # Counsel Sessions
+    path('counsel/', views.counsel_sessions, name='counsel_sessions'),
+    path('counsel/<int:conversation_id>/', views.counsel_chat, name='counsel_chat'),
+    path('counsel/<int:conversation_id>/close/', views.counsel_close, name='counsel_close'),
 ]

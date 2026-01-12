@@ -317,3 +317,72 @@ def newsletter_compose(request):
     return render(request, 'dashboard/newsletter_compose.html', {
         'subscriber_count': subscribers.count()
     })
+
+
+# --- Counsel Sessions (Dashboard) ---
+
+@staff_required
+def counsel_sessions(request):
+    """Dashboard view for managing counsel sessions."""
+    from counsel.models import Conversation
+    
+    # Get unassigned (waiting) conversations
+    waiting = Conversation.objects.filter(
+        counsellor__isnull=True,
+        is_active=True
+    ).select_related('user').order_by('-created_at')
+    
+    # Get active conversations for this counsellor
+    active = Conversation.objects.filter(
+        counsellor=request.user,
+        is_active=True
+    ).select_related('user').order_by('-updated_at')
+    
+    # Get completed/closed conversations
+    closed = Conversation.objects.filter(
+        counsellor=request.user,
+        is_active=False
+    ).select_related('user').order_by('-updated_at')[:20]
+    
+    return render(request, 'dashboard/counsel_sessions.html', {
+        'waiting': waiting,
+        'active': active,
+        'closed': closed,
+        'waiting_count': waiting.count(),
+        'active_count': active.count(),
+    })
+
+
+@staff_required
+def counsel_chat(request, conversation_id):
+    """Dashboard chat view for a specific conversation."""
+    from counsel.models import Conversation, Message
+    
+    conversation = get_object_or_404(Conversation, id=conversation_id)
+    
+    # Assign counsellor if not assigned
+    if conversation.counsellor is None:
+        conversation.counsellor = request.user
+        conversation.save()
+    
+    # Get messages
+    chat_messages = conversation.messages.all().order_by('timestamp')
+    
+    return render(request, 'dashboard/counsel_chat.html', {
+        'conversation': conversation,
+        'messages': chat_messages,
+    })
+
+
+@staff_required
+def counsel_close(request, conversation_id):
+    """Close a conversation."""
+    from counsel.models import Conversation
+    from django.contrib import messages as django_messages
+    
+    conversation = get_object_or_404(Conversation, id=conversation_id)
+    conversation.is_active = False
+    conversation.save()
+    
+    django_messages.success(request, "Conversation closed.")
+    return redirect('dashboard:counsel_sessions')
