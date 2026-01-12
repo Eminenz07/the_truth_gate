@@ -1,4 +1,5 @@
-{% extends 'core/base.html' %} {% load static %} {% block header_title %}Watch Live | The Truth Gate{% endblock %} {% block content %}
+{% extends 'core/base.html' %} {% load static %} {% block header_title %}Watch
+Live | The Truth Gate{% endblock %} {% block content %}
 <style>
   .live-wrapper {
     position: relative;
@@ -77,17 +78,41 @@
       >
       </iframe>
       {% else %}
-      <div class="placeholder-screen">
-        <i
-          class="material-icons-round"
-          style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.5"
-          >cloud_off</i
+      <div
+        class="offline-thumbnail"
+        style="width: 100%; height: 100%; position: absolute; top: 0; left: 0"
+      >
+        <img
+          src="{% static 'core/img/live_thumbnail.png' %}"
+          alt="Live Stream Offline"
+          style="width: 100%; height: 100%; object-fit: cover"
+        />
+        <div
+          style="
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+          "
         >
-        <h3 style="margin-bottom: 0.5rem">Stream Offline</h3>
-        <p style="opacity: 0.7">
-          There is no active live stream at the moment.<br />Please check back
-          during our scheduled service times.
-        </p>
+          <i
+            class="material-icons-round"
+            style="font-size: 4rem; opacity: 0.8; margin-bottom: 0.5rem"
+            >play_circle_outline</i
+          >
+          <h3 style="margin: 0; font-size: 1.5rem">Stream Offline</h3>
+          <p style="opacity: 0.9; margin-top: 0.5rem">
+            Check back during scheduled service times
+          </p>
+        </div>
       </div>
       {% endif %}
     </div>

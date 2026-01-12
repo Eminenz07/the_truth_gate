@@ -36,12 +36,13 @@ body {
     color: var(--text-primary);
     background-color: var(--bg-body);
     /* Silver Gradient + Doodle Overlay */
+    /* Order matters: Top layer first */
     background-image: 
         url('../img/doodle_bg.jpg'),
         linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-    background-blend-mode: overlay, normal;
+    background-blend-mode: multiply, normal; /* 'multiply' usually works better for dark doodles on light bg */
     background-repeat: repeat;
-    background-size: 400px; /* Adjust size as needed */
+    background-size: 500px; /* Slightly larger */
     background-attachment: fixed;
     line-height: 1.7;
     overflow-x: hidden;
