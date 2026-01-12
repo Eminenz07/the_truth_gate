@@ -35,8 +35,13 @@ body {
     font-family: var(--font-body);
     color: var(--text-primary);
     background-color: var(--bg-body);
-    /* Silver Gradient */
-    background-image: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    /* Silver Gradient + Doodle Overlay */
+    background-image: 
+        url('../img/doodle_bg.jpg'),
+        linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    background-blend-mode: overlay, normal;
+    background-repeat: repeat;
+    background-size: 400px; /* Adjust size as needed */
     background-attachment: fixed;
     line-height: 1.7;
     overflow-x: hidden;
@@ -185,8 +190,8 @@ body {
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-    position: sticky;
-    top: 0;
+    position: relative; /* WAS sticky */
+    /* top: 0; */
     z-index: 900;
 }
 
