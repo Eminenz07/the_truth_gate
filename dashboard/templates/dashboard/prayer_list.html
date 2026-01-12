@@ -108,8 +108,8 @@ endblock %} {% block extra_css %}
     <i class="fas fa-bell" style="color: #f59e0b"></i> Needs Follow-Up
   </h3>
 
-  {% with has_followup=False %} {% for req in requests %} {% if
-  req.request_followup and not req.is_followed_up %}
+  {% for req in requests %} {% if req.request_followup and not
+  req.is_followed_up %}
   <div class="prayer-card needs-followup">
     <div class="prayer-header">
       <div>
@@ -142,7 +142,7 @@ endblock %} {% block extra_css %}
       </a>
     </div>
   </div>
-  {% endif %} {% endfor %} {% endwith %}
+  {% endif %} {% endfor %}
 
   <!-- All Prayer Requests -->
   <h3 class="section-title"><i class="fas fa-list"></i> All Prayer Requests</h3>
