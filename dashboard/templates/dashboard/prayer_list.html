@@ -1,8 +1,5 @@
-{% extends 'dashboard/base.html' %}
-
-{% block header_title %}Prayer Wall{% endblock %}
-
-{% block extra_css %}
+{% extends 'dashboard/base.html' %} {% block header_title %}Prayer Wall{%
+endblock %} {% block extra_css %}
 <style>
   .prayer-card {
     background: white;
@@ -107,14 +104,11 @@
 {% endblock %} {% block content %}
 <div style="max-width: 800px">
   <!-- Follow-Up Requests Section -->
-  {% with
-  followup_requests=requests|dictsort:"created_at"|dictsortreversed:"request_followup"
-  %} {% for req in requests %} {% if req.request_followup and not
-  req.is_followed_up %} {% if forloop.first %}
   <h3 class="section-title">
     <i class="fas fa-bell" style="color: #f59e0b"></i> Needs Follow-Up
   </h3>
-  {% endif %}
+  {% for req in requests %} {% if req.request_followup and not
+  req.is_followed_up %}
   <div class="prayer-card needs-followup">
     <div class="prayer-header">
       <div>
@@ -147,9 +141,14 @@
       </a>
     </div>
   </div>
-  {% endif %}
+  {% endif %} {% empty %}
+  <div
+    class="card"
+    style="text-align: center; color: var(--text-light); padding: 2rem"
+  >
+    No follow-up requests pending.
+  </div>
   {% endfor %}
-  {% endwith %}
 
   <!-- All Prayer Requests -->
   <h3 class="section-title"><i class="fas fa-list"></i> All Prayer Requests</h3>
