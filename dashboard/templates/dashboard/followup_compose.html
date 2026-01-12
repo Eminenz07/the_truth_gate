@@ -1,5 +1,8 @@
-{% extends 'dashboard/base.html' %} {% block header_title %}Compose Follow-up{%
-endblock %} {% block extra_css %}
+{% extends 'dashboard/base.html' %} 
+
+{% block header_title %}Compose Follow-up{% endblock %} 
+
+{% block extra_css %}
 <style>
   .compose-card {
     background: white;
@@ -96,28 +99,25 @@ endblock %} {% block extra_css %}
     margin-bottom: 1.5rem;
   }
 </style>
-{% endblock %} {% block content %}
+{% endblock %} 
+
+{% block content %}
 <div class="compose-card">
   <h2 style="margin-bottom: 1.5rem; font-family: 'Lora', serif">
-    <i class="fas fa-envelope" style="color: #3b82f6"></i> Compose Follow-up
-    Email
+    <i class="fas fa-envelope" style="color: #3b82f6"></i> Compose Follow-up Email
   </h2>
 
-  <!-- Recipient Info -->
   <div class="recipient-info">
-    <strong>To:</strong> {{ prayer_request.name|default:"Anonymous" }} {% if
-    prayer_request.email %}
-    <span style="color: #3b82f6">&lt;{{ prayer_request.email }}&gt;</span>
+    <strong>To:</strong> {{ prayer_request.name|default:"Anonymous" }} 
+    {% if prayer_request.email %}
+      <span style="color: #3b82f6">&lt;{{ prayer_request.email }}&gt;</span>
     {% else %}
-    <span style="color: #ef4444">(No email address)</span>
+      <span style="color: #ef4444">(No email address)</span>
     {% endif %}
   </div>
 
-  <!-- Original Prayer Request -->
   <div class="prayer-preview">
-    <strong style="font-size: 0.85rem; color: #92400e"
-      >Original Prayer Request:</strong
-    >
+    <strong style="font-size: 0.85rem; color: #92400e">Original Prayer Request:</strong>
     <p style="margin-top: 0.5rem; color: #78350f; font-size: 0.95rem">
       {{ prayer_request.request_text|truncatewords:75 }}
     </p>
@@ -128,21 +128,19 @@ endblock %} {% block extra_css %}
 
     <div class="form-group">
       <label for="subject">Subject</label>
-      <input
-        type="text"
-        name="subject"
-        id="subject"
-        class="form-control"
-        value="{{ default_subject }}"
+      <input 
+        type="text" 
+        name="subject" 
+        id="subject" 
+        class="form-control" 
+        value="{{ default_subject }}" 
         required
       />
     </div>
 
     <div class="form-group">
       <label for="message">Message</label>
-      <textarea name="message" id="message" class="form-control" required>
-{{ default_message }}</textarea
-      >
+      <textarea name="message" id="message" class="form-control" required>{{ default_message }}</textarea>
     </div>
 
     <div style="display: flex; gap: 1rem; justify-content: flex-end">
