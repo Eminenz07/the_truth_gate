@@ -102,7 +102,7 @@ endblock %} {% block extra_css %}
       <tr>
         <td>{{ sub.email }}</td>
         <td style="color: var(--text-light)">
-          {{ sub.subscribed_at|date:"M d, Y" }}
+          {{ sub.created_at|date:"M d, Y" }}
         </td>
       </tr>
       {% endfor %}

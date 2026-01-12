@@ -269,7 +269,7 @@ def newsletter_list(request):
     """Newsletter dashboard showing subscriber count."""
     from core.models import NewsletterSubscriber
     
-    subscribers = NewsletterSubscriber.objects.all().order_by('-subscribed_at')
+    subscribers = NewsletterSubscriber.objects.all().order_by('-created_at')
     return render(request, 'dashboard/newsletter_list.html', {
         'subscribers': subscribers,
         'subscriber_count': subscribers.count()
