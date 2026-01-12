@@ -113,7 +113,8 @@ def event_edit(request, pk):
 
 @staff_required
 def prayer_list(request):
-    requests = PrayerRequest.objects.all().order_by('-created_at')
+    # Order: not prayed for first, then by date (newest first)
+    requests = PrayerRequest.objects.all().order_by('is_prayed_for', '-created_at')
     return render(request, 'dashboard/prayer_list.html', {'requests': requests})
 
 @staff_required
