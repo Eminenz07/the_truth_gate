@@ -151,8 +151,8 @@ endblock %} {% block extra_css %}
     >
       <span style="color: var(--text-light); font-size: 0.85rem">
         <i class="fas fa-calendar"></i> {{ req.created_at|date:"M d, Y" }} {% if
-        req.followed_up_at %} &bull; Followed up: {{ req.followed_up_at|date:"M
-        d, Y" }} {% endif %}
+        req.followed_up_at %}&bull; Followed up: {{ req.followed_up_at|date:"M
+        d, Y" }}{% endif %}
       </span>
 
       <div style="display: flex; gap: 0.5rem">
