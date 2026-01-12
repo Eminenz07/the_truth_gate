@@ -1,0 +1,203 @@
+{% extends 'core/base.html' %} {% block title %}Counsel | The Truth Gate{%
+endblock %} {% block content %}
+<div class="container site-main" style="max-width: 900px">
+  <header class="text-center mb-4">
+    <h1 class="page-title">Counselling</h1>
+    <p class="text-secondary">
+      A safe, confidential space to connect with our pastoral team.
+    </p>
+  </header>
+
+  {% if is_counsellor %}
+  <!-- Counsellor Dashboard -->
+  <div style="margin-bottom: 2rem">
+    <h3
+      style="
+        font-family: var(--font-heading);
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+      "
+    >
+      <i class="fas fa-inbox" style="color: var(--accent)"></i> Waiting for
+      Counsellor
+    </h3>
+
+    {% if unassigned %} {% for convo in unassigned %}
+    <a href="{% url 'counsel:chat' convo.id %}" style="text-decoration: none">
+      <div
+        style="
+          background: white;
+          border: 1px solid var(--border-color);
+          border-left: 4px solid #f59e0b;
+          border-radius: 8px;
+          padding: 1rem;
+          margin-bottom: 0.75rem;
+          transition: all 0.2s;
+        "
+        onmouseover="this.style.borderColor='var(--primary)'"
+        onmouseout="this.style.borderColor='var(--border-color)'"
+      >
+        <strong style="color: var(--text-primary)"
+          >{{ convo.user.username }}</strong
+        >
+        <span style="color: var(--text-secondary); font-size: 0.85rem"
+          >• {{ convo.created_at|timesince }} ago</span
+        >
+        <span
+          style="
+            float: right;
+            background: #fef3c7;
+            color: #92400e;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+          "
+          >Waiting</span
+        >
+      </div>
+    </a>
+    {% endfor %} {% else %}
+    <p style="color: var(--text-secondary); font-style: italic">
+      No waiting conversations.
+    </p>
+    {% endif %}
+  </div>
+
+  <div style="margin-bottom: 2rem">
+    <h3
+      style="
+        font-family: var(--font-heading);
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+      "
+    >
+      <i class="fas fa-comments" style="color: var(--accent)"></i> Your Active
+      Sessions
+    </h3>
+
+    {% for convo in conversations %}
+    <a href="{% url 'counsel:chat' convo.id %}" style="text-decoration: none">
+      <div
+        style="
+          background: white;
+          border: 1px solid var(--border-color);
+          border-left: 4px solid var(--accent);
+          border-radius: 8px;
+          padding: 1rem;
+          margin-bottom: 0.75rem;
+          transition: all 0.2s;
+        "
+        onmouseover="this.style.borderColor='var(--primary)'"
+        onmouseout="this.style.borderColor='var(--border-color)'"
+      >
+        <strong style="color: var(--text-primary)"
+          >{{ convo.user.username }}</strong
+        >
+        <span style="color: var(--text-secondary); font-size: 0.85rem"
+          >• Updated {{ convo.updated_at|timesince }} ago</span
+        >
+      </div>
+    </a>
+    {% empty %}
+    <p style="color: var(--text-secondary); font-style: italic">
+      No active sessions.
+    </p>
+    {% endfor %}
+  </div>
+
+  {% else %}
+  <!-- Regular User View -->
+  <div
+    style="
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      margin-bottom: 2rem;
+    "
+  >
+    <i
+      class="fas fa-hands-praying"
+      style="font-size: 3rem; color: var(--accent); margin-bottom: 1rem"
+    ></i>
+    <h3 style="font-family: var(--font-heading); margin-bottom: 0.5rem">
+      Need Someone to Talk To?
+    </h3>
+    <p style="color: var(--text-secondary); margin-bottom: 1.5rem">
+      Our counsellors are here to listen, pray, and provide spiritual guidance
+      in confidence.
+    </p>
+    <a
+      href="{% url 'counsel:start' %}"
+      class="btn"
+      style="
+        background: var(--text-primary);
+        color: white;
+        padding: 0.75rem 2rem;
+        font-size: 1rem;
+      "
+    >
+      <i class="fas fa-comment-dots"></i> Start a Conversation
+    </a>
+  </div>
+
+  {% if conversations %}
+  <div style="margin-bottom: 2rem">
+    <h3
+      style="
+        font-family: var(--font-heading);
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+      "
+    >
+      <i class="fas fa-history" style="color: var(--accent)"></i> Your
+      Conversations
+    </h3>
+
+    {% for convo in conversations %}
+    <a href="{% url 'counsel:chat' convo.id %}" style="text-decoration: none">
+      <div
+        style="
+          background: white;
+          border: 1px solid var(--border-color);
+          border-radius: 8px;
+          padding: 1rem;
+          margin-bottom: 0.75rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          transition: all 0.2s;
+        "
+        onmouseover="this.style.borderColor='var(--primary)'"
+        onmouseout="this.style.borderColor='var(--border-color)'"
+      >
+        <div>
+          <strong style="color: var(--text-primary)">
+            {% if convo.counsellor %}With {{
+            convo.counsellor.get_full_name|default:convo.counsellor.username
+            }}{% else %}Waiting for counsellor{% endif %}
+          </strong>
+          <span style="color: var(--text-secondary); font-size: 0.85rem"
+            >• {{ convo.updated_at|timesince }} ago</span
+          >
+        </div>
+        {% if not convo.counsellor %}
+        <span
+          style="
+            background: #fef3c7;
+            color: #92400e;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+          "
+          >Pending</span
+        >
+        {% endif %}
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+  {% endif %} {% endif %}
+</div>
+{% endblock %}

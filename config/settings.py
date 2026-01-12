@@ -41,12 +41,14 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',  # Channels ASGI server - must be first
     'config.apps.MinistryAdminConfig', # Custom Admin Site
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',  # Django Channels
     'django_ckeditor_5',
     'core',
     'sermons',
@@ -54,6 +56,7 @@ INSTALLED_APPS = [
     'ministry',
     'dashboard',
     'accounts',
+    'counsel',  # Counselling chat
     'axes', # Rate Limiting
     'auditlog', # Audit Logging
 ]
@@ -243,3 +246,11 @@ AXES_FAILURE_LIMIT = 5
 AXES_COOLOFF_TIME = 1 # Hours
 AXES_LOCKOUT_PARAMETERS = ["username", "ip_address"]
 AXES_RESET_ON_SUCCESS = True
+
+# Django Channels Configuration
+ASGI_APPLICATION = 'config.asgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',  # Dev only - use Redis in production
+    },
+}

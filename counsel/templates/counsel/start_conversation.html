@@ -1,0 +1,144 @@
+{% extends 'core/base.html' %} {% block title %}Start Conversation | The Truth
+Gate{% endblock %} {% block content %}
+<div class="container site-main" style="max-width: 500px">
+  <header class="text-center mb-4">
+    <h1 class="page-title">Start a Conversation</h1>
+    <p class="text-secondary">
+      Before we begin, please choose your message preference.
+    </p>
+  </header>
+
+  <form
+    method="post"
+    style="
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 2rem;
+    "
+  >
+    {% csrf_token %}
+
+    <div style="margin-bottom: 1.5rem">
+      <label
+        style="
+          display: block;
+          font-weight: 600;
+          margin-bottom: 0.75rem;
+          color: var(--text-primary);
+        "
+      >
+        <i class="fas fa-clock"></i> Message Retention
+      </label>
+
+      <div
+        style="
+          background: #f8fafc;
+          border-radius: 8px;
+          padding: 1rem;
+          margin-bottom: 0.5rem;
+        "
+      >
+        <label
+          style="
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            cursor: pointer;
+          "
+        >
+          <input
+            type="radio"
+            name="retention"
+            value="permanent"
+            checked
+            style="margin-top: 0.25rem"
+          />
+          <div>
+            <strong style="color: var(--text-primary)">Keep Messages</strong>
+            <p
+              style="
+                margin: 0;
+                color: var(--text-secondary);
+                font-size: 0.85rem;
+              "
+            >
+              Your conversation history is preserved for continuity.
+            </p>
+          </div>
+        </label>
+      </div>
+
+      <div style="background: #f8fafc; border-radius: 8px; padding: 1rem">
+        <label
+          style="
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            cursor: pointer;
+          "
+        >
+          <input
+            type="radio"
+            name="retention"
+            value="24h"
+            style="margin-top: 0.25rem"
+          />
+          <div>
+            <strong style="color: var(--text-primary)"
+              >Auto-Delete After 24 Hours</strong
+            >
+            <p
+              style="
+                margin: 0;
+                color: var(--text-secondary);
+                font-size: 0.85rem;
+              "
+            >
+              Messages disappear automatically for extra privacy.
+            </p>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <div
+      style="
+        background: #fef3c7;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+      "
+    >
+      <p style="margin: 0; font-size: 0.9rem; color: #92400e">
+        <i class="fas fa-shield-alt"></i> <strong>Privacy Notice:</strong> Your
+        conversation is confidential and treated with pastoral care. Counsellors
+        retain records for continuity of care.
+      </p>
+    </div>
+
+    <button
+      type="submit"
+      class="btn"
+      style="
+        width: 100%;
+        background: var(--text-primary);
+        color: white;
+        padding: 0.75rem;
+        font-size: 1rem;
+      "
+    >
+      <i class="fas fa-comment-dots"></i> Begin Conversation
+    </button>
+
+    <p style="text-align: center; margin-top: 1rem">
+      <a
+        href="{% url 'counsel:home' %}"
+        style="color: var(--text-secondary); font-size: 0.9rem"
+      >
+        <i class="fas fa-arrow-left"></i> Back to Counsel
+      </a>
+    </p>
+  </form>
+</div>
+{% endblock %}
