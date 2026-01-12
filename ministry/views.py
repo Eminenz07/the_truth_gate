@@ -47,10 +47,13 @@ def testimony_detail(request, pk):
 @login_required
 def prayer_request(request):
     if request.method == 'POST':
-        name = request.POST.get('name')
-        email = request.POST.get('email')
         request_text = request.POST.get('request_text')
         request_followup = request.POST.get('request_followup') == 'on'
+        
+        # Use logged-in user's info
+        user = request.user
+        name = user.get_full_name() or user.username
+        email = user.email
         
         PrayerRequest.objects.create(
             name=name, email=email, request_text=request_text, request_followup=request_followup
