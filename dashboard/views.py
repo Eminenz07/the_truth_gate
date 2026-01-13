@@ -370,7 +370,7 @@ def counsel_chat(request, conversation_id):
     
     return render(request, 'dashboard/counsel_chat.html', {
         'conversation': conversation,
-        'messages': chat_messages,
+        'chat_messages': chat_messages,
     })
 
 

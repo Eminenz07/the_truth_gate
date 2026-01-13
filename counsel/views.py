@@ -65,7 +65,7 @@ def chat_room(request, conversation_id):
     
     return render(request, 'counsel/chat_room.html', {
         'conversation': conversation,
-        'messages': chat_messages,
+        'chat_messages': chat_messages,
         'is_counsellor': user.is_staff,
     })
 
