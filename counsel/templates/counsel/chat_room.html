@@ -1,5 +1,8 @@
-{% extends 'core/base.html' %} {% block title %}Chat | The Truth Gate{% endblock
-%} {% block extra_css %}
+{% extends 'core/base.html' %} 
+
+{% block title %}Chat | The Truth Gate{% endblock %} 
+
+{% block extra_css %}
 <style>
   .chat-container {
     max-width: 800px;
@@ -135,29 +138,31 @@
     color: #b91c1c;
   }
 </style>
-{% endblock %} {% block content %}
+{% endblock %} 
+
+{% block content %}
 <div class="chat-container">
   <div class="chat-header">
     <div>
       <strong style="font-family: var(--font-heading)">
-        {% if conversation.counsellor %} Chat with {{
-        conversation.counsellor.get_full_name|default:"Counsellor" }} {% else %}
-        Waiting for a counsellor... {% endif %}
+        {% if conversation.counsellor %} 
+          Chat with {{ conversation.counsellor.get_full_name|default:"Counsellor" }} 
+        {% else %}
+          Waiting for a counsellor... 
+        {% endif %}
       </strong>
       <div style="font-size: 0.8rem; color: var(--text-secondary)">
         {% if conversation.retention_mode == '24h' %}
-        <i class="fas fa-clock"></i> Messages auto-delete after 24 hours {% else
-        %} <i class="fas fa-lock"></i> Confidential conversation {% endif %}
+          <i class="fas fa-clock"></i> Messages auto-delete after 24 hours 
+        {% else %} 
+          <i class="fas fa-lock"></i> Confidential conversation 
+        {% endif %}
       </div>
     </div>
+    
     <div style="display: flex; align-items: center; gap: 1rem">
-      <span id="connection-status" class="connection-status disconnected"
-        >Connecting...</span
-      >
-      <a
-        href="{% url 'counsel:home' %}"
-        style="color: var(--text-secondary); text-decoration: none"
-      >
+      <span id="connection-status" class="connection-status disconnected">Connecting...</span>
+      <a href="{% url 'counsel:home' %}" style="color: var(--text-secondary); text-decoration: none">
         <i class="fas fa-times" style="font-size: 1.25rem"></i>
       </a>
     </div>
@@ -165,28 +170,28 @@
 
   <div class="chat-messages" id="chat-messages">
     {% for msg in messages %}
-    <div
-      class="message {% if msg.sender == request.user %}sent{% else %}received{% endif %}"
-    >
-      <div>{{ msg.content }}</div>
-      <div class="message-time">{{ msg.timestamp|time:"g:i A" }}</div>
-    </div>
+      <div class="message {% if msg.sender == request.user %}sent{% else %}received{% endif %}">
+        <div>{{ msg.content }}</div>
+        <div class="message-time">{{ msg.timestamp|time:"g:i A" }}</div>
+      </div>
     {% empty %}
-    <div class="empty-chat" id="empty-chat">
-      <i class="fas fa-comments"></i>
-      <p>No messages yet. Start the conversation!</p>
-    </div>
+      <div class="empty-chat" id="empty-chat">
+        <i class="fas fa-comments"></i>
+        <p>No messages yet. Start the conversation!</p>
+      </div>
     {% endfor %}
   </div>
 
   <form class="chat-input-form" id="chat-form">
-    <input
-      type="text"
-      id="message-input"
-      placeholder="Type your message..."
-      autocomplete="off"
+    <input 
+      type="text" 
+      id="message-input" 
+      placeholder="Type your message..." 
+      autocomplete="off" 
     />
-    <button type="submit"><i class="fas fa-paper-plane"></i> Send</button>
+    <button type="submit">
+      <i class="fas fa-paper-plane"></i> Send
+    </button>
   </form>
 </div>
 
@@ -203,99 +208,94 @@
   let chatSocket = null;
 
   function connectWebSocket() {
-      const wsUrl = wsScheme + '://' + window.location.host + '/ws/counsel/' + conversationId + '/';
-      console.log('Connecting to WebSocket:', wsUrl);
+    const wsUrl = wsScheme + '://' + window.location.host + '/ws/counsel/' + conversationId + '/';
+    console.log('Connecting to WebSocket:', wsUrl);
 
-      chatSocket = new WebSocket(wsUrl);
+    chatSocket = new WebSocket(wsUrl);
 
-      chatSocket.onopen = function(e) {
-          console.log('WebSocket connected');
-          statusIndicator.textContent = 'Connected';
-          statusIndicator.className = 'connection-status connected';
-      };
+    chatSocket.onopen = function(e) {
+      console.log('WebSocket connected');
+      statusIndicator.textContent = 'Connected';
+      statusIndicator.className = 'connection-status connected';
+    };
 
-      chatSocket.onmessage = function(e) {
-          console.log('Message received:', e.data);
-          const data = JSON.parse(e.data);
+    chatSocket.onmessage = function(e) {
+      const data = JSON.parse(e.data);
 
-          if (data.type === 'message') {
-              // Remove empty state if present
-              const emptyChat = document.getElementById('empty-chat');
-              if (emptyChat) emptyChat.remove();
+      if (data.type === 'message') {
+        const emptyChat = document.getElementById('empty-chat');
+        if (emptyChat) emptyChat.remove();
 
-              // Add message to chat
-              const messageDiv = document.createElement('div');
-              messageDiv.className = 'message ' + (data.sender_id === currentUserId ? 'sent' : 'received');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message ' + (data.sender_id === currentUserId ? 'sent' : 'received');
 
-              const time = new Date(data.timestamp);
-              const timeStr = time.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+        const time = new Date(data.timestamp);
+        const timeStr = time.toLocaleTimeString('en-US', {
+          hour: 'numeric',
+          minute: '2-digit'
+        });
 
-              messageDiv.innerHTML = `
-                  <div>${escapeHtml(data.message)}</div>
-                  <div class="message-time">${timeStr}</div>
-              `;
+        messageDiv.innerHTML = `
+          <div>${escapeHtml(data.message)}</div>
+          <div class="message-time">${timeStr}</div>
+        `;
 
-              messagesContainer.appendChild(messageDiv);
-              scrollToBottom();
-          }
-      };
+        messagesContainer.appendChild(messageDiv);
+        scrollToBottom();
+      }
+    };
 
-      chatSocket.onclose = function(e) {
-          console.log('WebSocket closed:', e.code, e.reason);
-          statusIndicator.textContent = 'Disconnected';
-          statusIndicator.className = 'connection-status disconnected';
+    chatSocket.onclose = function(e) {
+      console.log('WebSocket closed:', e.code, e.reason);
+      statusIndicator.textContent = 'Disconnected';
+      statusIndicator.className = 'connection-status disconnected';
+      setTimeout(connectWebSocket, 3000);
+    };
 
-          // Reconnect after 3 seconds
-          setTimeout(connectWebSocket, 3000);
-      };
-
-      chatSocket.onerror = function(e) {
-          console.error('WebSocket error:', e);
-      };
+    chatSocket.onerror = function(e) {
+      console.error('WebSocket error:', e);
+    };
   }
 
-  // Connect on page load
   connectWebSocket();
 
   function scrollToBottom() {
-      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
   }
+  
   scrollToBottom();
 
   function sendMessage() {
-      const message = messageInput.value.trim();
+    const message = messageInput.value.trim();
 
-      if (message && chatSocket && chatSocket.readyState === WebSocket.OPEN) {
-          console.log('Sending message:', message);
-          chatSocket.send(JSON.stringify({ 'message': message }));
-          messageInput.value = '';
-      } else if (!chatSocket || chatSocket.readyState !== WebSocket.OPEN) {
-          console.error('WebSocket not connected. State:', chatSocket ? chatSocket.readyState : 'null');
-          alert('Connection lost. Please wait for reconnection.');
-      }
+    if (message && chatSocket && chatSocket.readyState === WebSocket.OPEN) {
+      chatSocket.send(JSON.stringify({
+        'message': message
+      }));
+      messageInput.value = '';
+    } else if (!chatSocket || chatSocket.readyState !== WebSocket.OPEN) {
+      alert('Connection lost. Please wait for reconnection.');
+    }
   }
 
-  // Form submit handler
   chatForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      sendMessage();
+    e.preventDefault();
+    sendMessage();
   });
 
-  // Enter key handler
   messageInput.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter' && !e.shiftKey) {
-          e.preventDefault();
-          sendMessage();
-      }
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
   });
 
   function escapeHtml(text) {
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
   }
 
-  // Focus input on load
   messageInput.focus();
 </script>
 {% endblock %}
