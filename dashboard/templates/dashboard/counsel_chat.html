@@ -58,10 +58,46 @@
         border: 1px solid #c7d2fe;
     }
 
+    .message-content {
+        white-space: pre-wrap;
+    }
+
     .message-time {
         font-size: 0.7rem;
         opacity: 0.7;
         margin-top: 0.25rem;
+    }
+
+    .message-actions {
+        position: absolute;
+        top: 0.25rem;
+        right: 0.25rem;
+        display: none;
+        gap: 0.25rem;
+    }
+
+    .message.sent:hover .message-actions {
+        display: flex;
+    }
+
+    .message-actions button {
+        background: rgba(255,255,255,0.2);
+        border: none;
+        padding: 0.25rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.7rem;
+        color: inherit;
+    }
+
+    .message-actions button:hover {
+        background: rgba(255,255,255,0.4);
+    }
+
+    .message-edited {
+        font-size: 0.65rem;
+        font-style: italic;
+        opacity: 0.6;
     }
 
     .chat-input-form {
@@ -186,9 +222,18 @@
 
         <div class="chat-messages" id="chat-messages">
             {% for msg in chat_messages %}
-                <div class="message {% if msg.sender == request.user %}sent{% else %}received{% endif %}">
-                    <div>{{ msg.content }}</div>
-                    <div class="message-time">{{ msg.timestamp|time:"g:i A" }}</div>
+                <div class="message {% if msg.sender.id == request.user.id %}sent{% else %}received{% endif %}" data-message-id="{{ msg.id }}">
+                    {% if msg.sender.id == request.user.id %}
+                    <div class="message-actions">
+                        <button onclick="editMessage({{ msg.id }})" title="Edit"><i class="fas fa-edit"></i></button>
+                        <button onclick="deleteMessage({{ msg.id }})" title="Delete"><i class="fas fa-trash"></i></button>
+                    </div>
+                    {% endif %}
+                    <div class="message-content">{{ msg.content }}</div>
+                    <div class="message-time">
+                        {{ msg.timestamp|time:"g:i A" }}
+                        {% if msg.edited_at %}<span class="message-edited">(edited)</span>{% endif %}
+                    </div>
                 </div>
             {% empty %}
                 <div class="empty-chat" id="empty-chat">
@@ -223,6 +268,7 @@
     const conversationId = {{ conversation.id }};
     const currentUserId = {{ request.user.id }};
     const wsScheme = window.location.protocol === 'https:' ? 'wss' : 'ws';
+    const csrfToken = '{{ csrf_token }}';
 
     const messagesContainer = document.getElementById('chat-messages');
     const messageInput = document.getElementById('message-input');
@@ -249,7 +295,9 @@
                 if (emptyChat) emptyChat.remove();
 
                 const messageDiv = document.createElement('div');
-                messageDiv.className = 'message ' + (data.sender_id === currentUserId ? 'sent' : 'received');
+                const isSent = data.sender_id === currentUserId;
+                messageDiv.className = 'message ' + (isSent ? 'sent' : 'received');
+                messageDiv.setAttribute('data-message-id', data.message_id);
 
                 const time = new Date(data.timestamp);
                 const timeStr = time.toLocaleTimeString('en-US', {
@@ -257,8 +305,19 @@
                     minute: '2-digit'
                 });
 
+                let actionsHtml = '';
+                if (isSent) {
+                    actionsHtml = `
+                        <div class="message-actions">
+                            <button onclick="editMessage(${data.message_id})" title="Edit"><i class="fas fa-edit"></i></button>
+                            <button onclick="deleteMessage(${data.message_id})" title="Delete"><i class="fas fa-trash"></i></button>
+                        </div>
+                    `;
+                }
+
                 messageDiv.innerHTML = `
-                    <div>${escapeHtml(data.message)}</div>
+                    ${actionsHtml}
+                    <div class="message-content">${escapeHtml(data.message)}</div>
                     <div class="message-time">${timeStr}</div>
                 `;
 
@@ -273,9 +332,7 @@
             setTimeout(connectWebSocket, 3000);
         };
 
-        chatSocket.onerror = function(e) {
-            // Silent error handling
-        };
+        chatSocket.onerror = function(e) {};
     }
 
     connectWebSocket();
@@ -290,9 +347,7 @@
         const message = messageInput.value.trim();
 
         if (message && chatSocket && chatSocket.readyState === WebSocket.OPEN) {
-            chatSocket.send(JSON.stringify({
-                'message': message
-            }));
+            chatSocket.send(JSON.stringify({ 'message': message }));
             messageInput.value = '';
         } else if (!chatSocket || chatSocket.readyState !== WebSocket.OPEN) {
             alert('Connection lost. Please wait for reconnection.');
@@ -315,6 +370,59 @@
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
+    }
+
+    function editMessage(messageId) {
+        const msgDiv = document.querySelector(`[data-message-id="${messageId}"]`);
+        const contentDiv = msgDiv.querySelector('.message-content');
+        const currentContent = contentDiv.textContent;
+        
+        const newContent = prompt('Edit message:', currentContent);
+        if (newContent && newContent.trim() !== currentContent) {
+            fetch(`/counsel/api/message/${messageId}/edit/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({ content: newContent.trim() })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    contentDiv.textContent = data.content;
+                    const timeDiv = msgDiv.querySelector('.message-time');
+                    if (!timeDiv.querySelector('.message-edited')) {
+                        timeDiv.innerHTML += ' <span class="message-edited">(edited)</span>';
+                    }
+                } else {
+                    alert(data.error || 'Failed to edit message');
+                }
+            })
+            .catch(err => alert('Error editing message'));
+        }
+    }
+
+    function deleteMessage(messageId) {
+        if (!confirm('Delete this message?')) return;
+        
+        fetch(`/counsel/api/message/${messageId}/delete/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const msgDiv = document.querySelector(`[data-message-id="${messageId}"]`);
+                msgDiv.style.opacity = '0';
+                setTimeout(() => msgDiv.remove(), 300);
+            } else {
+                alert(data.error || 'Failed to delete message');
+            }
+        })
+        .catch(err => alert('Error deleting message'));
     }
 
     messageInput.focus();

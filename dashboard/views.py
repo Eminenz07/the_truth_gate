@@ -365,8 +365,8 @@ def counsel_chat(request, conversation_id):
         conversation.counsellor = request.user
         conversation.save()
     
-    # Get messages
-    chat_messages = conversation.messages.all().order_by('timestamp')
+    # Get messages (exclude deleted)
+    chat_messages = conversation.messages.filter(is_deleted=False).order_by('timestamp')
     
     return render(request, 'dashboard/counsel_chat.html', {
         'conversation': conversation,

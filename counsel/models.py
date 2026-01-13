@@ -55,6 +55,8 @@ class Message(models.Model):
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)
+    is_deleted = models.BooleanField(default=False)  # Soft delete
+    edited_at = models.DateTimeField(null=True, blank=True)  # Track edits
     
     class Meta:
         ordering = ['timestamp']

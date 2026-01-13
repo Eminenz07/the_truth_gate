@@ -60,8 +60,8 @@ def chat_room(request, conversation_id):
         conversation.counsellor = user
         conversation.save()
     
-    # Get messages
-    chat_messages = conversation.messages.all().order_by('timestamp')
+    # Get messages (exclude deleted)
+    chat_messages = conversation.messages.filter(is_deleted=False).order_by('timestamp')
     
     return render(request, 'counsel/chat_room.html', {
         'conversation': conversation,
@@ -85,6 +85,64 @@ def delete_conversation(request, conversation_id):
     return redirect('counsel:home')
 
 
+@login_required
+def edit_message(request, message_id):
+    """Edit a message (AJAX endpoint)."""
+    import json
+    from django.utils import timezone
+    from django.views.decorators.http import require_POST
+    
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'error': 'POST required'}, status=405)
+    
+    message = get_object_or_404(Message, id=message_id)
+    
+    # Only sender can edit their own message
+    if message.sender != request.user:
+        return JsonResponse({'success': False, 'error': 'Permission denied'}, status=403)
+    
+    try:
+        data = json.loads(request.body)
+        new_content = data.get('content', '').strip()
+        
+        if not new_content:
+            return JsonResponse({'success': False, 'error': 'Message cannot be empty'}, status=400)
+        
+        message.content = new_content
+        message.edited_at = timezone.now()
+        message.save()
+        
+        return JsonResponse({
+            'success': True,
+            'message_id': message.id,
+            'content': message.content,
+            'edited_at': message.edited_at.isoformat()
+        })
+    except json.JSONDecodeError:
+        return JsonResponse({'success': False, 'error': 'Invalid JSON'}, status=400)
+
+
+@login_required
+def delete_message(request, message_id):
+    """Soft-delete a message (AJAX endpoint)."""
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'error': 'POST required'}, status=405)
+    
+    message = get_object_or_404(Message, id=message_id)
+    
+    # Only sender can delete their own message
+    if message.sender != request.user:
+        return JsonResponse({'success': False, 'error': 'Permission denied'}, status=403)
+    
+    message.is_deleted = True
+    message.save()
+    
+    return JsonResponse({
+        'success': True,
+        'message_id': message.id
+    })
+
+
 def get_online_status(request):
     """API endpoint to check if any counsellor is online."""
     from django.contrib.auth.models import User
@@ -94,3 +152,4 @@ def get_online_status(request):
     online = User.objects.filter(is_staff=True, is_active=True).exists()
     
     return JsonResponse({'online': online})
+
