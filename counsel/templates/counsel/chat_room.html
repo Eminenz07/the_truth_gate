@@ -1,8 +1,5 @@
-{% extends 'core/base.html' %} 
-
-{% block title %}Chat | The Truth Gate{% endblock %} 
-
-{% block extra_css %}
+{% extends 'core/base.html' %} {% block title %}Chat | The Truth Gate{% endblock
+%} {% block extra_css %}
 <style>
   .chat-container {
     max-width: 800px;
@@ -53,9 +50,10 @@
 
   .message.received {
     align-self: flex-start;
-    background: #e2e8f0;
-    color: #1a1a2e;
+    background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+    color: #312e81;
     border-bottom-left-radius: 4px;
+    border: 1px solid #c7d2fe;
   }
 
   .message-time {
@@ -138,31 +136,30 @@
     color: #b91c1c;
   }
 </style>
-{% endblock %} 
-
-{% block content %}
+{% endblock %} {% block content %}
 <div class="chat-container">
   <div class="chat-header">
     <div>
       <strong style="font-family: var(--font-heading)">
-        {% if conversation.counsellor %} 
-          Chat with {{ conversation.counsellor.get_full_name|default:"Counsellor" }} 
-        {% else %}
-          Waiting for a counsellor... 
-        {% endif %}
+        {% if conversation.counsellor %} Chat with {{
+        conversation.counsellor.get_full_name|default:"Counsellor" }} {% else %}
+        Waiting for a counsellor... {% endif %}
       </strong>
       <div style="font-size: 0.8rem; color: var(--text-secondary)">
         {% if conversation.retention_mode == '24h' %}
-          <i class="fas fa-clock"></i> Messages auto-delete after 24 hours 
-        {% else %} 
-          <i class="fas fa-lock"></i> Confidential conversation 
-        {% endif %}
+        <i class="fas fa-clock"></i> Messages auto-delete after 24 hours {% else
+        %} <i class="fas fa-lock"></i> Confidential conversation {% endif %}
       </div>
     </div>
-    
+
     <div style="display: flex; align-items: center; gap: 1rem">
-      <span id="connection-status" class="connection-status disconnected">Connecting...</span>
-      <a href="{% url 'counsel:home' %}" style="color: var(--text-secondary); text-decoration: none">
+      <span id="connection-status" class="connection-status disconnected"
+        >Connecting...</span
+      >
+      <a
+        href="{% url 'counsel:home' %}"
+        style="color: var(--text-secondary); text-decoration: none"
+      >
         <i class="fas fa-times" style="font-size: 1.25rem"></i>
       </a>
     </div>
@@ -170,28 +167,28 @@
 
   <div class="chat-messages" id="chat-messages">
     {% for msg in messages %}
-      <div class="message {% if msg.sender == request.user %}sent{% else %}received{% endif %}">
-        <div>{{ msg.content }}</div>
-        <div class="message-time">{{ msg.timestamp|time:"g:i A" }}</div>
-      </div>
+    <div
+      class="message {% if msg.sender == request.user %}sent{% else %}received{% endif %}"
+    >
+      <div>{{ msg.content }}</div>
+      <div class="message-time">{{ msg.timestamp|time:"g:i A" }}</div>
+    </div>
     {% empty %}
-      <div class="empty-chat" id="empty-chat">
-        <i class="fas fa-comments"></i>
-        <p>No messages yet. Start the conversation!</p>
-      </div>
+    <div class="empty-chat" id="empty-chat">
+      <i class="fas fa-comments"></i>
+      <p>No messages yet. Start the conversation!</p>
+    </div>
     {% endfor %}
   </div>
 
   <form class="chat-input-form" id="chat-form">
-    <input 
-      type="text" 
-      id="message-input" 
-      placeholder="Type your message..." 
-      autocomplete="off" 
+    <input
+      type="text"
+      id="message-input"
+      placeholder="Type your message..."
+      autocomplete="off"
     />
-    <button type="submit">
-      <i class="fas fa-paper-plane"></i> Send
-    </button>
+    <button type="submit"><i class="fas fa-paper-plane"></i> Send</button>
   </form>
 </div>
 
@@ -262,7 +259,7 @@
   function scrollToBottom() {
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
   }
-  
+
   scrollToBottom();
 
   function sendMessage() {
