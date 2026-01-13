@@ -206,12 +206,11 @@
 
   function connectWebSocket() {
     const wsUrl = wsScheme + '://' + window.location.host + '/ws/counsel/' + conversationId + '/';
-    console.log('Connecting to WebSocket:', wsUrl);
 
     chatSocket = new WebSocket(wsUrl);
 
     chatSocket.onopen = function(e) {
-      console.log('WebSocket connected');
+
       statusIndicator.textContent = 'Connected';
       statusIndicator.className = 'connection-status connected';
     };
@@ -243,14 +242,14 @@
     };
 
     chatSocket.onclose = function(e) {
-      console.log('WebSocket closed:', e.code, e.reason);
+
       statusIndicator.textContent = 'Disconnected';
       statusIndicator.className = 'connection-status disconnected';
       setTimeout(connectWebSocket, 3000);
     };
 
     chatSocket.onerror = function(e) {
-      console.error('WebSocket error:', e);
+
     };
   }
 

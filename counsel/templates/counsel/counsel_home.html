@@ -80,9 +80,11 @@
       >
         <div>
           <strong style="color: var(--text-primary)">
-            {% if convo.counsellor %} Chatting with {{
-            convo.counsellor.get_full_name|default:"Counsellor" }} {% else %}
-            Waiting for a counsellor... {% endif %}
+            {% if convo.counsellor %}
+            Chatting with {{ convo.counsellor.get_full_name|default:"Counsellor" }} 
+            {% else %}
+            Waiting for a counsellor... 
+            {% endif %}
           </strong>
           <span style="color: var(--text-secondary); font-size: 0.85rem"
             >• {{ convo.updated_at|timesince }} ago</span
