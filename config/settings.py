@@ -254,22 +254,17 @@ ASGI_APPLICATION = 'config.asgi.application'
 REDIS_URL = os.getenv('REDIS_URL')
 
 if REDIS_URL:
-    # Parse rediss:// URL for SSL connection (Upstash)
-    import ssl
-    ssl_context = ssl.create_default_context()
-    ssl_context.check_hostname = False
-    ssl_context.verify_mode = ssl.CERT_NONE
-    
+    # For Upstash, the rediss:// URL handles SSL automatically
+    # Just pass the URL directly to channels_redis
     CHANNEL_LAYERS = {
         'default': {
             'BACKEND': 'channels_redis.core.RedisChannelLayer',
             'CONFIG': {
                 'hosts': [REDIS_URL],
-                'ssl': ssl_context,
             },
         },
     }
-    print("SUCCESS: Redis channel layer configured (SSL enabled)")
+    print("SUCCESS: Redis channel layer configured")
 else:
     CHANNEL_LAYERS = {
         'default': {

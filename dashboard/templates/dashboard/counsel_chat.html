@@ -1,20 +1,20 @@
-{% extends 'dashboard/base.html' %}
+{% extends 'core/base.html' %} 
 
-{% block header_title %}
-  Chat: {{ conversation.user.get_full_name|default:conversation.user.username }}
-{% endblock %}
+{% block title %}Chat | The Truth Gate{% endblock %} 
 
 {% block extra_css %}
 <style>
   .chat-container {
-    background: white;
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    overflow: hidden;
+    max-width: 800px;
+    margin: 0 auto;
     height: calc(100vh - 200px);
     min-height: 500px;
     display: flex;
     flex-direction: column;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
   }
 
   .chat-header {
@@ -33,6 +33,7 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    background: #fafafa;
   }
 
   .message {
@@ -40,19 +41,20 @@
     padding: 0.75rem 1rem;
     border-radius: 12px;
     line-height: 1.5;
+    word-wrap: break-word;
   }
 
   .message.sent {
     align-self: flex-end;
-    background: var(--primary);
+    background: var(--text-primary, #1a1a2e);
     color: white;
     border-bottom-right-radius: 4px;
   }
 
   .message.received {
     align-self: flex-start;
-    background: #f1f5f9;
-    color: var(--text-primary);
+    background: #e2e8f0;
+    color: #1a1a2e;
     border-bottom-left-radius: 4px;
   }
 
@@ -62,52 +64,45 @@
     margin-top: 0.25rem;
   }
 
-  .chat-input {
+  .chat-input-form {
     padding: 1rem 1.5rem;
     border-top: 1px solid var(--border-color);
     background: #f8fafc;
     display: flex;
     gap: 0.75rem;
+    align-items: center;
   }
 
-  .chat-input input {
+  .chat-input-form input {
     flex: 1;
     padding: 0.75rem 1rem;
-    border: 1px solid var(--border-color);
+    border: 1px solid #d1d5db;
     border-radius: 25px;
     font-size: 1rem;
     outline: none;
+    background: white;
   }
 
-  .chat-input input:focus {
-    border-color: var(--primary);
+  .chat-input-form input:focus {
+    border-color: var(--primary, #6366f1);
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
   }
 
-  .chat-input button {
+  .chat-input-form button {
     padding: 0.75rem 1.5rem;
-    background: var(--primary);
+    background: var(--text-primary, #1a1a2e);
     color: white;
     border: none;
     border-radius: 25px;
     cursor: pointer;
     font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 
-  .chat-input button:hover {
-    background: var(--primary-dark);
-  }
-
-  .btn-close-session {
-    padding: 0.5rem 1rem;
-    background: #fee2e2;
-    color: #b91c1c;
-    border-radius: 6px;
-    text-decoration: none;
-    font-size: 0.85rem;
-  }
-
-  .btn-close-session:hover {
-    background: #fecaca;
+  .chat-input-form button:hover {
+    background: #2d2d4a;
   }
 
   .empty-chat {
@@ -116,7 +111,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: var(--text-secondary);
+    color: var(--text-secondary, #6b7280);
     text-align: center;
     padding: 2rem;
   }
@@ -126,87 +121,143 @@
     opacity: 0.5;
     margin-bottom: 1rem;
   }
+
+  .connection-status {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+  }
+
+  .connection-status.connected {
+    background: #d1fae5;
+    color: #065f46;
+  }
+
+  .connection-status.disconnected {
+    background: #fee2e2;
+    color: #b91c1c;
+  }
 </style>
-{% endblock %}
+{% endblock %} 
 
 {% block content %}
-<div style="max-width: 800px">
-  <div class="chat-container">
-    <div class="chat-header">
-      <div>
-        <strong style="font-family: var(--font-heading)">
-          {{ conversation.user.get_full_name|default:conversation.user.username }}
-        </strong>
-        <div style="font-size: 0.8rem; color: var(--text-secondary)">
-          {% if conversation.retention_mode == '24h' %}
-            <i class="fas fa-clock"></i> Messages auto-delete after 24 hours
-          {% else %}
-            <i class="fas fa-lock"></i> Confidential conversation
-          {% endif %}
-          &bull; Started {{ conversation.created_at|timesince }} ago
-        </div>
-      </div>
-      
-      <div style="display: flex; gap: 0.75rem; align-items: center">
-        {% if conversation.is_active %}
-          <a href="{% url 'dashboard:counsel_close' conversation.id %}" class="btn-close-session">
-            <i class="fas fa-times"></i> Close Session
-          </a>
+<div class="chat-container">
+  <div class="chat-header">
+    <div>
+      <strong style="font-family: var(--font-heading)">
+        {% if conversation.counsellor %} 
+          Chat with {{ conversation.counsellor.get_full_name|default:"Counsellor" }} 
+        {% else %}
+          Waiting for a counsellor... 
         {% endif %}
-        <a href="{% url 'dashboard:counsel_sessions' %}" style="color: var(--text-secondary)">
-          <i class="fas fa-arrow-left"></i> Back
-        </a>
+      </strong>
+      <div style="font-size: 0.8rem; color: var(--text-secondary)">
+        {% if conversation.retention_mode == '24h' %}
+          <i class="fas fa-clock"></i> Messages auto-delete after 24 hours 
+        {% else %} 
+          <i class="fas fa-lock"></i> Confidential conversation 
+        {% endif %}
       </div>
     </div>
-
-    <div class="chat-messages" id="chat-messages">
-      {% if messages %}
-        {% for msg in messages %}
-          <div class="message {% if msg.sender == request.user %}sent{% else %}received{% endif %}">
-            <div>{{ msg.content }}</div>
-            <div class="message-time">{{ msg.timestamp|time:"g:i A" }}</div>
-          </div>
-        {% endfor %}
-      {% else %}
-        <div class="empty-chat">
-          <i class="fas fa-comments"></i>
-          <p>No messages yet. The user is waiting for your response.</p>
-        </div>
-      {% endif %}
+    
+    <div style="display: flex; align-items: center; gap: 1rem">
+      <span id="connection-status" class="connection-status disconnected">Connecting...</span>
+      <a href="{% url 'counsel:home' %}" style="color: var(--text-secondary); text-decoration: none">
+        <i class="fas fa-times" style="font-size: 1.25rem"></i>
+      </a>
     </div>
-
-    {% if conversation.is_active %}
-      <form class="chat-input" id="chat-form" onsubmit="return sendMessage(event);">
-        <input 
-          type="text" 
-          id="message-input" 
-          placeholder="Type your response..." 
-          autocomplete="off" 
-          required 
-        />
-        <button type="submit">
-          <i class="fas fa-paper-plane"></i> Send
-        </button>
-      </form>
-    {% else %}
-      <div class="chat-input" style="justify-content: center; color: var(--text-light)">
-        <i class="fas fa-lock"></i> This conversation is closed
-      </div>
-    {% endif %}
   </div>
+
+  <div class="chat-messages" id="chat-messages">
+    {% for msg in messages %}
+      <div class="message {% if msg.sender == request.user %}sent{% else %}received{% endif %}">
+        <div>{{ msg.content }}</div>
+        <div class="message-time">{{ msg.timestamp|time:"g:i A" }}</div>
+      </div>
+    {% empty %}
+      <div class="empty-chat" id="empty-chat">
+        <i class="fas fa-comments"></i>
+        <p>No messages yet. Start the conversation!</p>
+      </div>
+    {% endfor %}
+  </div>
+
+  <form class="chat-input-form" id="chat-form">
+    <input 
+      type="text" 
+      id="message-input" 
+      placeholder="Type your message..." 
+      autocomplete="off" 
+    />
+    <button type="submit">
+      <i class="fas fa-paper-plane"></i> Send
+    </button>
+  </form>
 </div>
 
-{% if conversation.is_active %}
 <script>
   const conversationId = {{ conversation.id }};
   const currentUserId = {{ request.user.id }};
   const wsScheme = window.location.protocol === 'https:' ? 'wss' : 'ws';
-  const chatSocket = new WebSocket(
-    wsScheme + '://' + window.location.host + '/ws/counsel/' + conversationId + '/'
-  );
 
   const messagesContainer = document.getElementById('chat-messages');
   const messageInput = document.getElementById('message-input');
+  const chatForm = document.getElementById('chat-form');
+  const statusIndicator = document.getElementById('connection-status');
+
+  let chatSocket = null;
+
+  function connectWebSocket() {
+    const wsUrl = wsScheme + '://' + window.location.host + '/ws/counsel/' + conversationId + '/';
+    console.log('Connecting to WebSocket:', wsUrl);
+
+    chatSocket = new WebSocket(wsUrl);
+
+    chatSocket.onopen = function(e) {
+      console.log('WebSocket connected');
+      statusIndicator.textContent = 'Connected';
+      statusIndicator.className = 'connection-status connected';
+    };
+
+    chatSocket.onmessage = function(e) {
+      const data = JSON.parse(e.data);
+
+      if (data.type === 'message') {
+        const emptyChat = document.getElementById('empty-chat');
+        if (emptyChat) emptyChat.remove();
+
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message ' + (data.sender_id === currentUserId ? 'sent' : 'received');
+
+        const time = new Date(data.timestamp);
+        const timeStr = time.toLocaleTimeString('en-US', {
+          hour: 'numeric',
+          minute: '2-digit'
+        });
+
+        messageDiv.innerHTML = `
+          <div>${escapeHtml(data.message)}</div>
+          <div class="message-time">${timeStr}</div>
+        `;
+
+        messagesContainer.appendChild(messageDiv);
+        scrollToBottom();
+      }
+    };
+
+    chatSocket.onclose = function(e) {
+      console.log('WebSocket closed:', e.code, e.reason);
+      statusIndicator.textContent = 'Disconnected';
+      statusIndicator.className = 'connection-status disconnected';
+      setTimeout(connectWebSocket, 3000);
+    };
+
+    chatSocket.onerror = function(e) {
+      console.error('WebSocket error:', e);
+    };
+  }
+
+  connectWebSocket();
 
   function scrollToBottom() {
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -214,48 +265,30 @@
   
   scrollToBottom();
 
-  chatSocket.onmessage = function(e) {
-    const data = JSON.parse(e.data);
-
-    if (data.type === 'message') {
-      const emptyChat = messagesContainer.querySelector('.empty-chat');
-      if (emptyChat) emptyChat.remove();
-
-      const messageDiv = document.createElement('div');
-      messageDiv.className = 'message ' + (data.sender_id === currentUserId ? 'sent' : 'received');
-
-      const time = new Date(data.timestamp);
-      const timeStr = time.toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        minute: '2-digit'
-      });
-
-      messageDiv.innerHTML = `
-        <div>${escapeHtml(data.message)}</div>
-        <div class="message-time">${timeStr}</div>
-      `;
-
-      messagesContainer.appendChild(messageDiv);
-      scrollToBottom();
-    }
-  };
-
-  chatSocket.onclose = function(e) {
-    console.log('Chat socket closed');
-  };
-
-  function sendMessage(e) {
-    e.preventDefault();
+  function sendMessage() {
     const message = messageInput.value.trim();
 
-    if (message && chatSocket.readyState === WebSocket.OPEN) {
+    if (message && chatSocket && chatSocket.readyState === WebSocket.OPEN) {
       chatSocket.send(JSON.stringify({
         'message': message
       }));
       messageInput.value = '';
+    } else if (!chatSocket || chatSocket.readyState !== WebSocket.OPEN) {
+      alert('Connection lost. Please wait for reconnection.');
     }
-    return false;
   }
+
+  chatForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    sendMessage();
+  });
+
+  messageInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
 
   function escapeHtml(text) {
     const div = document.createElement('div');
@@ -265,5 +298,4 @@
 
   messageInput.focus();
 </script>
-{% endif %}
 {% endblock %}
