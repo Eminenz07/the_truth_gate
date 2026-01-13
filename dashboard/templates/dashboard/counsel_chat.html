@@ -1,8 +1,10 @@
-{% extends 'dashboard/base.html' %} 
+{% extends 'dashboard/base.html' %}
 
-{% block header_title %}Chat: {{ conversation.user.get_full_name|default:conversation.user.username }}
+{% block header_title %}
+  Chat: {{ conversation.user.get_full_name|default:conversation.user.username }}
+{% endblock %}
 
-{% endblock %} {% block extra_css %}
+{% block extra_css %}
 <style>
   .chat-container {
     background: white;
@@ -125,78 +127,71 @@
     margin-bottom: 1rem;
   }
 </style>
-{% endblock %} {% block content %}
+{% endblock %}
+
+{% block content %}
 <div style="max-width: 800px">
   <div class="chat-container">
     <div class="chat-header">
       <div>
         <strong style="font-family: var(--font-heading)">
-          {{ conversation.user.get_full_name|default:conversation.user.username
-          }}
+          {{ conversation.user.get_full_name|default:conversation.user.username }}
         </strong>
         <div style="font-size: 0.8rem; color: var(--text-secondary)">
           {% if conversation.retention_mode == '24h' %}
-          <i class="fas fa-clock"></i> Messages auto-delete after 24 hours {%
-          else %} <i class="fas fa-lock"></i> Confidential conversation {% endif
-          %} • Started {{ conversation.created_at|timesince }} ago
+            <i class="fas fa-clock"></i> Messages auto-delete after 24 hours
+          {% else %}
+            <i class="fas fa-lock"></i> Confidential conversation
+          {% endif %}
+          &bull; Started {{ conversation.created_at|timesince }} ago
         </div>
       </div>
+      
       <div style="display: flex; gap: 0.75rem; align-items: center">
         {% if conversation.is_active %}
-        <a
-          href="{% url 'dashboard:counsel_close' conversation.id %}"
-          class="btn-close-session"
-        >
-          <i class="fas fa-times"></i> Close Session
-        </a>
+          <a href="{% url 'dashboard:counsel_close' conversation.id %}" class="btn-close-session">
+            <i class="fas fa-times"></i> Close Session
+          </a>
         {% endif %}
-        <a
-          href="{% url 'dashboard:counsel_sessions' %}"
-          style="color: var(--text-secondary)"
-        >
+        <a href="{% url 'dashboard:counsel_sessions' %}" style="color: var(--text-secondary)">
           <i class="fas fa-arrow-left"></i> Back
         </a>
       </div>
     </div>
 
     <div class="chat-messages" id="chat-messages">
-      {% if messages %} {% for msg in messages %}
-      <div
-        class="message {% if msg.sender == request.user %}sent{% else %}received{% endif %}"
-      >
-        <div>{{ msg.content }}</div>
-        <div class="message-time">{{ msg.timestamp|time:"g:i A" }}</div>
-      </div>
-      {% endfor %} {% else %}
-      <div class="empty-chat">
-        <i class="fas fa-comments"></i>
-        <p>No messages yet. The user is waiting for your response.</p>
-      </div>
+      {% if messages %}
+        {% for msg in messages %}
+          <div class="message {% if msg.sender == request.user %}sent{% else %}received{% endif %}">
+            <div>{{ msg.content }}</div>
+            <div class="message-time">{{ msg.timestamp|time:"g:i A" }}</div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="empty-chat">
+          <i class="fas fa-comments"></i>
+          <p>No messages yet. The user is waiting for your response.</p>
+        </div>
       {% endif %}
     </div>
 
     {% if conversation.is_active %}
-    <form
-      class="chat-input"
-      id="chat-form"
-      onsubmit="return sendMessage(event);"
-    >
-      <input
-        type="text"
-        id="message-input"
-        placeholder="Type your response..."
-        autocomplete="off"
-        required
-      />
-      <button type="submit"><i class="fas fa-paper-plane"></i> Send</button>
-    </form>
+      <form class="chat-input" id="chat-form" onsubmit="return sendMessage(event);">
+        <input 
+          type="text" 
+          id="message-input" 
+          placeholder="Type your response..." 
+          autocomplete="off" 
+          required 
+        />
+        <button type="submit">
+          <i class="fas fa-paper-plane"></i> Send
+        </button>
+      </form>
     {% else %}
-    <div
-      class="chat-input"
-      style="justify-content: center; color: var(--text-light)"
-    >
-      <i class="fas fa-lock"></i> This conversation is closed
-    </div>
+      <div class="chat-input" style="justify-content: center; color: var(--text-light)">
+        <i class="fas fa-lock"></i> This conversation is closed
+      </div>
     {% endif %}
   </div>
 </div>
@@ -207,61 +202,68 @@
   const currentUserId = {{ request.user.id }};
   const wsScheme = window.location.protocol === 'https:' ? 'wss' : 'ws';
   const chatSocket = new WebSocket(
-      wsScheme + '://' + window.location.host + '/ws/counsel/' + conversationId + '/'
+    wsScheme + '://' + window.location.host + '/ws/counsel/' + conversationId + '/'
   );
 
   const messagesContainer = document.getElementById('chat-messages');
   const messageInput = document.getElementById('message-input');
 
   function scrollToBottom() {
-      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
   }
+  
   scrollToBottom();
 
   chatSocket.onmessage = function(e) {
-      const data = JSON.parse(e.data);
+    const data = JSON.parse(e.data);
 
-      if (data.type === 'message') {
-          const emptyChat = messagesContainer.querySelector('.empty-chat');
-          if (emptyChat) emptyChat.remove();
+    if (data.type === 'message') {
+      const emptyChat = messagesContainer.querySelector('.empty-chat');
+      if (emptyChat) emptyChat.remove();
 
-          const messageDiv = document.createElement('div');
-          messageDiv.className = 'message ' + (data.sender_id === currentUserId ? 'sent' : 'received');
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'message ' + (data.sender_id === currentUserId ? 'sent' : 'received');
 
-          const time = new Date(data.timestamp);
-          const timeStr = time.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+      const time = new Date(data.timestamp);
+      const timeStr = time.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit'
+      });
 
-          messageDiv.innerHTML = `
-              <div>${escapeHtml(data.message)}</div>
-              <div class="message-time">${timeStr}</div>
-          `;
+      messageDiv.innerHTML = `
+        <div>${escapeHtml(data.message)}</div>
+        <div class="message-time">${timeStr}</div>
+      `;
 
-          messagesContainer.appendChild(messageDiv);
-          scrollToBottom();
-      }
+      messagesContainer.appendChild(messageDiv);
+      scrollToBottom();
+    }
   };
 
   chatSocket.onclose = function(e) {
-      console.log('Chat socket closed');
+    console.log('Chat socket closed');
   };
 
   function sendMessage(e) {
-      e.preventDefault();
-      const message = messageInput.value.trim();
+    e.preventDefault();
+    const message = messageInput.value.trim();
 
-      if (message && chatSocket.readyState === WebSocket.OPEN) {
-          chatSocket.send(JSON.stringify({ 'message': message }));
-          messageInput.value = '';
-      }
-      return false;
+    if (message && chatSocket.readyState === WebSocket.OPEN) {
+      chatSocket.send(JSON.stringify({
+        'message': message
+      }));
+      messageInput.value = '';
+    }
+    return false;
   }
 
   function escapeHtml(text) {
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
   }
 
   messageInput.focus();
 </script>
-{% endif %} {% endblock %}
+{% endif %}
+{% endblock %}
