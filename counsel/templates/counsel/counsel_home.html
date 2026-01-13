@@ -1,5 +1,6 @@
-{% extends 'core/base.html' %} {% block title %}Counsel | The Truth Gate{% endblock %} {% block content %}
-<div class="container site-main" style="max-width: 900px">
+{% extends 'core/base.html' %} {% block title %}Counsel | The Truth Gate{%
+endblock %} {% block content %}
+<div class="container site-main" style="max-width: 700px">
   <header class="text-center mb-4">
     <h1 class="page-title">Counselling</h1>
     <p class="text-secondary">
@@ -7,105 +8,7 @@
     </p>
   </header>
 
-  {% if is_counsellor %}
-  <!-- Counsellor Dashboard -->
-  <div style="margin-bottom: 2rem">
-    <h3
-      style="
-        font-family: var(--font-heading);
-        font-size: 1.1rem;
-        margin-bottom: 1rem;
-      "
-    >
-      <i class="fas fa-inbox" style="color: var(--accent)"></i> Waiting for
-      Counsellor
-    </h3>
-
-    {% if unassigned %} {% for convo in unassigned %}
-    <a href="{% url 'counsel:chat' convo.id %}" style="text-decoration: none">
-      <div
-        style="
-          background: white;
-          border: 1px solid var(--border-color);
-          border-left: 4px solid #f59e0b;
-          border-radius: 8px;
-          padding: 1rem;
-          margin-bottom: 0.75rem;
-          transition: all 0.2s;
-        "
-        onmouseover="this.style.borderColor='var(--primary)'"
-        onmouseout="this.style.borderColor='var(--border-color)'"
-      >
-        <strong style="color: var(--text-primary)"
-          >{{ convo.user.username }}</strong
-        >
-        <span style="color: var(--text-secondary); font-size: 0.85rem"
-          >• {{ convo.created_at|timesince }} ago</span
-        >
-        <span
-          style="
-            float: right;
-            background: #fef3c7;
-            color: #92400e;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.75rem;
-          "
-          >Waiting</span
-        >
-      </div>
-    </a>
-    {% endfor %} {% else %}
-    <p style="color: var(--text-secondary); font-style: italic">
-      No waiting conversations.
-    </p>
-    {% endif %}
-  </div>
-
-  <div style="margin-bottom: 2rem">
-    <h3
-      style="
-        font-family: var(--font-heading);
-        font-size: 1.1rem;
-        margin-bottom: 1rem;
-      "
-    >
-      <i class="fas fa-comments" style="color: var(--accent)"></i> Your Active
-      Sessions
-    </h3>
-
-    {% for convo in conversations %}
-    <a href="{% url 'counsel:chat' convo.id %}" style="text-decoration: none">
-      <div
-        style="
-          background: white;
-          border: 1px solid var(--border-color);
-          border-left: 4px solid var(--accent);
-          border-radius: 8px;
-          padding: 1rem;
-          margin-bottom: 0.75rem;
-          transition: all 0.2s;
-        "
-        onmouseover="this.style.borderColor='var(--primary)'"
-        onmouseout="this.style.borderColor='var(--border-color)'"
-      >
-        <strong style="color: var(--text-primary)"
-          >{{ convo.user.username }}</strong
-        >
-        <span style="color: var(--text-secondary); font-size: 0.85rem"
-          >• Updated {{ convo.updated_at|timesince }} ago</span
-        >
-      </div>
-    </a>
-    {% empty %}
-    <p style="color: var(--text-secondary); font-style: italic">
-      No active sessions.
-    </p>
-    {% endfor %}
-  </div>
-
-  {% else %}
-  <!-- Regular User View -->
+  <!-- Start Conversation CTA -->
   <div
     style="
       background: white;
@@ -141,6 +44,7 @@
     </a>
   </div>
 
+  <!-- User's Existing Conversations -->
   {% if conversations %}
   <div style="margin-bottom: 2rem">
     <h3
@@ -173,9 +77,9 @@
       >
         <div>
           <strong style="color: var(--text-primary)">
-            {% if convo.counsellor %}With {{
-            convo.counsellor.get_full_name|default:convo.counsellor.username
-            }}{% else %}Waiting for counsellor{% endif %}
+            {% if convo.counsellor %} Chatting with {{
+            convo.counsellor.get_full_name|default:"Counsellor" }} {% else %}
+            Waiting for a counsellor... {% endif %}
           </strong>
           <span style="color: var(--text-secondary); font-size: 0.85rem"
             >• {{ convo.updated_at|timesince }} ago</span
@@ -192,11 +96,35 @@
           "
           >Pending</span
         >
+        {% else %}
+        <span
+          style="
+            background: #d1fae5;
+            color: #065f46;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+          "
+          >Active</span
+        >
         {% endif %}
       </div>
     </a>
     {% endfor %}
   </div>
-  {% endif %} {% endif %}
+  {% endif %}
+
+  <!-- Privacy Notice -->
+  <div
+    style="
+      text-align: center;
+      padding: 1rem;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    "
+  >
+    <i class="fas fa-shield-alt"></i> Your conversations are private and
+    confidential.
+  </div>
 </div>
 {% endblock %}

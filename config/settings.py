@@ -249,8 +249,24 @@ AXES_RESET_ON_SUCCESS = True
 
 # Django Channels Configuration
 ASGI_APPLICATION = 'config.asgi.application'
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels.layers.InMemoryChannelLayer',  # Dev only - use Redis in production
-    },
-}
+
+# Redis for production, InMemory for development
+REDIS_URL = os.getenv('REDIS_URL')
+
+if REDIS_URL:
+    CHANNEL_LAYERS = {
+        'default': {
+            'BACKEND': 'channels_redis.core.RedisChannelLayer',
+            'CONFIG': {
+                'hosts': [REDIS_URL],
+            },
+        },
+    }
+    print("SUCCESS: Redis channel layer configured")
+else:
+    CHANNEL_LAYERS = {
+        'default': {
+            'BACKEND': 'channels.layers.InMemoryChannelLayer',
+        },
+    }
+    print("INFO: Using InMemory channel layer (no REDIS_URL set)")

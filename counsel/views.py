@@ -11,35 +11,18 @@ from .models import Conversation, Message
 
 @login_required
 def counsel_home(request):
-    """Main counsel page - shows conversations or starts new one."""
+    """Main counsel page for regular users - shows their conversations."""
     user = request.user
     
-    # Get user's active conversations
-    if user.is_staff:
-        # Staff see all conversations they're involved in
-        conversations = Conversation.objects.filter(
-            counsellor=user, 
-            is_active=True
-        ).select_related('user')
-        
-        # Also show unassigned conversations
-        unassigned = Conversation.objects.filter(
-            counsellor__isnull=True, 
-            is_active=True
-        ).select_related('user')
-    else:
-        # Regular users see their own conversations
-        conversations = Conversation.objects.filter(
-            user=user, 
-            is_active=True,
-            user_deleted=False
-        ).select_related('counsellor')
-        unassigned = None
+    # Regular users see their own conversations
+    conversations = Conversation.objects.filter(
+        user=user, 
+        is_active=True,
+        user_deleted=False
+    ).select_related('counsellor').order_by('-updated_at')
     
     return render(request, 'counsel/counsel_home.html', {
         'conversations': conversations,
-        'unassigned': unassigned,
-        'is_counsellor': user.is_staff,
     })
 
 
