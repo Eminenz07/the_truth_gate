@@ -258,11 +258,14 @@ if REDIS_URL:
         'default': {
             'BACKEND': 'channels_redis.core.RedisChannelLayer',
             'CONFIG': {
-                'hosts': [REDIS_URL],
+                'hosts': [{
+                    'address': REDIS_URL,
+                    'ssl': True,
+                }],
             },
         },
     }
-    print("SUCCESS: Redis channel layer configured")
+    print("SUCCESS: Redis channel layer configured (SSL enabled)")
 else:
     CHANNEL_LAYERS = {
         'default': {

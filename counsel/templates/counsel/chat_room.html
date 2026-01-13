@@ -1,5 +1,8 @@
-{% extends 'core/base.html' %} {% block title %}Chat | The Truth Gate{% endblock
-%} {% block extra_css %}
+{% extends 'core/base.html' %} 
+
+{% block title %}Chat | The Truth Gate{% endblock %}
+
+{% block extra_css %}
 <style>
   .chat-container {
     max-width: 800px;
@@ -116,16 +119,22 @@
   <div class="chat-header">
     <div>
       <strong style="font-family: var(--font-heading)">
-        {% if is_counsellor %} Chat with {{
-        conversation.user.get_full_name|default:conversation.user.username }} {%
-        else %} {% if conversation.counsellor %} Counsellor: {{
-        conversation.counsellor.get_full_name|default:conversation.counsellor.username
-        }} {% else %} Waiting for a counsellor... {% endif %} {% endif %}
+        {% if is_counsellor %} 
+        Chat with {{ conversation.user.get_full_name|default:conversation.user.username }}
+        {% else %} 
+        {% if conversation.counsellor %} 
+        Counsellor: {{ conversation.counsellor.get_full_name|default:conversation.counsellor.username }} 
+        {% else %} 
+        Waiting for a counsellor... 
+        {% endif %} 
+        {% endif %}
       </strong>
       <div style="font-size: 0.8rem; color: var(--text-secondary)">
         {% if conversation.retention_mode == '24h' %}
-        <i class="fas fa-clock"></i> Messages auto-delete after 24 hours {% else
-        %} <i class="fas fa-lock"></i> Confidential conversation {% endif %}
+        <i class="fas fa-clock"></i> Messages auto-delete after 24 hours 
+        {% else %} 
+        <i class="fas fa-lock"></i> Confidential conversation 
+        {% endif %}
       </div>
     </div>
     <a

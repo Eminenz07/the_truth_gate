@@ -1,6 +1,8 @@
-{% extends 'dashboard/base.html' %} {% block header_title %}Chat: {{
-conversation.user.get_full_name|default:conversation.user.username }}{% endblock
-%} {% block extra_css %}
+{% extends 'dashboard/base.html' %} 
+
+{% block header_title %}Chat: {{ conversation.user.get_full_name|default:conversation.user.username }}
+
+{% endblock %} {% block extra_css %}
 <style>
   .chat-container {
     background: white;
