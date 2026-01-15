@@ -17,6 +17,59 @@
         </div>
 
         <p class="mt-4 text-secondary" style="font-size: 0.9rem;">We try to respond to every email within 48 hours.</p>
+
+        <!-- Social Media Links -->
+        <div class="mt-5 pt-4 border-top">
+            <h4 class="mb-4" style="font-size: 1rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.1em;">Connect With Us</h4>
+            <div class="d-flex justify-content-center gap-3" style="font-size: 1.5rem;">
+                {% if site_config.facebook_url %}
+                <a href="{{ site_config.facebook_url }}" target="_blank" class="social-link" title="Facebook">
+                    <i class="fab fa-facebook text-primary-hover"></i>
+                </a>
+                {% endif %}
+                {% if site_config.instagram_url %}
+                <a href="{{ site_config.instagram_url }}" target="_blank" class="social-link" title="Instagram">
+                    <i class="fab fa-instagram text-accent-hover"></i>
+                </a>
+                {% endif %}
+                {% if site_config.x_url %}
+                <a href="{{ site_config.x_url }}" target="_blank" class="social-link" title="X (Twitter)">
+                    <i class="fab fa-twitter text-primary-hover"></i>
+                </a>
+                {% endif %}
+                {% if site_config.youtube_url %}
+                <a href="{{ site_config.youtube_url }}" target="_blank" class="social-link" title="YouTube">
+                    <i class="fab fa-youtube text-danger-hover"></i>
+                </a>
+                {% endif %}
+            </div>
+        </div>
     </div>
 </div>
+
+<style>
+    .social-link {
+        color: var(--text-secondary);
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.5);
+        border: 1px solid var(--border-color);
+        text-decoration: none;
+    }
+    .social-link:hover {
+        transform: translateY(-3px);
+        background: white;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        border-color: #cbd5e1;
+    }
+    .text-primary-hover:hover { color: #1877F2 !important; } /* FB Blue */
+    .text-accent-hover:hover { color: #E1306C !important; } /* Insta Pink */
+    .text-danger-hover:hover { color: #FF0000 !important; } /* YT Red */
+    .social-link:hover .fa-twitter { color: #1DA1F2 !important; } /* Twitter Blue */
+</style>
 {% endblock %}

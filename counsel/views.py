@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.contrib import messages
 from .models import Conversation, Message
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 
 @login_required
@@ -29,6 +31,12 @@ def counsel_home(request):
 @login_required
 def start_conversation(request):
     """Start a new counselling conversation."""
+    # Check for existing active conversation
+    active_conversation = Conversation.objects.filter(user=request.user, is_active=True).first()
+    if active_conversation:
+        messages.info(request, "You already have an active session.")
+        return redirect('counsel:chat', conversation_id=active_conversation.id)
+
     if request.method == 'POST':
         retention = request.POST.get('retention', 'permanent')
         
@@ -112,6 +120,18 @@ def edit_message(request, message_id):
         message.edited_at = timezone.now()
         message.save()
         
+        # Broadcast edit to room group
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            f'counsel_{message.conversation.id}',
+            {
+                'type': 'chat_message_edit',
+                'message_id': message.id,
+                'content': message.content,
+                'edited_at': message.edited_at.isoformat()
+            }
+        )
+        
         return JsonResponse({
             'success': True,
             'message_id': message.id,
@@ -134,8 +154,19 @@ def delete_message(request, message_id):
     if message.sender != request.user:
         return JsonResponse({'success': False, 'error': 'Permission denied'}, status=403)
     
+    conversation_id = message.conversation.id
     message.is_deleted = True
     message.save()
+    
+    # Broadcast delete to room group
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        f'counsel_{conversation_id}',
+        {
+            'type': 'chat_message_delete',
+            'message_id': message.id,
+        }
+    )
     
     return JsonResponse({
         'success': True,
@@ -152,4 +183,52 @@ def get_online_status(request):
     online = User.objects.filter(is_staff=True, is_active=True).exists()
     
     return JsonResponse({'online': online})
+
+
+@login_required
+def widget_messages(request):
+    """API endpoint for floating widget to fetch recent messages."""
+    user = request.user
+    
+    # Get user's active conversation
+    active_conversation = Conversation.objects.filter(
+        user=user,
+        is_active=True,
+        user_deleted=False
+    ).select_related('counsellor').first()
+    
+    if not active_conversation:
+        return JsonResponse({'error': 'No active conversation'}, status=404)
+    
+    # Get recent messages (last 60, excluding deleted)
+    messages = active_conversation.messages.filter(
+        is_deleted=False
+    ).order_by('-timestamp')[:60]
+    
+    # Reverse to show oldest first
+    messages = list(reversed(messages))
+    
+    # Mark unread messages from other users (counsellors) as read
+    unread_messages = [msg for msg in messages if not msg.is_read and msg.sender != user]
+    if unread_messages:
+        for msg in unread_messages:
+            msg.is_read = True
+        Message.objects.bulk_update(unread_messages, ['is_read'])
+    
+    # Format messages for JSON response
+    messages_data = [{
+        'id': msg.id,
+        'content': msg.content,
+        'sender_id': msg.sender.id,
+        'sender_name': msg.sender.get_full_name() or msg.sender.username,
+        'timestamp': msg.timestamp.isoformat(),
+        'edited_at': msg.edited_at.isoformat() if msg.edited_at else None
+    } for msg in messages]
+    
+    return JsonResponse({
+        'conversation_id': active_conversation.id,
+        'messages': messages_data,
+        'counsellor_name': active_conversation.counsellor.get_full_name() if active_conversation.counsellor else 'Counsellor'
+    })
+
 

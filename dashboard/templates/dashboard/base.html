@@ -246,8 +246,13 @@
             <a href="{% url 'dashboard:newsletter_list' %}" class="nav-item {% if 'newsletter' in request.resolver_match.url_name %}active{% endif %}">
                 <i class="fas fa-envelope-open-text"></i> Newsletters
             </a>
-            <a href="{% url 'dashboard:counsel_sessions' %}" class="nav-item {% if 'counsel' in request.resolver_match.url_name %}active{% endif %}">
-                <i class="fas fa-comments"></i> Counsel Sessions
+            <a href="{% url 'dashboard:counsel_sessions' %}" class="nav-item {% if 'counsel' in request.resolver_match.url_name %}active{% endif %}" style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <i class="fas fa-comments"></i> Counsel Sessions
+                </div>
+                {% if counsel_badge_count > 0 %}
+                <span style="background: var(--danger); color: white; border-radius: 99px; padding: 0.15rem 0.6rem; font-size: 0.75rem; font-weight: 600;">{{ counsel_badge_count }}</span>
+                {% endif %}
             </a>
 
             <!-- Section: Configuration -->
@@ -291,7 +296,6 @@
         <div class="page-content">
             {% block content %}{% endblock %}
         </div>
-    </main>
     </main>
     
     <script>

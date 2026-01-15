@@ -100,6 +100,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'core.context_processors.site_settings',
+                'counsel.context_processors.counsel_notifications',
             ],
         },
     },
@@ -199,8 +200,29 @@ MEDIA_ROOT = BASE_DIR / "media"
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
-# Email Backend (Console for Development)
+# Email Configuration
+# Default to Console for development
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Production Email Configuration (SMTP/Brevo)
+EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp-relay.brevo.com')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True') == 'True'
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'The Truth Gate <noreply@thetruthgate.com>')
+
+# Switch to SMTP if configured and not in DEBUG mode (or forced)
+if (not DEBUG and EMAIL_HOST_USER and EMAIL_HOST_PASSWORD) or os.environ.get('FORCE_SMTP', 'False') == 'True':
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    print(f"SUCCESS: Email backend configured using SMTP ({EMAIL_HOST})")
+else:
+    print("INFO: Using Console Email Backend (emails will be printed to terminal)")
+
+# Brevo API Key (for specific API features if needed)
+BREVO_API_KEY = os.environ.get('BREVO_API_KEY', '')
+if not BREVO_API_KEY and EMAIL_BACKEND == 'django.core.mail.backends.smtp.EmailBackend':
+    print("WARNING: BREVO_API_KEY not set, but SMTP is configured.")
 
 # Device Restriction Security
 # GENERATE A NEW TOKEN IN PRODUCTION & ADD TO ENV VARS!
@@ -235,10 +257,7 @@ if PAYSTACK_SECRET_KEY == 'sk_test_replace_me':
 else:
     print(f"SUCCESS: Loaded Paystack Key starting with {PAYSTACK_SECRET_KEY[:8]}...")
 
-# Brevo (Sendinblue) Email Configuration
-BREVO_API_KEY = os.environ.get('BREVO_API_KEY', '')
-if not BREVO_API_KEY:
-    print("INFO: BREVO_API_KEY not set. Email sending disabled.")
+
 
 
 # Axes Configuration

@@ -88,6 +88,22 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'timestamp': event['timestamp'],
             'message_id': event['message_id'],
         }))
+
+    async def chat_message_edit(self, event):
+        """Send message edit event to WebSocket."""
+        await self.send(text_data=json.dumps({
+            'type': 'message_edited',
+            'message_id': event['message_id'],
+            'content': event['content'],
+            'edited_at': event['edited_at'],
+        }))
+
+    async def chat_message_delete(self, event):
+        """Send message delete event to WebSocket."""
+        await self.send(text_data=json.dumps({
+            'type': 'message_deleted',
+            'message_id': event['message_id'],
+        }))
     
     @database_sync_to_async
     def check_conversation_access(self, user):
