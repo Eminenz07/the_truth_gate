@@ -1,4 +1,4 @@
-{% if not request.user.is_staff %}
+{% if not request.user.is_staff and '/counsel/' not in request.path %}
 <div id="counsel-widget" class="counsel-widget minimized">
     <!-- Minimized State (Button) -->
     <button class="widget-toggle-btn" onclick="toggleCounselWidget()">
